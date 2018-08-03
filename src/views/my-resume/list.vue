@@ -24,13 +24,13 @@
                     style="width: 100%">
                     <el-table-column
                         align="center"
-                        prop="batchCode"
+                        prop="insideCode"
                         label="对应溯源码"
                         min-width="200">
                     </el-table-column>
                     <el-table-column
                         align="center"
-                        prop="batchCode"
+                        prop="browseNum"
                         label="被访问次数"
                         min-width="200">
                     </el-table-column>
@@ -71,7 +71,7 @@
         methods: {
             // 搜索按钮
             handleSearch(val) {
-                getMapResumeList(this.search.resumeCode, val, this.$route.query.uniqueCode || '').then(((data) => {
+                getMapResumeList(this.search.resumeCode, val, this.$route.query.code || '').then(((data) => {
                     this.totalCount = data.data.pageCount * 20;
                     this.tableData = data.data.batchCorrespondTwoDtoList || [];
                     this.currentPage = val;

@@ -104,7 +104,7 @@ export default {
     left: 0;
     width: 100%;
     height: 60px;
-    background: #45BC9C;
+    background: $color;
     overflow: hidden;
     z-index: 999;
     .header-left {

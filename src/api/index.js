@@ -99,6 +99,14 @@ export const addResume = code => {
         data: code
     })
 }
+// 修改 履历
+export const editResume = code => {
+    return request({
+        url: '/product/edit',
+        method: 'PUT',
+        data: code
+    })
+}
 // 查找单个 履历数据
 export const getResumeDetails = code => {
     return request({

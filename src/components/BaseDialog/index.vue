@@ -30,6 +30,7 @@
                         <el-date-picker
                         v-if="item.label.indexOf('时间') != -1"
                         style="width:158px;"
+                        :editable="false"
                         type="date"
                         v-model="item.value">
                         </el-date-picker>

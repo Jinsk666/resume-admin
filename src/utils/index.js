@@ -19,7 +19,10 @@ const padLeft = ( value, num, pad ) => {
 
 export const formatTime = ( date, format ) => {
 	if( !date ) return '';
-	if( typeof(date) == 'number' || typeof(date) == 'string' ) {
+	if( typeof(date) == 'string' ) {
+		date = Number(date);
+	}
+	if( typeof(date) == 'number' ) {
 		date = new Date(date);
 	}
 	return (format || 'Y-m-d H:i:s.M').replace(/Y/g, padLeft(date.getFullYear(), 4))
@@ -82,3 +85,43 @@ export const isImg = path => {
     if( /\.(png|jpe?g|gif|svg)(\?.*)?$/.test(path) ) return true;
     else return false;
 }
+
+/**
+ * 获取 scrollTop
+ */
+
+export const getScrollTop = () => {
+	return document.documentElement.scrollTop || document.body.scrollTop;
+}
+
+ /**
+  * 设置scrollTop
+  */
+export const setScrollTop = (code) => {
+	document.documentElement.scrollTop = code;
+	document.body.scrollTop = code;
+}
+
+/**
+ * throttle 节流
+ */
+export const throttle = (func, wait, mustRun) => {
+	var timeout,
+		startTime = new Date();
+
+	return function() {
+		var context = this,
+			args = arguments,
+			curTime = new Date();
+
+		clearTimeout(timeout);
+		// 如果达到了规定的触发时间间隔，触发 handler
+		if(curTime - startTime >= mustRun){
+			func.apply(context,args);
+			startTime = curTime;
+		// 没达到触发间隔，重新设定定时器
+		}else{
+			timeout = setTimeout(func, wait);
+		}
+	};
+};

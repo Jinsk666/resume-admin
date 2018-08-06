@@ -15,11 +15,19 @@
                 </div>
                 <div v-else>
                 履历数据编号:
-                <el-select v-model="mapCode.resumeCode" placeholder="请选择" size="small" style="width:262px">
+                <el-select
+                    filterable
+                    remote
+                    :remote-method="remoteMethodTop"
+                    :loading="loading1"
+                    v-model="mapCode.resumeCode"
+                    placeholder="请选择"
+                    size="small"
+                    style="width:262px">
                     <el-option
-                    v-for="item in resumeOptions"
-                    :key="item.uniqueCode"
-                    :value="item.uniqueCode">
+                        v-for="item in resumeOptions"
+                        :key="item.uniqueCode"
+                        :value="item.uniqueCode">
                     </el-option>
                 </el-select>
                 </div>
@@ -44,11 +52,20 @@
                         <div class="font2">对应批次履历码范围</div>
                         <div class="choose-product">
                             选择产品批次:
-                            <el-select v-model="mapCode.batchCode" placeholder="请选择" size="small" style="width:262px">
+                            <el-select
+                                filterable
+                                remote
+                                :remote-method="remoteMethod"
+                                :loading="loading"
+                                v-model="mapCode.batchCode"
+                                placeholder="请选择"
+                                size="small"
+                                style="width:262px">
                                 <el-option
-                                v-for="item in options"
-                                :key="item.batchCode"
-                                :value="item.batchCode">
+                                    v-for="item in options"
+                                    :key="item.batchCode"
+                                    :label="item.batchCode"
+                                    :value="item.batchCode">
                                 </el-option>
                             </el-select>
                         </div>
@@ -84,16 +101,20 @@
                 },
                 options:[],
                 resumeOptions: [],
+                loading: '',
+                loading1: '',
             }
         },
         mounted() {
-            getCodeList('', 1).then(((data) => {
-                this.options = data.data.resumeBatchTwoResponseList;
-            }))
+            // getCodeList('', 1).then(((data) => {
+            //     this.options = data.data.resumeBatchTwoResponseList;
+            // }))
+            this.remoteMethod();
             if( this.from != 'resume' ) {
-                getResumeList('', 1).then(data => {
-                    this.resumeOptions = data.data.productInfoListSubset;
-                })
+                this.remoteMethodTop();
+                // getResumeList('', 1).then(data => {
+                //     this.resumeOptions = data.data.productInfoListSubset;
+                // })
             }
         },
         methods: {
@@ -124,6 +145,20 @@
             },
             handleClose() {
                 this.$emit('handleClose');
+            },
+            remoteMethod(query) {
+                this.loading = true;
+                getCodeList(query, 1).then(data => {
+                    this.loading = false;
+                    this.options = data.data.resumeBatchTwoResponseList;
+                })
+            },
+            remoteMethodTop(query) {
+                this.loading1 = true;
+                getResumeList(query, 1).then(data => {
+                    this.loading1 = false;
+                    this.resumeOptions = data.data.productInfoListSubset;
+                })
             }
         },
     }

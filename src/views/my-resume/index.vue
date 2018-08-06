@@ -38,7 +38,7 @@
                                     <p>查看对应</p>
                                 </router-link>
                             </li>
-                            <li @click="resumeCode = item.uniqueCode; deleteDialog=true;">
+                            <li @click="resumeCode = item.uniqueCode; deleteDialog=true; deleteResumeIndex = index;">
                                 <p class="circle"><img src="~@/assets/images/resume/icon6.png" alt=""></p>
                                 <p>删除</p>
                             </li>
@@ -74,7 +74,7 @@
             </div>
             <span slot="footer" class="dialog-footer">
                 <el-button @click="deleteDialog = false" size="small">取 消</el-button>
-                <el-button type="primary" @click="deleteDialogSure" size="small">保 存</el-button>
+                <el-button type="primary" @click="deleteDialogSure" size="small">确 定</el-button>
             </span>
         </el-dialog>
     </div>
@@ -83,21 +83,36 @@
 <script>
     import { getResumeList, deleteResume } from '@/api'
     import mapCodeDialog from '@/components/MapCodeDialog'
-    import { formatTime } from '@/utils'
+    import { formatTime, throttle } from '@/utils'
     export default {
         components: { mapCodeDialog },
         data() {
             return {
+                loading: '',
                 resumeList: [],
                 codeDialog: false, // 驸马弹出框
                 deleteDialog: false, // 删除弹出框
                 deleteResumeIndex: '', //删除的顺序
                 resumeCode: '',
+                isLoaded: true, // 是否加载完成
+                currentPage: 2
             }
         },
         filters: {
             formatTime
         },
+        created() {
+            // 绑定 滚动事件
+            // 为了 解除绑定 再套一层函数
+            this.throttleLoad =  throttle( () => {
+                this.loadMore();
+            }, 200, 400);
+            window.addEventListener('scroll', this.throttleLoad)
+        },
+        destroyed () {
+			// 移除 window 事件
+			window.removeEventListener('scroll', this.throttleLoad)
+		},
         mounted() {
             getResumeList('', 1).then(data => {
                 this.resumeList = data.data.productInfoListSubset;
@@ -125,8 +140,33 @@
             },
             handleClose() {
                 this.codeDialog = false;
+            },
+            // 加载更多函数
+            loadMore() {
+                var scrollTop = document.documentElement.scrollTop||document.body.scrollTop;
+                //可视区的高度
+                var windowHeight = document.documentElement.clientHeight || document.body.clientHeight;
+                //滚动条的总高度
+                var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
+                //滚动条到底部的条件
+                if(this.isLoaded && scrollTop + windowHeight + 200 > scrollHeight){
+                    this.loading = this.$loading({text:'加载中...'});
+                    this.isLoaded = false;
+                    //写后台加载数据的函数
+                    getResumeList('', this.currentPage).then(data => {
+                        this.loading.close();
+                        if( data.code != '0000') return;
+                        if( data.data.productInfoListSubset.length == 0 ){
+                            this.$message('没有更多数据了。');
+                            return;
+                        }
+                        this.resumeList = this.resumeList.concat( data.data.productInfoListSubset );
+                        this.currentPage++; // 页数 + 1
+                        this.isLoaded = true; // 可以继续加载
+                    })
+                }
             }
-        },
+        }
     }
 </script>
 

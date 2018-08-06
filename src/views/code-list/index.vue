@@ -79,22 +79,13 @@
             width="500px"
         >
             <div class="codeContent">
-                <!-- <div class="code-top">日期批次：
-                    <el-date-picker
-                        size="small"
-                        v-model="codeTime"
-                        type="date"
-                        placeholder="选择日期">
-                    </el-date-picker>
-                </div>
-                <div class="code-bottom">生成溯源码数量：<el-input style="width:200px;" size="small" v-model="codeCount"></el-input></div> -->
-
                 <el-form label-position="right" label-width="140px" :model="innerCode">
                 <el-form-item label="日期批次：">
                     <el-date-picker
                         size="small"
                         v-model="innerCode.time"
                         type="date"
+                        :editable="false"
                         placeholder="选择日期">
                     </el-date-picker>
                 </el-form-item>
@@ -113,7 +104,8 @@
             from=""
             :codeDialog="codeDialog"
             @codeDialogSure="codeDialogSure"
-            @codeDialogCancel="codeDialogCancel">
+            @codeDialogCancel="codeDialogCancel"
+            @handleClose="handleClose">
         </map-code-dialog>
     </div>
 </template>
@@ -190,6 +182,9 @@
                 this.codeDialog = false;
             },
             codeDialogCancel() {
+                this.codeDialog = false;
+            },
+            handleClose() {
                 this.codeDialog = false;
             }
         },

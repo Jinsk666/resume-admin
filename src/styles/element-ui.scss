@@ -56,11 +56,6 @@
   .el-tabs__item {
     padding: 0 10px;
   }
-  .JG {
-    .el-tabs__nav {
-      margin-left: 43px;
-    }
-  }
 }
 
 #app {
@@ -74,5 +69,22 @@
     .el-tabs__nav {
       margin-left: 125px;
     }
+  }
+}
+
+.JG, .ZZ {
+  .el-tabs__item {
+    height: 70px;
+    line-height: 100px;
+  }
+}
+.JG {
+  .el-tabs__nav {
+    margin-left: 64px;
+  }
+}
+.ZZ {
+  .el-tabs__nav {
+    margin-left: 22px;
   }
 }

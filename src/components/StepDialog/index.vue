@@ -83,7 +83,8 @@
                                 <el-date-picker
                                     v-else-if="item.label.indexOf('时间') != -1 || item.label.indexOf('日期') != -1"
                                     style="width:158px;"
-                                    @change="item.value = +item.value"
+                                    value-format="timestamp"
+                                    :editable="false"
                                     type="date"
                                     v-model="item.value">
                                 </el-date-picker>
@@ -147,7 +148,8 @@
                                             v-else-if="item.label.indexOf('时间') != -1 || item.label.indexOf('日期') != -1"
                                             style="width:158px;"
                                             type="date"
-                                            @change="item.value = +item.value"
+                                            :editable="false"
+                                            value-format="timestamp"
                                             v-model="item.value">
                                         </el-date-picker>
                                         <div  v-else-if="item.label.indexOf('图片') != -1" class="file-container">
@@ -204,7 +206,8 @@
                                                 v-else-if="item.label.indexOf('时间') != -1 || item.label.indexOf('日期') != -1"
                                                 style="width:158px;"
                                                 type="date"
-                                                @change="item.value = +item.value"
+                                                :editable="false"
+                                                value-format="timestamp"
                                                 v-model="item.value">
                                             </el-date-picker>
                                             <div  v-else-if="item.label.indexOf('图片') != -1" class="file-container">

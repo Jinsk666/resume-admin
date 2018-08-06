@@ -16,7 +16,7 @@
                 {{ toData.data[0].generalInfoList[0].value || ''}}
                 <span class="more" @click="viewMore(0)">更多》</span>
                 <br/>
-                <p class="txt-date">{{ toData.data[0].generalInfoList[1].value | formatTime }}</p>
+                <p class="txt-date">{{ toData.data[0].generalInfoList[1].value | formatTime('Y-m-d') }}</p>
               </div>
             </div>
           </div>
@@ -36,7 +36,7 @@
                 {{ toData.data[0].generalInfoList[0].value || ''}}
                 <span class="more" @click="viewMore(0)">更多》</span>
                 <br/>
-                <p class="txt-date">{{ toData.data[0].generalInfoList[1].value | formatTime }}</p>
+                <p class="txt-date">{{ toData.data[0].generalInfoList[1].value | formatTime('Y-m-d') }}</p>
               </div>
             </div>
           </div>
@@ -55,7 +55,7 @@
                   {{ toData.data.slice(1)[index].generalInfoList[0].value || '' }}
                   <span class="more" @click="viewMore(index + 1)">更多》</span>
                   <br/>
-                  <p class="txt-date">{{ toData.data.slice(1)[index].generalInfoList[1].value | formatTime }}</p>
+                  <p class="txt-date">{{ toData.data.slice(1)[index].generalInfoList[1].value | formatTime('Y-m-d') }}</p>
                 </div>
               </div>
             </div>
@@ -72,7 +72,7 @@
                   {{ toData.data.slice(1)[index].generalInfoList[0].value || ''}}
                   <span class="more" @click="viewMore(index + 1)">更多》</span>
                   <br/>
-                  <p class="txt-date">{{ toData.data.slice(1)[index].generalInfoList[1].value | formatTime }}</p>
+                  <p class="txt-date">{{ toData.data.slice(1)[index].generalInfoList[1].value | formatTime('Y-m-d') }}</p>
                 </div>
               </div>
             </div>

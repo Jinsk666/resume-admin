@@ -30,10 +30,10 @@
 				<el-row
 					class="acc-row factory-info"
 					v-for="(item, index) in stepData.data.generalInfoList"
-					v-show="item.label.indexOf('图片') == -1"
+					v-if="item.label.indexOf('图片') == -1"
 					:key="index">
 					<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
-					<el-col v-if="item.dataType == 4" :span="16"><div class="right t">{{item.value | formatTime('Y-m-d')}}</div></el-col>
+					<el-col v-if="dateList.includes(item.dataType)" :span="16"><div class="right t">{{item.value | formatTime('Y-m-d')}}</div></el-col>
 					<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 				</el-row>
 			</div>
@@ -46,11 +46,11 @@
 					v-for="(item, index) in stepData.data.subModelInfoInfoList"
 					:key="index">
 					<span slot="label">
-						<svg-icon v-if="item.label == '种植基本信息'" icon-class="zz"></svg-icon>
-						<svg-icon v-if="item.label == '环境信息'" icon-class="hj"></svg-icon>
-						<svg-icon v-if="item.label == '田间管理'" icon-class="tj"></svg-icon>
-						<svg-icon v-if="item.label == '加工基本信息'" icon-class="jg"></svg-icon>
-						<svg-icon v-if="item.label == '工序流程'" icon-class="gx"></svg-icon>
+						<span class="pro-icon-1" v-if="item.label == '种植基本信息'"><svg-icon icon-class="zz"></svg-icon></span>
+						<span class="pro-icon-2" v-else-if="item.label == '环境信息'"><svg-icon icon-class="hj"></svg-icon></span>
+						<span class="pro-icon-2" v-else-if="item.label == '田间管理'"><svg-icon icon-class="tj"></svg-icon></span>
+						<span class="pro-icon-1" v-if="item.label == '加工基本信息'"><svg-icon icon-class="jg"></svg-icon></span>
+						<span class="pro-icon-2" v-if="item.label == '工序流程'"><svg-icon icon-class="gx"></svg-icon></span>
 						{{item.label || '无返回'}}
 					</span>
 					<div class="item-container" v-if="index != 1">
@@ -68,10 +68,10 @@
 						<el-row
 							class="acc-row factory-info"
 							v-for="(item, index) in item.generalInfoList"
-							v-show="item.label.indexOf('图片') == -1"
+							v-if="item.label.indexOf('图片') == -1"
 							:key="index">
 							<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
-							<el-col v-if="item.dataType == 4" :span="16"><div class="right t">{{item.value | formatTime('Y-m-d')}}</div></el-col>
+							<el-col v-if="dateList.includes(item.dataType)" :span="16"><div class="right t">{{item.value | formatTime('Y-m-d')}}</div></el-col>
 							<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 						</el-row>
 					</div>
@@ -80,7 +80,7 @@
 						<base-tree :toData="{data: item.subModelInfoInfoList}"></base-tree>
 					</div>
 					<div v-else-if="stepData.data.moduleName == '加工' && index == 1">
-						<div class="left" style="height: 300px;">
+						<div class="left" style="height: 200px;">
 							<el-steps direction="vertical">
 								<el-step
 									title=""
@@ -90,12 +90,12 @@
 							</el-steps>
 						</div>
 						<div
-							class="left"
+							class="left jg-step"
 							v-for="(item, index) in item.subModelInfoInfoList"
 							:key="index">
 							<div v-if="item.imgUrlList"><img :src="item.imgUrlList[0]" alt="图片"></div>
 							<div>工序名称 {{item.generalInfoList[0].value}}</div>
-							<div>生产时间段 {{item.generalInfoList[1].value | formatTime}}</div>
+							<div>生产时间段 {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
 						</div>
 					</div>
 				</el-tab-pane>
@@ -113,7 +113,8 @@
         props: ['stepData'],
         data() {
             return {
-				activeName2: '0h'
+				activeName2: '0h',
+				dateList: [3, 4, 5, 6],
             }
 		},
 		filters: {
@@ -135,6 +136,21 @@
 
 <style lang="scss" scoped>
 	@import '../../styles/mixin';
+	.pro-icon-1, .pro-icon-2 {
+		position: absolute;
+		top: -26px;
+		font-size: 24px;
+	}
+	.pro-icon-1 {
+		left: 40px;
+	}
+	.pro-icon-2 {
+		left: 26px;
+	}
+	.jg-step {
+		height: 170px;
+		width: calc(100% - 50px);
+	}
 	.env-info {
 		text-align: center;
 		height: 30px;

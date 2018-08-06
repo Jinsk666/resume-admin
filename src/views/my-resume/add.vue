@@ -1,5 +1,6 @@
 <template>
     <div class="add-container">
+        <!-- <theme-picker></theme-picker> -->
         <!-- <div id="container">
             <div id="selectfiles" class="btn-op borderright">
 				换图
@@ -113,13 +114,14 @@
 </template>
 
 <script>
-    import MainPhone from '@/components/MainPhone/index'
-    import StepDialog from '@/components/StepDialog/index'
-    import BaseDialog from '@/components/BaseDialog/index'
+    import MainPhone from '@/components/MainPhone'
+    import StepDialog from '@/components/StepDialog'
+    import BaseDialog from '@/components/BaseDialog'
+    //import ThemePicker from "@/components/ThemePicker";
     import { deepClone, Step2Class } from '@/utils'
-    import { getTemplateModule, addResume, getResumeDetails } from '@/api'
+    import { getTemplateModule, addResume, editResume, getResumeDetails } from '@/api'
     export default {
-        components: { MainPhone, StepDialog, BaseDialog },
+        components: {/* ThemePicker, */  MainPhone, StepDialog, BaseDialog },
         data() {
             return {
                 mouseoverMaterialIndex: -1,
@@ -158,6 +160,12 @@
                 outerMaterialName: '',// 原料 名称
                 outerMaterialUrl: '', // 原料 url
             }
+        },
+        // 离开页面
+        beforeRouteLeave (to, from, next) {
+            console.log(this)    //可以访问vue实例
+            console.log('组件路由勾子：beforeRouteLeave')
+            next()
         },
         computed: {
             stepData() {
@@ -200,14 +208,7 @@
             getTemplateModule().then( data => {
                 this.loading.close();
                 let res = data.data.moduleInfos;
-                // let res = [
-                //     {moduleName:'基本信息',generalInfoList:[{label: '名称', value: ''},{label:'时间', value:''},{label:'干什么', value:''}],outsideResumeFunc:[{label:'',value:''}]},
-                //     {moduleName:'采购',generalInfoList:[{label: '采购名称', value: ''},{label:'时间', value:''},{label:'干什么', value:''}],outsideResumeFunc:[{label:'',value:''}]},
-                //     {moduleName:'仓储',generalInfoList:[{label: '仓储名称', value: ''},{label:'时间', value:''},{label:'干什么', value:''}],outsideResumeFunc:[{label:'',value:''}]},
-                //     {moduleName:'加工',generalInfoList:[{label: '加工名称', value: ''},{label:'时间', value:''},{label:'干什么', value:''}],outsideResumeFunc:[{label:'',value:''}]},
-                //     {moduleName:'包装',generalInfoList:[{label: '包装名称', value: ''},{label:'时间', value:''},{label:'干什么', value:''}],outsideResumeFunc:[{label:'',value:''}]},
-                //     {moduleName:'运输',generalInfoList:[{label: '运输名称', value: ''},{label:'时间', value:''},{label:'干什么', value:''}],outsideResumeFunc:[{label:'',value:''}]},
-                // ];
+                this.moduleInfos['基本信息'] = data.data.generalInfoList || [];
                 res.forEach((val, index, arr) => {
                     //val['class'] = Step2Class(val.moduleName);
                     this.moduleInfos[val.moduleName] = val;
@@ -228,7 +229,7 @@
                     let two = ['productInfo', 'material'];
                     for(let i = 0; i < two.length; i++){
                         let row = two[i];
-                        this[row].generalInfoList = deepClone(this.moduleInfos['基本信息'].generalInfoList) || [];
+                        this[row].generalInfoList = deepClone(this.moduleInfos['基本信息']) || [];
                         this.baseStep.forEach((val, index) => {
                             if(this.moduleInfos[val]) this[row].moduleInfos.push( deepClone(this.moduleInfos[val]) )
                         })
@@ -250,9 +251,6 @@
                             this.$store.commit('SWITCH_STEPDATA', this.productInfo);
                             this.$store.commit('SWITCH_STEPDATA_CLONE', clone2);
                         }
-                    }).catch( code => {
-                        this.$message.error('加载失败.');
-                        this.loading.close();
                     })
                 }
             }).catch(err => {
@@ -360,8 +358,8 @@
                     return;
                 }
                 this.productInfo.productImportList.push({
-                    label: this.outerMaterialName,
-                    value: this.outerMaterialUrl
+                    "label": this.outerMaterialName,
+                    "value": this.outerMaterialUrl
                 })
                 this.outerMaterialDialog = false;
             },
@@ -400,12 +398,17 @@
                     this.$message.error('请输入产品名称');
                     return;
                 }
-                addResume(this.productInfo).then( data => {
-                    this.$message.success('保存成功.')
-                    this.$router.push('/resume/index');
-                }).catch( err => {
-                    this.$message.error('保存失败.')
-                })
+                if( !this.isEdit ) {
+                    addResume(this.productInfo).then( data => {
+                        this.$message.success('保存成功.')
+                        //this.$router.push('/resume/index');
+                    })
+                }else {
+                    editResume(this.productInfo).then( data => {
+                        this.$message.success('保存成功.')
+                        //this.$router.push('/resume/index');
+                    })
+                }
             },
             cancelData() {
                 this.$confirm('确定要放弃修改吗', '提示', {

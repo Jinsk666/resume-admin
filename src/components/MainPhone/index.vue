@@ -66,7 +66,7 @@
                             <!-- <span class="step-edit2 right" @click.stop="editMaterial()" v-show="isEnterMaterial">
                                 <i class="el-icon-edit"></i>
                             </span> -->
-                            <el-dropdown trigger="click" class="right step-edit2" @command.stop="handleCommand" v-show="isEnterMaterial">
+                            <el-dropdown trigger="click" class="right step-edit2" @command="handleCommand" v-show="isEnterMaterial">
                                 <span class="el-dropdown-link"  >
                                     <i class="el-icon-edit"></i>
                                 </span>
@@ -87,7 +87,7 @@
                             <div class="LL-button"
                                 v-if="stepData.productImportList"
                                 v-for="(item, index) in stepData.productImportList"
-                                :key="index"
+                                :key="(index + 1000)"
                             >
                                 <a class="LL-href" :href="item.value">{{item.value}}</a>
                             </div>
@@ -285,7 +285,7 @@
         width: 346px;
         height: 46px;
         line-height: 46px;
-        margin: 0 auto;
+        margin: 10px auto;
         text-align: center;
         cursor: pointer;
     }
@@ -405,7 +405,7 @@
         line-height: 30px;
         font-size: 14px;
         padding: 0 10px 0 22px !important;
-        margin: 0 20px 20px 0!important;
+        margin: 6px 20px 20px 6px!important;
         border:1px solid rgba(86, 190, 158, .54);
         background-color: rgba(88, 191, 159,.05);
         @include bis('~@/assets/images/tag.png');

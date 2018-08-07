@@ -182,7 +182,7 @@
                                             <svg-icon icon-class="diamond"></svg-icon>
                                         </div>
                                         <div class="left line"></div>
-                                        <div class="delete" @click="deleteFarm(item0, index0)">
+                                        <div class="delete" @click="deleteFarm(item0, index1)">
                                             <i class="el-icon-delete"></i>
                                         </div>
                                     </div>
@@ -384,7 +384,8 @@
             },
             //删除农事
             deleteFarm(item, index) {
-                item.subModelInfoInfoList.splice(index - 1, 1)
+                //debugger
+                item.subModelInfoInfoList.splice(index, 1)
             },
             //  步骤移动
             leftMove() {

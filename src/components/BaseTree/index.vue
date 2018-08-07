@@ -105,7 +105,7 @@
     @import '../../styles/mixin';
 // 树
 .more {
-    display: none;
+  visibility: hidden;
 }
 .headTreeBg {
     background: url('~@/assets/images/tree-head.png') no-repeat;
@@ -132,10 +132,10 @@
     background-size: 100% 100%;
 };
 .tree-right .txt-flow{
-    padding-left: 40px!important;
+    padding-left: 60px!important;
 }
 .tree-left .txt-flow{
-    padding-left: 5px!important;
+    padding-left: 15px!important;
 }
 .tree-info-block{
   position: relative;
@@ -239,7 +239,7 @@
   margin-top: 6px;
   font-size: 14px;
   color: #2b2b2b;
-  text-align: center;
+  text-align: left;
   padding-left: 30px;
   box-sizing: border-box;
 }

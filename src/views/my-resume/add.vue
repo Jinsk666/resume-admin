@@ -352,7 +352,6 @@
                 this.outerMaterialDialog = true;
             },
             outerMaterialDialogSure() {
-                debugger
                 if(this.outerMaterialName == '' || this.outerMaterialUrl == '') {
                     this.$message.error('请输入完整信息');
                     return;
@@ -401,12 +400,12 @@
                 if( !this.isEdit ) {
                     addResume(this.productInfo).then( data => {
                         this.$message.success('保存成功.')
-                        //this.$router.push('/resume/index');
+                        this.$router.push('/resume/index');
                     })
                 }else {
                     editResume(this.productInfo).then( data => {
                         this.$message.success('保存成功.')
-                        //this.$router.push('/resume/index');
+                        this.$router.push('/resume/index');
                     })
                 }
             },

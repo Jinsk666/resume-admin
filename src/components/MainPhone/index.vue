@@ -78,6 +78,7 @@
                                 </el-dropdown>
                             </div>
                         </template>
+                        <!-- 原料链接 -->
                         <div
                             class="acc-row acc-phone-material">
                             <span
@@ -86,17 +87,21 @@
                                 class="ellipsis phone-material">
                                 {{item.productName}}
                             </span>
-                            <div class="LL-button"
-                                v-if="stepData.productImportList"
-                                v-for="(item, index) in stepData.productImportList"
-                                :key="(index + 1000)"
-                            >
-                                <a class="LL-href" :href="item.value">{{item.value}}</a>
-                            </div>
                             <!-- 加号 -->
                             <!-- <span class="phone-material">
                                 <i class="el-icon-plus"></i>
                             </span> -->
+                        </div>
+                        <!-- 原料外链 -->
+                        <div
+                            class="acc-row acc-phone-material"
+                            v-if="stepData.productImportList">
+                            <span
+                                v-for="(item, index) in stepData.productImportList"
+                                :key="(index + 1000)"
+                                class="ellipsis LL-button">
+                                <a target="_blank" :href="item.value">{{item.label}}</a>
+                            </span>
                         </div>
                     </el-collapse-item>
                 </div>

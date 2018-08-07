@@ -11,6 +11,11 @@
                 </span>
                 <el-dropdown-menu slot="dropdown">
                     <el-dropdown-item>
+                      <router-link :to="{name: 'factory'}">
+                        <span style="display:block;">企业信息</span>
+                      </router-link>
+                    </el-dropdown-item>
+                    <el-dropdown-item>
                       <span @click="logout" style="display:block;">退出登录</span>
                     </el-dropdown-item>
                 </el-dropdown-menu>

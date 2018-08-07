@@ -66,7 +66,8 @@
                             <!-- <span class="step-edit2 right" @click.stop="editMaterial()" v-show="isEnterMaterial">
                                 <i class="el-icon-edit"></i>
                             </span> -->
-                            <el-dropdown trigger="click" class="right step-edit2" @command="handleCommand" v-show="isEnterMaterial">
+                            <div class="my right" @click.stop>
+                                <el-dropdown trigger="click" class="right step-edit2" @command="handleCommand" v-show="isEnterMaterial">
                                 <span class="el-dropdown-link"  >
                                     <i class="el-icon-edit"></i>
                                 </span>
@@ -74,7 +75,8 @@
                                     <el-dropdown-item command="inner">创建新原料</el-dropdown-item>
                                     <el-dropdown-item command="outer">引用外部链接</el-dropdown-item>
                                 </el-dropdown-menu>
-                            </el-dropdown>
+                                </el-dropdown>
+                            </div>
                         </template>
                         <div
                             class="acc-row acc-phone-material">

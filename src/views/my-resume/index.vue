@@ -46,8 +46,8 @@
                     </div>
                 </div>
                 <div class="item-bottom">
-                    <div class="name">{{item.productName}}</div>
-                    <div class="name">履历数据编码: {{item.uniqueCode}}</div>
+                    <div class="name ellipsis" :title="item.productName">{{item.productName}}</div>
+                    <div class="name ellipsis" :title="item.uniqueCode">履历数据编码: {{item.uniqueCode}}</div>
                     <div class="time">
                         <div class="left">时间: {{item.insertTime | formatTime('Y-m-d')}}</div>
                         <div class="right">访问: 0 次</div>
@@ -273,7 +273,7 @@
             color: #8FA1AC;
             font-weight: 500;
             text-align: center;
-            padding: 5px 0;
+            padding: 5px 10px;
         }
         .time {
             overflow: hidden;

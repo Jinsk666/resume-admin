@@ -223,17 +223,20 @@
                         }
                     }
                 });
+                var two = ['productInfo', 'material'];
+                if( this.isEdit ) {
+                    two = ['material'];
+                }
+                for(let i = 0; i < two.length; i++){
+                    let row = two[i];
+                    this[row].generalInfoList = deepClone(this.moduleInfos['基本信息']) || [];
+                    this.baseStep.forEach((val, index) => {
+                        if(this.moduleInfos[val]) this[row].moduleInfos.push( deepClone(this.moduleInfos[val]) )
+                    })
+                }
                 // push 数据到 模版中
                     // 基本信息push
                 if( !this.isEdit ) {
-                    let two = ['productInfo', 'material'];
-                    for(let i = 0; i < two.length; i++){
-                        let row = two[i];
-                        this[row].generalInfoList = deepClone(this.moduleInfos['基本信息']) || [];
-                        this.baseStep.forEach((val, index) => {
-                            if(this.moduleInfos[val]) this[row].moduleInfos.push( deepClone(this.moduleInfos[val]) )
-                        })
-                    }
                     this.noEditData = deepClone(this.productInfo); // 存入初始值
                     let clone = deepClone(this.productInfo);
                     this.$store.commit('SWITCH_STEPDATA', this.productInfo);
@@ -340,6 +343,7 @@
                     this.$message.error('请输入原料名称');
                     return;
                 }
+                //debugger
                 this.materialDialog = false;
                 let clone = deepClone(this.material);
                 clone.productName = this.materialName;

@@ -50,16 +50,24 @@
   }
   .hideSidebar {
     .sidebar-container {
-      width: 36px !important;
+      width: 60px !important;
+      .svg-icon {
+        margin-right: 0;
+      }
     }
     .main-container {
-      margin-left: 36px;
+      margin-left: 60px;
     }
     .submenu-title-noDropdown {
       padding-left: 10px !important;
       position: relative;
       .el-tooltip {
         padding: 0 10px !important;
+        text-align: center;
+        font-size: 20px;
+        &:hover {
+          color: #fff;
+        }
       }
     }
     .el-submenu {
@@ -91,6 +99,7 @@
     background-color: $subMenuBg !important;
     &:hover {
       background-color: $menuHover !important;
+      color: #fff;
     }
   }
   .el-menu--collapse .el-menu .el-submenu {

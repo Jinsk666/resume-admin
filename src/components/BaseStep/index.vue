@@ -138,14 +138,14 @@
 	@import '../../styles/mixin';
 	.pro-icon-1, .pro-icon-2 {
 		position: absolute;
-		top: -26px;
+		top: -69px;
 		font-size: 24px;
 	}
 	.pro-icon-1 {
-		left: 40px;
+		left: 30px;
 	}
 	.pro-icon-2 {
-		left: 26px;
+		left: 16px;
 	}
 	.jg-container{
 		height: 200px;
@@ -168,14 +168,14 @@
 		line-height: 30px;
 		margin: 10px 0;
 		.env-info-pointer {
-			border: 3.6px solid $color;
+			border: 5px solid $color;
 			display: inline-block;
 		}
 		.env-info-line {
 			width: 30px;
 			height: 2px;
 			position: relative;
-			bottom:2.8px;
+			bottom: 3.6px;
 			background: $color;
 			display:inline-block;
 		}

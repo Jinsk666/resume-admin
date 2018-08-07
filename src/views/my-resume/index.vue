@@ -46,8 +46,8 @@
                     </div>
                 </div>
                 <div class="item-bottom">
-                    <div class="name ellipsis" :title="item.productName">{{item.productName}}</div>
-                    <div class="name ellipsis" :title="item.uniqueCode">履历数据编码: {{item.uniqueCode}}</div>
+                    <div class="name ellipsis name-title" :title="item.productName">{{item.productName}}</div>
+                    <div class="name ellipsis name-code" :title="item.uniqueCode">{{item.uniqueCode}}</div>
                     <div class="time">
                         <div class="left">时间: {{item.insertTime | formatTime('Y-m-d')}}</div>
                         <div class="right">访问: 0 次</div>
@@ -205,7 +205,7 @@
             }
         }
         .item {
-            border: 1px dashed #C8C8C8;
+            border: 1px solid #e7e7e7;
             border-radius: 6px;
             background: #FCFCFC;
             position: relative;
@@ -213,7 +213,8 @@
         }
     }
     .item-top {
-        height: 236px;
+        height: 224px;
+        overflow: hidden;
         .logo {
             width: 230px;
             img {
@@ -225,7 +226,7 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 236px;
+            height: 224px;
             border-top-left-radius: 6px;
             border-top-right-radius: 6px;
             background: rgba(0, 0, 0, .6);
@@ -275,9 +276,16 @@
             text-align: center;
             padding: 5px 10px;
         }
+        .name-title {
+            font-size: 16px;
+            font-weight: 500;
+        }
+        .name-code {
+            font-size: 14px;
+        }
         .time {
             overflow: hidden;
-            padding: 8px;
+            padding: 8px 20px;
         }
     }
 

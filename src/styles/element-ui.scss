@@ -53,9 +53,6 @@
   .el-collapse-item__arrow {
     line-height: 48px;
   }
-  .el-tabs__item {
-    padding: 0 10px;
-  }
 }
 
 #app {
@@ -64,27 +61,51 @@
   }
   .el-menu-item:hover {
     background-color: $navBarColor!important;
+    color: #fff!important;
   }
-  .middle-container{
-    .el-tabs__nav {
-      margin-left: 125px;
+  .el-breadcrumb__inner {
+    a{
+      color: #333;
     }
   }
+  .el-dialog__footer {
+    text-align: center;
+    border-top: 1px solid #ddd;
+  }
+  .el-dialog__header {
+    border-bottom: 1px solid #ddd;
+  }
+  .el-dialog__body .el-form-item__content .el-input {
+    width: 159px;
+  }
 }
-
+.el-tabs__item {
+  color:#8ba2b9;
+}
 .JG, .ZZ {
+  .el-tabs__nav-wrap {
+    height: 70px;
+  }
   .el-tabs__item {
     height: 70px;
     line-height: 100px;
   }
 }
-.JG {
-  .el-tabs__nav {
-    margin-left: 64px;
-  }
+
+
+.el-tabs__nav-wrap {
+  height: 40px;
 }
-.ZZ {
-  .el-tabs__nav {
-    margin-left: 22px;
+.el-tabs__nav {
+  //width: 100%;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%)!important;
+}
+.el-tabs__item {
+  text-align: center;
+  height: 40px;
+  >span {
+      position: relative;
   }
 }

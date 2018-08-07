@@ -81,8 +81,8 @@ export const constantRouterMap = [
     path: '/list',
     component: Layout,
     redirect: '/list/index',
-    name: 'ListOuter',
-    meta: { title: '编码列表', icon: 'module' },
+    //name: 'ListOuter',
+    //meta: { title: '编码列表', icon: 'module' },
     children: [
       {
         path: 'index',

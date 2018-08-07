@@ -452,6 +452,7 @@
             },
             // 上传文件
             uploadFile($event, obj) {
+                debugger
                 let file = $event.target.files[0];
                 if( !isImg(file.name) ) {
                     this.$message({
@@ -600,6 +601,10 @@
         line-height: 42px;
         border: 1px solid #ddd;
         border-radius: 6px;
+        &:hover {
+            color: #409EFF;
+            border: 1px solid #409EFF;
+        }
     }
     .icon-jt {
         font-size: 55px;

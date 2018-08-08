@@ -12,7 +12,7 @@ const service = axios.create({
 service.interceptors.request.use(config => {
     config.headers['Platform-Secret'] = '08xwwf336woy1688uudkelyyhl3i13mk';
     config.headers['Platform-Code'] = '1s7kc8zvwwat';
-    //if( getToken() )config.headers['Access-Token'] = getToken();
+    if( getToken() )config.headers['Access-Token'] = getToken();
     return config
 }, error => {
   console.log(error)

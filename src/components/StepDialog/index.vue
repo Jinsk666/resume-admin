@@ -442,7 +442,6 @@
                 this.uploadDialog = false;
             },
             handleOuterAdd(index, rows, scope) {
-                console.log(scope)
                 //rows.splice(index,0, {lable:'',value:''});
                 rows.push({lable:'',value:''})
             },

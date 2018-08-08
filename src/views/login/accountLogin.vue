@@ -51,7 +51,7 @@
 					return;
                 }
                 // 提交 action 记录 token
-                this.$store.dispatch('AccountLogin', {username: this.phone, password: this. password}).then(() => {
+                this.$store.dispatch('AccountLogin', {username: this.phone, password: this. password}).then(data => {
                     this.$router.push({ path: '/' })
                 }).catch((res) => {
                     this.$message.error( res.message );

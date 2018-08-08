@@ -161,12 +161,6 @@
                 outerMaterialUrl: '', // 原料 url
             }
         },
-        // 离开页面
-        beforeRouteLeave (to, from, next) {
-            console.log(this)    //可以访问vue实例
-            console.log('组件路由勾子：beforeRouteLeave')
-            next()
-        },
         computed: {
             stepData() {
                 return this.$store.state.app.stepData
@@ -189,8 +183,6 @@
                     }
                 },
                 set: function(newValue) {
-                    console.dir(newValue)
-                    console.log(this.$store.state.app.isMaterial)
                     if( this.$store.state.app.isMaterial === false ){
                         this.productInfo = newValue;
                     }else {
@@ -201,6 +193,10 @@
             isEdit() {
                 return this.$route.query.code
             }
+        },
+        mounted() {
+            let rootDom = document.querySelectorAll('.menu-wrapper')[0];
+            rootDom.querySelector('.el-menu-item').classList.add('is-active');
         },
         created: function() {
             this.loading = this.$loading({text:'拼命加载中...'});

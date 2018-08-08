@@ -128,8 +128,6 @@
                 this.row = row;
             },
             handleCommand(code) {
-                console.log(this.row)
-                console.log(code)
                 if( code == 'qrcode'){
                     let base = this.row.addressUrl;
                     let resumeCode = this.row.resumeNumber;
@@ -145,7 +143,6 @@
                                 duration: 1000
                             });
                             let url = canvas.toDataURL('image/png');
-                            console.log(url);
                             // 构造a标签并模拟点击
                             var downloadLink = document.getElementById('downloadLink');
                             downloadLink.setAttribute('href', url);

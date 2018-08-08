@@ -2,6 +2,7 @@ import Cookies from 'js-cookie'
 
 const TokenKey = 'Admin-Token'
 const UserName = 'userName'
+const FacoryId = "factoryId"
 
 export function getToken() {
   return Cookies.get(TokenKey)
@@ -26,4 +27,16 @@ export function setName(name) {
 
 export function removeName() {
   return Cookies.remove(UserName)
+}
+
+export function getFactory() {
+  return Cookies.get(FacoryId)
+}
+
+export function setFactory(id) {
+  return Cookies.set(FacoryId, id)
+}
+
+export function removeFactory() {
+  return Cookies.remove(FacoryId)
 }

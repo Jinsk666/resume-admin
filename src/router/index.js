@@ -21,8 +21,20 @@ export const constantRouterMap = [
   { path: '/accountLogin',name: 'accountLogin', component: AccountLogin, hidden: true },
   { path: '/forget',name: 'forget', component: Forget, hidden: true },
   { path: '/404', component: Errors, hidden: true },
-  { path: '/factory', name:'factory', component: Factory, hidden: true },
-
+  // 企业信息
+  {
+    path: '/factory',
+    component: Layout,
+    redirect: '/factory/index',
+    name: 'factoryAll',
+    hidden: true,
+    children: [{
+      path: '/index',
+      name: 'factory',
+      component: Factory,
+    }]
+  },
+  // 首页
   {
     path: '/',
     component: Layout,
@@ -34,6 +46,7 @@ export const constantRouterMap = [
     //   component: () => import('@/views/dashboard/index')
     // }]
   },
+  // 我的履历
   {
     path: '/resume',
     component: Layout,
@@ -61,7 +74,7 @@ export const constantRouterMap = [
       }
     ]
   },
-
+  // 模版选择
   {
     path: '/module',
     component: Layout,
@@ -76,7 +89,7 @@ export const constantRouterMap = [
       }
     ]
   },
-
+  // 编码列表
   {
     path: '/list',
     component: Layout,

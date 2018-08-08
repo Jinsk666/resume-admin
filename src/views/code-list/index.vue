@@ -149,8 +149,6 @@
                 this.row = row;
             },
             handleCommand(code) {
-                console.log(this.row)
-                console.log(code)
             },
             // 内部溯源码 弹出框
             handleInnerCode() {

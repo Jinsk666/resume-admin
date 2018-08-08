@@ -54,4 +54,36 @@ export const logout = () => {
     method: 'post'
   })
 }
+// 获取企业信息
+export const getFactoryInfo = code => {
+  return request({
+    url: '/auth/enterpriseInfo/get/' + code,
+    method: 'get',
+    data: code
+  })
+}
+// 添加企业信息
+export const addFactoryInfo = code => {
+  return request({
+    url: '/auth/enterpriseInfo/add',
+    method: 'post',
+    data: code
+  })
+}
+// 修改企业信息
+export const editFactoryInfo = code => {
+  return request({
+    url: '/auth/enterpriseInfo/edit',
+    method: 'put',
+    data: code
+  })
+}
+
+//获取省市区
+export const getCountry = id => {
+  return request({
+    url: '/auth/area/getSonArea/'+ id,
+    method: 'get'
+  })
+}
 

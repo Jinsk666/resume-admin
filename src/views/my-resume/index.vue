@@ -33,6 +33,14 @@
                                 </router-link>
                             </li>
                             <li>
+                                <p class="circle"><img src="~@/assets/images/resume/icon3.png" alt=""></p>
+                                <p>预览</p>
+                            </li>
+                            <li>
+                                <p class="circle"><img src="~@/assets/images/resume/icon4.png" alt=""></p>
+                                <p>复制并新建</p>
+                            </li>
+                            <li>
                                 <router-link :to="{name: 'resumeList', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon5.png" alt=""></p>
                                     <p>查看对应</p>
@@ -111,7 +119,8 @@
         },
         destroyed () {
 			// 移除 window 事件
-			window.removeEventListener('scroll', this.throttleLoad)
+            window.removeEventListener('scroll', this.throttleLoad)
+            this.throttleLoad = null;
 		},
         mounted() {
             getResumeList('', 1).then(data => {
@@ -248,6 +257,9 @@
                 color: #FFF;
                 margin: 10px 0;
                 cursor: pointer;
+                p {
+                    font-size: 12px;
+                }
             }
             .circle {
                 display: inline-block;

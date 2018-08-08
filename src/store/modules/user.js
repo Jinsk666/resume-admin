@@ -1,19 +1,23 @@
 import { login, logout, accountLogin } from '@/api/login'
-import { getToken, setToken, removeToken, getName, setName, removeName } from '@/utils/auth'
+import { getToken, setToken, removeToken, getName, setName, removeName, getFactory, setFactory, removeFactory } from '@/utils/auth'
+import { getFactoryInfo } from '../../api/login';
 
 const user = {
   state: {
-	token: getToken(),
-	username: getName()
+    token: getToken(),
+    username: getName(),
+    factoryId: getFactory(),
   },
-
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
-	},
-	SET_NAME: (state, name) => {
-		state.username = name
-	}
+    },
+    SET_NAME: (state, name) => {
+      state.username = name
+    },
+    SET_FACTORY:(state, id) => {
+      state.factoryId = id
+    }
   },
 
   actions: {
@@ -25,6 +29,8 @@ const user = {
 		      const data = response.data
           setToken(data.accessToken)
           setName(data.username)
+          setFactory(data.enterpriseInfoId);
+          commit('SET_FACTORY', data.enterpriseInfoId)
           commit('SET_TOKEN', data.accessToken)
           commit('SET_NAME', data.username)
           resolve()
@@ -40,6 +46,8 @@ const user = {
         const data = response.data
         setToken(data.accessToken)
         setName(data.username)
+        setFactory(data.enterpriseInfoId);
+        commit('SET_FACTORY', data.enterpriseInfoId)
         commit('SET_TOKEN', data.accessToken)
         commit('SET_NAME', data.username)
         resolve()
@@ -54,6 +62,8 @@ const user = {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
           commit('SET_NAME', '')
+          commit('SET_FACTORY', '')
+          removeFactory();
           removeToken()
           removeName()
           resolve()
@@ -68,6 +78,8 @@ const user = {
       return new Promise(resolve => {
         commit('SET_TOKEN', '')
         commit('SET_NAME', '')
+        commit('SET_FACTORY', '')
+        removeFactory();
         removeToken()
         removeName()
         resolve()

@@ -25,6 +25,7 @@
     </div>
 </template>
 <script>
+    import { removeToken, removeFactory } from '@/utils/auth'
     export default {
         data() {
             return {
@@ -37,6 +38,10 @@
             rightPhone: function (){
                 return /^1\d{10}$/gi.test(this.phone);
             }
+        },
+        mounted() {
+            removeToken()
+            removeFactory()
         },
         methods: {
             /* 登陆请求  */

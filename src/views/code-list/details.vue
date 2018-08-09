@@ -1,6 +1,6 @@
 <template>
     <div class="code-list">
-        <div class="search-header clearfix">
+        <!-- <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
                     placeholder="内部溯源码, 履历数据编码"
@@ -21,7 +21,7 @@
             <div class="right search-btn">
                   <el-button size="medium" type="primary" @click="handleSearch(1)">搜索</el-button>
             </div>
-        </div>
+        </div> -->
         <div class="code-container">
             <div class="container-top">
                 <div class="left">溯源码列表</div>

@@ -90,6 +90,7 @@
 	import axios from 'axios'
 	import { addFactoryInfo, editFactoryInfo, getCountry, getFactoryInfo } from '@/api/login';
 	import { isImg } from '@/utils'
+	import { setFactory } from '@/utils/auth'
     export default {
         data() {
             return {
@@ -106,7 +107,6 @@
 					creditCode: '', //企业信用编码
 					logoImgUrl: '', //企业logo
 					description: '', // 企业简介
-					username: '',
 				},
 				rules: {
 					enterpriseName: [
@@ -124,9 +124,6 @@
 		computed: {
 			factoryId: function () {
 				return this.$store.state.user.factoryId
-			},
-			username: function() {
-				return this.$store.state.user.username
 			}
 		},
 		mounted() {
@@ -160,8 +157,11 @@
 							this.$router.push({name: 'Resume'})
 						});
 					}else {
-						this.ruleForm.username = this.username;
 						addFactoryInfo(this.ruleForm).then( data => {
+							let id = data.data.enterpriseInfoResponseDTO.enterpriseInfoId
+							// 企业 ID 存入 store
+							this.$store.commit('SET_FACTORY', id);
+							setFactory(id);
 							this.$message.success('添加成功');
 							this.$router.push({name: 'Resume'})
 						});

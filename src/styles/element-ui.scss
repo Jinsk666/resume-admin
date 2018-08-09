@@ -79,6 +79,16 @@
   .el-dialog__body .el-form-item__content .el-input {
     width: 159px;
   }
+  .el-menu {
+    border-right: 1px solid #e6e6e6;
+  }
+  // .menu-wrapper {
+  //   border-bottom: 1px solid #D2DADF;
+  // }
+  .el-step {
+    height: 190px;
+    flex-basis:100%!important;
+  }
 }
 .el-tabs__item {
   color:#8ba2b9;

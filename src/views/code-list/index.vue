@@ -1,6 +1,6 @@
 <template>
     <div class="code-list">
-        <div class="search-header clearfix">
+        <!-- <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
                     placeholder="编码批次"
@@ -12,7 +12,7 @@
             <div class="right search-btn">
                   <el-button size="small" type="primary" @click="handleSearch(1)">搜索</el-button>
             </div>
-        </div>
+        </div> -->
         <div class="code-container">
             <div class="container-top">
                 <div class="left">编码列表</div>

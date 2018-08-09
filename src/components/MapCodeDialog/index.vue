@@ -87,7 +87,8 @@
 </template>
 
 <script>
-    import { setMapCode, getCodeList, getResumeList} from '@/api'
+    import { setMapCode, getCodeList, getResumeList } from '@/api'
+    import { isNumber } from '@/utils'
     export default {
         props:[ 'codeDialog', 'resumeCode', 'from'],
         data() {
@@ -119,21 +120,37 @@
         },
         methods: {
             codeDialogSure() {
+                if( !this.mapCode.batchCode && !this.mapCode.inputCode ) {
+                    this.$message.error('请输入履历对应码或产品批次');
+                    return;
+                }
+                if(!this.resumeCode && !this.mapCode.resumeCode){
+                    this.$message.error('请填写履历数据编码');
+                    return;
+                }
+                if( this.mapCode.batchCode && ( !this.mapCode.startePoint || !this.mapCode.endPoint ) ) {
+                    this.$message.error('请填写溯源号段');
+                    return;
+                }
+                if( this.mapCode.startePoint &&  this.mapCode.endPoint) {
+                    if( !isNumber( this.mapCode.startePoint ) || !isNumber( this.mapCode.endPoint )) {
+                        this.$message.error('溯源号段应为数字');
+                        return;
+                    }
+                    if( isNumber( this.mapCode.startePoint ) && isNumber( this.mapCode.endPoint ) ) {
+                        if( this.mapCode.startePoint > this.mapCode.endPoint ) {
+                            this.$message.error('溯源号段填写错误');
+                            return;
+                        }
+                    }
+                }
                 setMapCode( (this.resumeCode?this.resumeCode:this.mapCode.resumeCode),this.mapCode.inputCode,this.mapCode.batchCode,this.mapCode.startePoint,this.mapCode.endPoint ).then((data) => {
                     if( data.data.inExistenceList && data.data.inExistenceList.length > 0 ) {
-                        this.$message.error('履历码已经对应过');
+                        this.$message.error('该履历码已经对应过');
                         return;
                     }
                     if( data.data.inExistenceList && data.data.nonConformityList.length > 0 ){
                         this.$message.error('履历码不符合规则');
-                        return;
-                    }
-                    if( !this.mapCode.batchCode ) {
-                        this.$message.error('输入有误');
-                        return;
-                    }
-                    if(!this.resumeCode && !this.mapCode.resumeCode){
-                        this.$message.error('请填写履历数据编码');
                         return;
                     }
                     this.$message.success('赋码成功');

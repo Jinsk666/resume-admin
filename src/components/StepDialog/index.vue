@@ -67,7 +67,7 @@
                             v-if="toData.moduleInfos && toData.moduleInfos.length > 0"
                             :inline="true" ref="productInfoDom" label-width="120px" size="mini">
                             <el-form-item
-                                :class="{block: item.label == '图片'}"
+                                :class="{block: item.label == '图片' || item.label == '上传检测报告'}"
                                 v-for="(item, index) in toData.moduleInfos[accordionIndex].generalInfoList"
                                 :key="index"
                                 :label="item.label + ':'"
@@ -88,7 +88,7 @@
                                     type="date"
                                     v-model="item.value">
                                 </el-date-picker>
-                                <div  v-else-if="item.label == '图片'" class="file-container">
+                                <div  v-else-if="(item.label == '图片' || item.label == '上传检测报告')" class="file-container">
                                     <div class="img-container" v-if="toData.moduleInfos[accordionIndex].imgUrlList">
                                         <span  v-for="(item, index) in toData.moduleInfos[accordionIndex].imgUrlList"
                                             :key="index">

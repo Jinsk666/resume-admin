@@ -32,14 +32,16 @@
                                     <p>编辑</p>
                                 </router-link>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <p class="circle"><img src="~@/assets/images/resume/icon3.png" alt=""></p>
                                 <p>预览</p>
                             </li>
                             <li>
-                                <p class="circle"><img src="~@/assets/images/resume/icon4.png" alt=""></p>
-                                <p>复制并新建</p>
-                            </li>
+                                <router-link :to="{name: 'AddResume', query: {code: item.uniqueCode, add: 1}}">
+                                    <p class="circle"><img src="~@/assets/images/resume/icon4.png" alt=""></p>
+                                    <p>复制并新建</p>
+                                </router-link>
+                            </li> -->
                             <li>
                                 <router-link :to="{name: 'resumeList', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon5.png" alt=""></p>

@@ -19,6 +19,7 @@
                 >
             </main-phone>
         </div>
+        <!-- <div class="left-container"></div> -->
         <div class="right-container">
             <div class="top-btn">
                 <el-button type="primary" size="small" @click="saveData">保 存</el-button>
@@ -398,7 +399,7 @@
                     this.$message.error('请输入产品名称');
                     return;
                 }
-                if( !this.isEdit ) {
+                if( !this.isEdit || this.$route.query.add) {
                     addResume(this.productInfo).then( data => {
                         this.$message.success('保存成功.')
                         this.$router.push('/resume/index');
@@ -512,6 +513,15 @@
         right: 20px;
         //margin-right: 10px;
     }
+    .left-container {
+        height: calc(100% - 60px);
+        width: 180px;
+        position: fixed;
+        left: 0;
+        top: 60px;
+        background: #FFF;
+        text-align: center;
+    }
     .right-container{
         height: calc(100% - 60px);
         width: 180px;
@@ -520,6 +530,7 @@
         top: 60px;
         background: #FFF;
         text-align: center;
+        border-left: 1px solid #e6e6e6;
         .top-btn {
             padding: 8.4px;
         }

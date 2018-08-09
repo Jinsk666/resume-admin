@@ -12,11 +12,14 @@ router.beforeEach((to, from, next) => {
       if( Number(getFactory()) || to.name == 'factory') {
         next()
       }else {
-        Message({
-          message: '请填写企业信息',
-          type: 'error',
-          duration: 5 * 1000
-        })
+        // 给提示
+        if( from.name != 'login' && from.name !='accountLogin') {
+          Message({
+            message: '请填写企业信息',
+            type: 'error',
+            duration: 5 * 1000
+          })
+        }
         next({name: 'factory'})
       }
       NProgress.done()

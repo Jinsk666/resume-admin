@@ -125,3 +125,14 @@ export const throttle = (func, wait, mustRun) => {
 		}
 	};
 };
+
+export const isNumber = val => {
+    if( val === "" || val ==null ){
+        return false;
+    }
+    if( !isNaN(val) ){
+        return true;
+    }else{
+        return false;
+    }
+}

@@ -65,7 +65,7 @@ export const getFactoryInfo = code => {
 // 添加企业信息
 export const addFactoryInfo = code => {
   return request({
-    url: '/auth/enterpriseInfo/add',
+    url: '/auth/enterpriseInfo/addFromResume',
     method: 'post',
     data: code
   })

@@ -28,7 +28,8 @@
 </template>
 
 <script>
-	import { getVerify } from '@/api/login';
+    import { getVerify } from '@/api/login';
+    import { removeToken, removeFactory } from '@/utils/auth'
 
     export default {
         data() {
@@ -43,6 +44,10 @@
             rightPhone: function (){
                 return /^1\d{10}$/gi.test(this.phone);
             }
+        },
+        mounted() {
+            removeToken()
+            removeFactory()
         },
         methods: {
 			/* 登陆请求  */

@@ -30,7 +30,7 @@
 				<el-row
 					class="acc-row factory-info"
 					v-for="(item, index) in stepData.data.generalInfoList"
-					v-if="item.label.indexOf('图片') == -1"
+					v-if="item.label.indexOf('图片') == -1 && item.label.indexOf('上传检测报告') == -1"
 					:key="(index + 200)">
 					<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
 					<el-col v-if="dateList.includes(item.dataType)" :span="16"><div class="right t">{{item.value | formatTime('Y-m-d')}}</div></el-col>
@@ -80,7 +80,7 @@
 						<base-tree :toData="{data: item.subModelInfoInfoList}"></base-tree>
 					</div>
 					<div v-else-if="stepData.data.moduleName == '加工' && index == 1">
-						<div class="left jg-container">
+						<div class="left jg-container" style="display:none;">
 							<el-steps direction="vertical">
 								<el-step
 									title=""
@@ -94,8 +94,8 @@
 							v-for="(item, index) in item.subModelInfoInfoList"
 							:key="(index + 1000)">
 							<div v-if="item.imgUrlList"><img :src="item.imgUrlList[0]" alt="图片"></div>
-							<div>工序名称 {{item.generalInfoList[0].value}}</div>
-							<div>生产时间段 {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
+							<div>工序名称: {{item.generalInfoList[0].value}}</div>
+							<div>生产时间段: {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
 						</div>
 					</div>
 				</el-tab-pane>
@@ -147,12 +147,8 @@
 	.pro-icon-2 {
 		left: 16px;
 	}
-	.jg-container{
-		height: 200px;
-	}
 	.jg-step {
-		height: 170px;
-		width: calc(100% - 50px);
+		width: 100%;
 		border: 1px solid #ccc;
 		border-radius: 6px;
 		margin-bottom: 10px;

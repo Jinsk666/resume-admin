@@ -169,6 +169,7 @@
 							// 企业 ID 存入 store
 							this.$store.commit('SET_FACTORY', id);
 							setFactory(id);
+							// 重新 获取 Token
 							let r = getRefreshToken();
 							getToken(r).then( (data2) => {
 								this.$store.commit('SET_TOKEN', data2.data);

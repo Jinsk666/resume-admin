@@ -60,7 +60,7 @@
                     <div class="name ellipsis name-code" :title="item.uniqueCode">{{item.uniqueCode}}</div>
                     <div class="time">
                         <div class="left">时间: {{item.insertTime | formatTime('Y-m-d')}}</div>
-                        <div class="right">访问: 0 次</div>
+                        <div class="right">访问: {{item.visitNum || 0}} 次</div>
                     </div>
                 </div>
             </div>

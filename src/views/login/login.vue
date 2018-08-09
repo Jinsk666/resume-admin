@@ -13,7 +13,7 @@
                     <p class="login-label">手机号</p>
                     <input id="phone" type="text" v-model="phone" placeholder="请输入手机号"/>
                 </div>
-                <div class="login-code">
+                <div class="login-code" >
                     <p class="login-label">验证码</p>
                     <input id="password" type="text" @keyup.enter.native="handleLogin" v-model="verify" placeholder="请输入验证码"/>
                     <button id="send_sms_code" :class="{ right_phone: rightPhone }" v-show="!countdownTime" @click="sendVerify">发送验证码</button>

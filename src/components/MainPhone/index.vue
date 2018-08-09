@@ -25,7 +25,7 @@
                     {{stepData.productName || '点击填写产品名称'}}
                 </div>
                 <div class="intro-name" v-show="editProductName" @click.stop="editProductName = true">
-                    <el-input v-model="stepData.productName" placeholder="填写产品名称"></el-input>
+                    <el-input autofocus="true" v-model="stepData.productName" placeholder="填写产品名称"></el-input>
                 </div>
             </div>
             <div ref="baseDom" class="intro-content clear"
@@ -139,7 +139,7 @@
         components: { BaseStep },
         data() {
             return {
-                editProductName: false,
+                editProductName: true,
                 isEnterBase: false,
                 isEnterMaterial: false,
                 isEnterStep: false,

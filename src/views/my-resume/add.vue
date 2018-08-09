@@ -300,16 +300,17 @@
                 this.baseDialog = true;
             },
             baseDialogCancel() {
+                // 取消 需要拿到副本 重新设置 storeData
                 this.baseDialog = false;
                 let clone = deepClone(this.stepDataClone);
                 this.$store.commit('SWITCH_STEPDATA', clone);
                 this.stroeData = clone;
             },
             baseDialogSure() {
+                //确认 需要拿到副本 重新设置 副本
                 this.baseDialog = false;
                 let clone = deepClone(this.stepData);
                 this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
-                this.stroeData = clone;
             },
             // 添加原料
             addMaterial() {

@@ -53,6 +53,7 @@
                         <div class="choose-product">
                             选择产品批次:
                             <el-select
+                                @focus="batchCodeFocus"
                                 filterable
                                 remote
                                 :remote-method="remoteMethod"
@@ -110,7 +111,7 @@
             // getCodeList('', 1).then(((data) => {
             //     this.options = data.data.resumeBatchTwoResponseList;
             // }))
-            this.remoteMethod();
+            
             if( this.from != 'resume' ) {
                 this.remoteMethodTop();
                 // getResumeList('', 1).then(data => {
@@ -119,6 +120,9 @@
             }
         },
         methods: {
+            batchCodeFocus() {
+                this.remoteMethod();
+            },
             codeDialogSure() {
                 if( !this.mapCode.batchCode && !this.mapCode.inputCode ) {
                     this.$message.error('请输入履历对应码或产品批次');

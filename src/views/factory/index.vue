@@ -130,15 +130,22 @@
 			if( Number(this.factoryId) ) {
 				getFactoryInfo(this.factoryId).then( data => {
 					this.ruleForm = data.data;
+					if( data.data.cityId == 0 ) this.ruleForm.cityId = '';
+					if( data.data.countyId == 0 ) this.ruleForm.countyId = '';
+					if( data.data.provincesId == 0 ) this.ruleForm.provincesId = '';
 					getCountry(0).then( data => {
 						this.provCnList = data.data;
 					})
-					getCountry(this.ruleForm.provincesId).then( data => {
-						this.cityCnList = data.data;
-					})
-					getCountry(this.ruleForm.cityId).then( data => {
-						this.countyCnList = data.data;
-					})
+					if( this.ruleForm.provincesId ) {
+						getCountry(this.ruleForm.provincesId).then( data => {
+							this.cityCnList = data.data;
+						})
+					}
+					if( this.ruleForm.cityId ) {
+						getCountry(this.ruleForm.cityId).then( data => {
+							this.countyCnList = data.data;
+						})
+					}
 				})
 			}else {
 				getCountry(0).then( data => {

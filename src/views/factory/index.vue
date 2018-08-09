@@ -88,9 +88,9 @@
 
 <script>
 	import axios from 'axios'
-	import { addFactoryInfo, editFactoryInfo, getCountry, getFactoryInfo } from '@/api/login';
+	import { addFactoryInfo, editFactoryInfo, getCountry, getFactoryInfo, getToken  } from '@/api/login';
 	import { isImg } from '@/utils'
-	import { setFactory } from '@/utils/auth'
+	import { setFactory, getRefreshToken, setRefreshToken, setToken } from '@/utils/auth'
     export default {
         data() {
             return {
@@ -169,6 +169,11 @@
 							// 企业 ID 存入 store
 							this.$store.commit('SET_FACTORY', id);
 							setFactory(id);
+							let r = getRefreshToken();
+							getToken(r).then( (data2) => {
+								this.$store.commit('SET_TOKEN', data2.data);
+								setToken(data2.data);
+							})
 							this.$message.success('添加成功');
 							this.$router.push({name: 'Resume'})
 						});

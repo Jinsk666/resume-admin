@@ -3,6 +3,14 @@ import Cookies from 'js-cookie'
 const TokenKey = 'Admin-Token'
 const UserName = 'userName'
 const FacoryId = "factoryId"
+const RefreshToken = 'Refresh-Token'
+
+export function setRefreshToken(token) {
+  return Cookies.set(RefreshToken, token)
+}
+export function getRefreshToken() {
+  return Cookies.get(RefreshToken)
+}
 
 export function getToken() {
   return Cookies.get(TokenKey)

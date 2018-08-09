@@ -86,4 +86,15 @@ export const getCountry = id => {
     method: 'get'
   })
 }
+// 重新获取 token
+
+export const getToken = code => {
+  return request({
+    url: '/auth/getAccessToken/',
+    method: 'post',
+    data:{
+      reFreshToken: code
+    }
+  })
+}
 

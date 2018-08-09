@@ -7,6 +7,6 @@ module.exports = {
   //BASE_API: '"http://cs.nongchangyun.cn/farmeasy-resume-service/resume/V2.0"',
   //LOGIN_API:'"http://cs.nongchangyun.cn/farmeasy-api-gateway/farmeasy-auth-service"',
     // 正式
-  BASE_API: '"http://auth.farmeasy.cn/farmeasy-resume-service/resume/V2.0"',
+  BASE_API: '"http://auth.farmeasy.cn/farmeasy-api-gateway/farmeasy-resume-service/resume/V2.0"',
   LOGIN_API:'"http://auth.farmeasy.cn/farmeasy-api-gateway/farmeasy-auth-service"',
 }

@@ -1,5 +1,5 @@
 import { login, logout, accountLogin } from '@/api/login'
-import { getToken, setToken, removeToken, getName, setName, removeName, getFactory, setFactory, removeFactory } from '@/utils/auth'
+import { getToken, setToken, removeToken, getName, setName, removeName, getFactory, setFactory, removeFactory, setRefreshToken } from '@/utils/auth'
 import { getFactoryInfo } from '../../api/login';
 
 const user = {
@@ -30,6 +30,7 @@ const user = {
           setToken(data.accessToken)
           setName(data.username)
           setFactory(data.enterpriseInfoId);
+          setRefreshToken(data.refreshToken);
           commit('SET_FACTORY', data.enterpriseInfoId)
           commit('SET_TOKEN', data.accessToken)
           commit('SET_NAME', data.username)
@@ -47,6 +48,7 @@ const user = {
         setToken(data.accessToken)
         setName(data.username)
         setFactory(data.enterpriseInfoId);
+        setRefreshToken(data.refreshToken);
         commit('SET_FACTORY', data.enterpriseInfoId)
         commit('SET_TOKEN', data.accessToken)
         commit('SET_NAME', data.username)

@@ -195,8 +195,8 @@
             }
         },
         mounted() {
-            let rootDom = document.querySelectorAll('.menu-wrapper')[0];
-            rootDom.querySelector('.el-menu-item').classList.add('is-active');
+            // let rootDom = document.querySelectorAll('.menu-wrapper')[0];
+            // rootDom.querySelector('.el-menu-item').classList.add('is-active');
         },
         created: function() {
             this.loading = this.$loading({text:'拼命加载中...'});

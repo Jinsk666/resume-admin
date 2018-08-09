@@ -28,7 +28,7 @@
                 <div
                     :class="{active: productModuleIndex == -1}"
                     class="product-btn"
-                    @click="handleProductModule">产品模版</div>
+                    @click="handleProductModule">{{productInfo.productName || '产品模版'}}</div>
                 <div
                     class="ellipsis material-list"
                     :class="{active: productModuleIndex == index}"

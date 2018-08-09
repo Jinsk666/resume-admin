@@ -13,7 +13,7 @@
                 :show-file-list="false"
                 >
                 <img v-if="stepData.imgUrl" :src="stepData.imgUrl" class="avatar">
-                <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                <i v-else class="avatar-uploader-icon"></i>
             </el-upload>
         </div>
         <div class="code">
@@ -381,28 +381,22 @@
         line-height: 20px;
         border-bottom: 1px dashed $color2;
     }
-    .logo-uploader .el-upload {
-        border: 1px dashed #d9d9d9;
-        border-radius: 6px;
-        cursor: pointer;
-        position: relative;
-        overflow: hidden;
-        margin: 0 auto;
-    }
-    .logo-uploader .el-upload:hover {
-        border-color: #409EFF;
+    .logo-uploader {
+        background: url('~@/assets/images/add-logo.png') center center no-repeat;
+        background-size: 346px 200px;
     }
     .avatar-uploader-icon {
+        display: inline-block;
         font-size: 38px;
         color: #8c939d;
         width: 375px;
-        height: 200px;
+        height: 220px;
         line-height: 178px;
         text-align: center;
     }
     .avatar {
         width: 375px;
-        height: 200px;
+        height: 220px;
         display: block;
     }
     .LL-button {

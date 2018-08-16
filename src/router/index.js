@@ -56,7 +56,7 @@ export const constantRouterMap = [
         path: 'index',
         name: 'Resume',
         component: Myresume,
-        meta: { title: '我的履历', icon: 'resume' }
+        meta: { title: '我的履历', icon: 'resume' },
       },
       {
         path: 'add',

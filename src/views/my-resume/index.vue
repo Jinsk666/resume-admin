@@ -32,7 +32,7 @@
                                     <p>编辑</p>
                                 </router-link>
                             </li>
-                            <!-- <li>
+                            <li @click="handlePreview(item.uniqueCode)">
                                 <p class="circle"><img src="~@/assets/images/resume/icon3.png" alt=""></p>
                                 <p>预览</p>
                             </li>
@@ -41,7 +41,7 @@
                                     <p class="circle"><img src="~@/assets/images/resume/icon4.png" alt=""></p>
                                     <p>复制并新建</p>
                                 </router-link>
-                            </li> -->
+                            </li>
                             <li>
                                 <router-link :to="{name: 'resumeList', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon5.png" alt=""></p>
@@ -130,6 +130,10 @@
             })
         },
         methods: {
+            handlePreview(code){
+                let url = 'http://cs.nongchangyun.cn/resume-portal/#/defaults?resumeCode=' + code;
+                window.open(url);
+            },
             deleteDialogSure() {
                 this.deleteDialog = false;
                 deleteResume(this.resumeCode).then(data => {
@@ -160,7 +164,7 @@
                 //滚动条的总高度
                 var scrollHeight = document.documentElement.scrollHeight||document.body.scrollHeight;
                 //滚动条到底部的条件
-                if(this.isLoaded && scrollTop + windowHeight + 200 > scrollHeight){
+                if(this.isLoaded && scrollTop + windowHeight == scrollHeight){
                     this.loading = this.$loading({text:'加载中...'});
                     this.isLoaded = false;
                     //写后台加载数据的函数

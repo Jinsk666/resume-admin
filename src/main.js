@@ -8,12 +8,17 @@ import '@/styles/element-variables.scss'
 
 import '@/styles/index.scss' // global css
 
+import '@/styles/theme.scss' // 主题
+
 import App from './App'
 import router from './router'
 import store from './store'
 
 import '@/icons' // icon
 import '@/permission' // permission control
+
+import VueDND from 'awe-dnd' // 拖拽插件
+Vue.use(VueDND)
 
 Vue.use(ElementUI)
 

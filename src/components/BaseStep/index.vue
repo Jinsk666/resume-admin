@@ -80,22 +80,18 @@
 						<base-tree :toData="{data: item.subModelInfoInfoList}"></base-tree>
 					</div>
 					<div v-else-if="stepData.data.moduleName == '加工' && index == 1">
-						<div class="left jg-container" style="display:none;">
-							<el-steps direction="vertical">
-								<el-step
-									title=""
-									v-for="(item, index) in item.subModelInfoInfoList"
-									:key="(index + 600)"
-								></el-step>
-							</el-steps>
-						</div>
 						<div
-							class="left jg-step"
-							v-for="(item, index) in item.subModelInfoInfoList"
+							class="right jg-step"
+							v-for="(item2, index) in item.subModelInfoInfoList"
 							:key="(index + 1000)">
-							<div v-if="item.imgUrlList"><img :src="item.imgUrlList[0]" alt="图片"></div>
-							<div>工序名称: {{item.generalInfoList[0].value}}</div>
-							<div>生产时间段: {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
+							<div class="point-line" v-if="index != item.subModelInfoInfoList.length - 1"></div>
+							<span class="circle-img" v-if="index == 0">
+								<img src="@/assets/images/jg-point.png" alt="">
+							</span>
+							<span class="circle" v-else></span>
+							<div v-if="item2.imgUrlList"><img :src="item2.imgUrlList[0]" alt="图片"></div>
+							<div>工序名称: {{item2.generalInfoList[0].value}}</div>
+							<div>生产时间段: {{item2.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
 						</div>
 					</div>
 				</el-tab-pane>
@@ -148,7 +144,8 @@
 		left: 16px;
 	}
 	.jg-step {
-		width: 100%;
+		position: relative;
+		width: calc(100% - 50px);
 		border: 1px solid #ccc;
 		border-radius: 6px;
 		margin-bottom: 10px;
@@ -156,6 +153,32 @@
 		img {
 			height: 110px;
 			border-radius: 6px;
+		}
+		.point-line {
+			position: absolute;
+			height: 124%;
+			width: 2px;
+			background: #E8E8E8;
+			left: -30px;
+			top:16px;
+		}
+		.circle {
+			padding: 6px 6px;
+			background: #E8E8E8;
+			border-radius: 50%;
+			position: absolute;
+			left: -35px;
+			top: 16px;
+		}
+		.circle-img {
+			position: absolute;
+			left: -41px;
+			top: 8px;
+			display: inline-block;
+			img {
+				height: 24px;
+				width: 24px;
+			}
 		}
 	}
 	.env-info {

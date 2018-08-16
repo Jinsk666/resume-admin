@@ -1,0 +1,87 @@
+.theme1 {
+    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+        background: #45BC9C!important;
+    }
+    .factory-info {
+        border-bottom: 1px dashed rgba(69,188,156,0.2)!important;
+    }
+    .env-info .env-info-pointer {
+        border: 5px dashed #45BC9C!important;
+    }
+    .el-tabs__item.is-active, .intro .intro-name {
+        color: #45BC9C!important;
+    }
+    .el-tabs__nav :hover {
+        color: #45BC9C!important;
+    }
+}
+
+.theme2 {
+    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+        background: #00ACE9!important;
+    }
+    .factory-info {
+        border-bottom: 1px dashed rgba(0,172,233,0.2)!important;
+    }
+    .env-info .env-info-pointer {
+        border: 5px dashed #00ACE9!important;
+    }
+    .el-tabs__item.is-active, .intro .intro-name {
+        color: #00ACE9!important;
+    }
+    .el-tabs__nav :hover {
+        color: #00ACE9!important;
+    }
+}
+
+.theme3 {
+    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+        background: #5A90DC!important;
+    }
+    .factory-info {
+        border-bottom: 1px dashed rgba(90,144,220,0.2)!important;
+    }
+    .env-info .env-info-pointer {
+        border: 5px dashed #5A90DC!important;
+    }
+    .el-tabs__item.is-active, .intro .intro-name {
+        color: #5A90DC!important;
+    }
+    .el-tabs__nav :hover {
+        color: #5A90DC!important;
+    }
+}
+.theme4 {
+    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+        background: #75B73D!important;
+    }
+    .factory-info {
+        border-bottom: 1px dashed rgba(117,183,61,0.2)!important;
+    }
+    .env-info .env-info-pointer {
+        border: 5px dashed #75B73D!important;
+    }
+    .el-tabs__item.is-active, .intro .intro-name {
+        color: #75B73D!important;
+    }
+    .el-tabs__nav :hover {
+        color: #75B73D!important;
+    }
+}
+.theme5 {
+    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+        background: #F8D24B!important;
+    }
+    .factory-info {
+        border-bottom: 1px dashed rgba(248,210,75,0.2)!important;
+    }
+    .env-info .env-info-pointer {
+        border: 5px dashed #F8D24B!important;
+    }
+    .el-tabs__item.is-active, .intro .intro-name {
+        color: #F8D24B!important;
+    }
+    .el-tabs__nav :hover {
+        color: #F8D24B!important;
+    }
+}

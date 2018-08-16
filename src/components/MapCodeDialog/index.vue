@@ -13,9 +13,11 @@
                 <div v-if="from=='resume'">
                 履历数据编号: <el-input disabled v-model="resumeCode" placeholder="请输入内容" style="width: 220px;" size="small"></el-input>
                 </div>
-                <div v-else>
+                <div v-else class="resume-top">
                 履历数据编号:
                 <el-select
+                    :popper-append-to-body="false"
+                    @visible-change="handleShow1"
                     filterable
                     remote
                     :remote-method="remoteMethodTop"
@@ -53,6 +55,8 @@
                         <div class="choose-product">
                             选择产品批次:
                             <el-select
+                                :popper-append-to-body="false"
+                                @visible-change="handleShow"
                                 @focus="batchCodeFocus"
                                 filterable
                                 remote
@@ -105,24 +109,86 @@
                 resumeOptions: [],
                 loading: '',
                 loading1: '',
+                isFirst: true, // 产品批次 在第一次 focus 触发
+                isRemote: false, // 下拉框是否在 请求数据
+                optionsPage: 1, // 当前页数
+                optionsPageCount: 0, // 总共页数
+                optionsLinkParams: '', // 搜索条件
+                resumeOptionsPage: 1,
+                resumeOptionsPageCount: 0,
+                resumeOptionsLinkParams: '',
             }
         },
         mounted() {
-            // getCodeList('', 1).then(((data) => {
-            //     this.options = data.data.resumeBatchTwoResponseList;
-            // }))
-            
             if( this.from != 'resume' ) {
-                this.remoteMethodTop();
-                // getResumeList('', 1).then(data => {
-                //     this.resumeOptions = data.data.productInfoListSubset;
-                // })
+                this.remoteMethodTop('', 1);
             }
         },
         methods: {
             batchCodeFocus() {
-                this.remoteMethod();
+                if( this.isFirst ) {
+                    this.options = [];
+                    this.remoteMethod('', 1);
+                    this.isFirst = false;
+                }
             },
+            // 产品批次
+            handleShow(val) {
+                let dom = document.querySelectorAll('.code-bottom .el-select-dropdown__wrap')[0];
+                if( val == false ) {
+                    dom.removeEventListener('scroll', this.loadMore);
+                }else {
+                    setTimeout(()=>{
+                        dom.addEventListener('scroll', this.loadMore);
+                    },200)
+                }
+            },
+            //  产品批次
+            loadMore() {
+                let dom = document.querySelectorAll('.code-bottom .el-select-dropdown__wrap')[0];
+                var scrollTop = dom.scrollTop; // 滑动高度
+                var windowHeight = dom.clientHeight; //可视区的高度
+                var scrollHeight = dom.scrollHeight; //滚动条的总高度
+                if(scrollTop + windowHeight == scrollHeight) {
+                    if( !this.isRemote ) {
+                        this.optionsPage++;
+                        if( this.optionsPage > this.optionsPageCount ) {
+                            this.$message('没用更多数据了')
+                            return;
+                        }
+                        this.remoteMethod(this.optionsLinkParams, this.optionsPage);
+                    }
+                }
+            },
+            // 数据编码
+            handleShow1(val){
+                let dom = document.querySelectorAll('.resume-top .el-select-dropdown__wrap')[0];
+                if( val == false ) {
+                    dom.removeEventListener('scroll', this.loadMore1);
+                }else {
+                    setTimeout(()=>{
+                        dom.addEventListener('scroll', this.loadMore1);
+                    },200)
+                }
+            },
+            // 数据编码
+            loadMore1() {
+                let dom = document.querySelectorAll('.resume-top .el-select-dropdown__wrap')[0];
+                var scrollTop = dom.scrollTop; // 滑动高度
+                var windowHeight = dom.clientHeight; //可视区的高度
+                var scrollHeight = dom.scrollHeight; //滚动条的总高度
+                if(scrollTop + windowHeight == scrollHeight) {
+                    if( !this.isRemote ) {
+                        this.resumeOptionsPage++;
+                        if( this.resumeOptionsPage > this.resumeOptionsPageCount ) {
+                            this.$message('没用更多数据了')
+                            return;
+                        }
+                        this.remoteMethod(this.resumeOptionsLinkParams, this.resumeOptionsPage);
+                    }
+                }
+            },
+            // 确定
             codeDialogSure() {
                 if( !this.mapCode.batchCode && !this.mapCode.inputCode ) {
                     this.$message.error('请输入履历对应码或产品批次');
@@ -167,18 +233,30 @@
             handleClose() {
                 this.$emit('handleClose');
             },
-            remoteMethod(query) {
+            remoteMethod(query, page) {
+                if( !page ) this.optionsPage = 1;
+                if( this.optionsPage == 1 ) this.options = [];
+                this.optionsLinkParams = query;
+                this.isRemote = true;
                 this.loading = true;
-                getCodeList(query, 1).then(data => {
+                getCodeList(this.optionsLinkParams, this.optionsPage).then(data => {
+                    this.optionsPageCount = data.data.pageCount;
+                    this.options = this.options.concat(data.data.resumeBatchTwoResponseList);
                     this.loading = false;
-                    this.options = data.data.resumeBatchTwoResponseList;
+                    this.isRemote = false;
                 })
             },
-            remoteMethodTop(query) {
+            remoteMethodTop(query, page) {
+                if( !page ) this.resumeOptionsPage = 1;
+                if( this.resumeOptionsPage == 1 ) this.resumeOptions = [];
+                this.resumeOptionsLinkParams = query;
+                this.isRemote = true;
                 this.loading1 = true;
-                getResumeList(query, 1).then(data => {
+                getResumeList(this.resumeOptionsLinkParams, this.resumeOptionsPage).then(data => {
+                    this.optionsPageCount = data.data.pageCount;
+                    this.resumeOptions = this.resumeOptions.concat(data.data.productInfoListSubset);
                     this.loading1 = false;
-                    this.resumeOptions = data.data.productInfoListSubset;
+                    this.isRemote = false;
                 })
             }
         },

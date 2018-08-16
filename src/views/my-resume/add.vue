@@ -1,5 +1,5 @@
 <template>
-    <div class="add-container">
+    <div class="add-container" v-show="isLoadingEnd">
         <!-- <theme-picker></theme-picker> -->
         <!-- <div id="container">
             <div id="selectfiles" class="btn-op borderright">
@@ -19,7 +19,52 @@
                 >
             </main-phone>
         </div>
-        <!-- <div class="left-container"></div> -->
+        <div style="display:none;" class="left-container" :class="{'left-active': isLeftActive}">
+            <div class="toggle-item" @click="isLeftActive = !isLeftActive">
+                <img v-if="!isLeftActive" src="@/assets/images/left-arrow.png" alt="">
+                <img v-else src="@/assets/images/right-arrow.png" alt="">
+            </div>
+            <div class="left-tabs">
+                <el-tabs type="border-card">
+                    <!-- 手机展示主题 -->
+                    <el-tab-pane label="风格设置">
+                        <div class="theme-container">
+                            <span
+                                v-for="(item, index) in themeColor"
+                                :key="index"
+                                :style="{background: item.color}"
+                                @click="handleTheme(item.name)"
+                                class="round">
+
+                            </span>
+                        </div>
+                    </el-tab-pane>
+                    <!-- 显示隐藏 以及 位置 -->
+                    <el-tab-pane label="模块设置">
+                        <ul class="is-more">
+                            <li
+                                class="clearfix"
+                                v-for="(item, index) in stroeData.moduleInfos"
+                                v-dragging="{ item: item, list: stroeData.moduleInfos, group: 'stroeData' }"
+                                :key="index">
+                                <div class="left name">
+                                    <span>{{item.moduleName}}</span>
+                                </div>
+                                <div class="left display">
+                                    <el-switch
+                                        v-model="item.display"
+                                        active-value=1
+                                        inactive-value=0
+                                        active-color="#45BC9c"
+                                        inactive-color="#CDCDCD">
+                                    </el-switch>
+                                </div>
+                            </li>
+                        </ul>
+                    </el-tab-pane>
+                </el-tabs>
+            </div>
+        </div>
         <div class="right-container">
             <div class="top-btn">
                 <el-button type="primary" size="small" @click="saveData">保 存</el-button>
@@ -115,6 +160,7 @@
 </template>
 
 <script>
+    import { ContainerMixin, ElementMixin } from 'vue-slicksort'
     import MainPhone from '@/components/MainPhone'
     import StepDialog from '@/components/StepDialog'
     import BaseDialog from '@/components/BaseDialog'
@@ -125,8 +171,10 @@
         components: {/* ThemePicker, */  MainPhone, StepDialog, BaseDialog },
         data() {
             return {
+                themeColor: [{color: '#45BC9C', name: 'theme1'}, {color: '#00ACE9', name: 'theme2'}, {color: '#4A90E2', name: 'theme3'}, {color: '#5DBA19', name: 'theme4'}, {color: '#FFD117', name: 'theme5'}],
                 mouseoverMaterialIndex: -1,
                 loading: '',
+                isLoadingEnd: false, //手机显示开关 第一个接口加载完毕是临界点
                 noEditData: {}, //每次都存入 页面刚进来的数据 取消的时候使用
                 productModuleIndex: -1, // 右侧点击样式
                 moduleInfos: {}, // 各个步骤的 数据模版
@@ -143,6 +191,7 @@
                     // 原料列表
                     productInfos:[],
                     productImportList: [], // 原料外链接
+                    skinInfoCode: '', // 皮肤
                 },
                 // 基本原料
                 material: {
@@ -160,6 +209,7 @@
                 materialName: '', // 新添加的原料名称
                 outerMaterialName: '',// 原料 名称
                 outerMaterialUrl: '', // 原料 url
+                isLeftActive: false, // 左侧 toggle
             }
         },
         computed: {
@@ -239,10 +289,17 @@
                     this.$store.commit('SWITCH_STEPDATA', this.productInfo);
                     this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
                     this.stroeData = this.productInfo;
+                    // 显示 手机
+                    this.isLoadingEnd = true;
                 }else {
                     getResumeDetails( this.isEdit ).then(data => {
                         this.loading.close();
                         if( data.data ) {
+                            // 置入皮肤颜色
+                            if( data.data.skinInfoCode ) {
+                                let phone = document.getElementById('phone');
+                                phone.className = data.data.skinInfoCode;
+                            }
                             this.noEditData = data.data;
                             let clone = deepClone(data.data);
                             this.productInfo = clone;
@@ -250,6 +307,8 @@
                             let clone2 = deepClone(this.productInfo);
                             this.$store.commit('SWITCH_STEPDATA', this.productInfo);
                             this.$store.commit('SWITCH_STEPDATA_CLONE', clone2);
+                            // 显示 手机
+                            this.isLoadingEnd = true;
                         }
                     })
                 }
@@ -258,6 +317,12 @@
             })
         },
         methods: {
+            // 主题切换
+            handleTheme(name) {
+                this.productInfo.skinInfoCode = name;
+                let phone = document.getElementById('phone');
+                phone.className = name;
+            },
             //  其实可以 将 stepDialog 放入 store
             editStep(index) {
                 this.stepDialog = true;
@@ -482,7 +547,7 @@
                         message: '已取消删除'
                     });
                 });
-            }
+            },
         },
     }
 </script>
@@ -494,7 +559,27 @@
     .borderright{border-right: 1px solid;}
     .btn-op img{margin-top: -3px; margin-right: 5px;width: auto!important;display: inline!important;}
     .zoombtn-op{width: 107px;height: 53px;line-height: 53px;}
-
+    .add-container {
+        position: relative;
+        .left-active {
+            width: 0;
+        }
+    }
+    .is-more {
+        padding: 0;
+        li {
+            height:40px;
+            line-height: 40px;
+            padding-left: 40px;
+            cursor: move;
+            &:hover {
+                background: #f5f5f5;
+            }
+            div {
+                margin: 0 10px;
+            }
+        }
+    }
     .materal-img {
         width: 110px;
         margin: 0 auto;
@@ -514,13 +599,34 @@
         //margin-right: 10px;
     }
     .left-container {
-        height: calc(100% - 60px);
-        width: 180px;
-        position: fixed;
+        position: relative;
+        height: calc(100% + 40px);
+        width: 260px;
+        position: absolute;
         left: 0;
-        top: 60px;
+        top: -20px;
         background: #FFF;
         text-align: center;
+        border-right: 1px solid #e6e6e6;
+        transition: width .28s;
+        .left-tabs {
+            overflow: hidden;
+        }
+        .toggle-item {
+            width: 24px;
+            position: absolute;
+            right: -24px;
+            top: 280px;
+            cursor: pointer;
+        }
+        .round {
+            float: left;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            margin: 6px;
+            cursor: pointer;
+        }
     }
     .right-container{
         height: calc(100% - 60px);

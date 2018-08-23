@@ -126,7 +126,7 @@
 		},
         mounted() {
             getResumeList('', 1).then(data => {
-                this.resumeList = data.data.productInfoListSubset;
+                this.resumeList = data.data.resumeDataTwoOneResponseList;
             })
         },
         methods: {
@@ -171,11 +171,11 @@
                     getResumeList('', this.currentPage).then(data => {
                         this.loading.close();
                         if( data.code != '0000') return;
-                        if( data.data.productInfoListSubset.length == 0 ){
+                        if( data.data.resumeDataTwoOneResponseList.length == 0 ){
                             this.$message('没有更多数据了。');
                             return;
                         }
-                        this.resumeList = this.resumeList.concat( data.data.productInfoListSubset );
+                        this.resumeList = this.resumeList.concat( data.data.resumeDataTwoOneResponseList );
                         this.currentPage++; // 页数 + 1
                         this.isLoaded = true; // 可以继续加载
                     })

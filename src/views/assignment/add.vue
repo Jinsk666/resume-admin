@@ -2,6 +2,7 @@
     <div class="add-container" v-show="isLoadingEnd">
         <div class="phone-container">
             <main-phone
+                :globalPool="globalPool"
                 @editStep="editStep"
                 @clickBase="clickBase"
                 >
@@ -69,13 +70,15 @@
     import StepDialog from '@/components/v2/assignment/StepDialog'
     import BaseDialog from '@/components/v2/template/BaseDialog'
     import ModuleDialog from '@/components/v2/assignment/ModuleDialog'
-    //import ThemePicker from "@/components/ThemePicker";
     import { deepClone, Step2Class } from '@/utils'
+    import { dataPool } from '@/utils/v2'
     import { getModuleList, getModuleDetails } from '@/api/v2'
+    import { addResume, editResume } from '@/api'
     export default {
         components: {/* ThemePicker, */  MainPhone, StepDialog, BaseDialog, ModuleDialog },
         data() {
             return {
+                globalPool: {}, //承载数据的数据池  可能很大 不放入 store
                 mouseoverMaterialIndex: -1,
                 loading: '',
                 isLoadingEnd: false, //手机显示开关 第一个接口加载完毕是临界点
@@ -183,7 +186,6 @@
         methods: {
             //  其实可以 将 stepDialog 放入 store
             editStep(index, name) {
-                debugger
                 this.stepDialog = true;
                 this.$store.commit('ACCORDION_INDEX', index);
                 this.$store.commit('ACCORDION_NAME', name);
@@ -241,6 +243,9 @@
                 let clone = deepClone(this.stepData);
                 this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
                 this.stroeData = clone;
+                // 并发 请求选中的数据 扔进数据池
+                    // globalPool  可以存入 store 这样 修改数据的地方也可以用到
+                dataPool(clone.moduleInfos, this.globalPool);
             },
             stepDialogCancel() {
                 this.stepDialog = false;
@@ -270,12 +275,12 @@
                 if( !this.isEdit || this.$route.query.add) {
                     addResume(this.resumeTemplateTwoOne).then( data => {
                         this.$message.success('保存成功.')
-                        this.$router.push('/resume/index');
+                        this.$router.push({name: 'assignmentProductBatch'});
                     })
                 }else {
                     editResume(this.resumeTemplateTwoOne).then( data => {
                         this.$message.success('保存成功.')
-                        this.$router.push('/resume/index');
+                        this.$router.push({name: 'assignmentProductBatch'});
                     })
                 }
             },

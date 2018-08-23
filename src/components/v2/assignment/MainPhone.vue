@@ -37,6 +37,32 @@
                     <div class="bg-connect-left left"></div>
                     <div class="bg-connect-right right"></div>
                 </div>
+                <!-- 第三方企业认证 -->
+                <el-row :gutter="20" class="icon-info icon-info-top" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
+                    <el-col
+						:span="24 / stepData.authenticationList.length"
+						v-for="(item, index) in stepData.authenticationList"
+                        v-if="item.label"
+						:key="index">
+						<div
+						type="text"
+						class="ellipsis"
+						:class="'factory' + index"
+						@click="thirdActive = index">{{item.label}}</div>
+					</el-col>
+                </el-row>
+				<el-row class="icon-info" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
+					<el-col
+						class="factory-intro"
+						v-show="thirdActive == index && item.value"
+						:span="24"
+						v-for="(item, index) in stepData.authenticationList"
+						:key="index">
+						{{item.value}}
+						<div class="factory-intro-top"
+						:style="stepData.authenticationList.length == 2 ? (index==1 ?'left:60%;':''): (stepData.authenticationList.length == 3 ? (index==1 ?'left:44%;':(index==2 ?'left:80%;':'')): '')"></div>
+					</el-col>
+				</el-row>
                 <!-- 基本信息 -->
 				<el-row :class="item.label == 'IMG' ? '' : 'factory-info'"
 					v-show="stepData.generalInfoList.length > 0 "
@@ -85,7 +111,7 @@
                <!-- 除了原料之外的其他流程 -->
                 <div v-for="(item, index) in stepData.moduleInfos" :key="index" @mouseover="mouseOverIndex = index">
                     <base-step
-                        :stepData="{data: item, index: index, mouseOverIndex: mouseOverIndex, isEnterStep: isEnterStep}"
+                        :stepData="{data: item, globalPool: globalPool, index: index, mouseOverIndex: mouseOverIndex, isEnterStep: isEnterStep}"
                         @editStep="editStep"
                         @handleEnterStep="handleEnterStep"
                         @handleLeaveStep="handleLeaveStep"
@@ -110,9 +136,11 @@
 
     export default {
         name:'MainPhone',
+        props: ['globalPool'],
         components: { BaseStep },
         data() {
             return {
+                thirdActive: 0,
                 isEnterBase: false,
                 isEnterMaterial: false,
                 isEnterStep: false,
@@ -390,4 +418,50 @@
         display: inline-block;
         color:$color;
     }
+    .icon-info {
+			font-size: 14px;
+			.factory0 {
+				@include bis('~@/assets/images/factory-1.png');
+			}
+			.factory1 {
+				@include bis('~@/assets/images/factory-2.png');
+			}
+			.factory2 {
+				@include bis('~@/assets/images/factory-3.png');
+			}
+			.ellipsis  {
+                margin: 10px 0;
+				padding-left: 20px;
+				background-size: 16px 18px;
+				height: 20px;
+				line-height: 19px;
+				font-size: 14px;
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				width:100%;
+				display: inline-block;
+				text-align: left;
+			}
+			.factory-intro {
+				width: 100%;
+				background-color: #ededed;
+				color:#666;
+				text-align: left;
+				@include bR(4px);
+				padding: 5px 10px;
+				position: relative;
+				.factory-intro-top {
+					position: absolute;
+					width:15px;
+					height:7px;
+					top: -7px;
+					left: 8%;
+					@include bis('~@/assets/images/cart.png');
+				}
+				.factory-intro-top2{
+					left: 20px;
+				}
+			}
+        }
 </style>

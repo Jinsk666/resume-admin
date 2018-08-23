@@ -47,10 +47,8 @@ export function addModule(data) {
 export function editModule(data) {
   return request({
     url: '/resume/V2.1/resumeTemplateTwoOne/edit',
-    method: 'post',
-    data: {
-      data
-    }
+    method: 'put',
+    data: data
   })
 }
 // 删除模板

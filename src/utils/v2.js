@@ -1,3 +1,5 @@
+import { getModuleData } from '@/api/v2'
+
 export const name2id = name => {
     if( name == '产品' ) return 'MK-20180901-000001';
     if( name == '原料' ) return 'MK-20180901-000002';
@@ -51,6 +53,30 @@ export const setModule = data => {
     return arr.filter(val => {
         return url != val.url;
     })
+ }
+
+ export const name2Type = name => {
+    if( name == '原料' ) return '1';
+    if( name == '种植' || name == 'zz' ) return '2';
+    if( name == '采收' || name == 'cs' ) return '3';
+    if( name == '加工' || name == 'jg' ) return '4';
+    if( name == '包装' || name == 'bz' ) return '5';
+    if( name == '仓储' || name == 'cc' ) return '6';
+    if( name == '检测' || name == 'jc' ) return '7';
+    if( name == '采购' || name == 'cg' ) return '';
+}
+
+ export const dataPool = (list, globalPool) => {
+    for(var i = 0; i < list.length; i++){
+        var type = name2Type(list[i].moduleName);
+        var code = list[i].moduleDataCode;
+        (function(type, code){
+            if( !code || globalPool[code] ) return;
+            getModuleData(code, type).then( data => {
+                globalPool[code] = data.data;
+            })
+        }(type, code))
+    }
  }
 
 

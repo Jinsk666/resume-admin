@@ -63,20 +63,20 @@
                 </el-table-column>
                 <el-table-column
                     align="center"
-                    prop="authenticationName"
+                    prop="label"
                     label="认证名称"
                     min-width="150">
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.authenticationName" size="small"></el-input>
+                        <el-input v-model="scope.row.label" size="small"></el-input>
                     </template>
                 </el-table-column>
                 <el-table-column
                 align="center"
-                    prop="companyName"
+                    prop="value"
                     label="公司名称"
                     min-width="150">
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.companyName" size="small"></el-input>
+                        <el-input v-model="scope.row.value" size="small"></el-input>
                     </template>
                 </el-table-column>
             </el-table>
@@ -117,7 +117,7 @@
             },
             // 第三方
             handleThirdAdd(index, rows, scope) {
-                rows.push({authenticationName:'',companyName:''})
+                rows.push({label:'',value:''})
                 if( rows.length == 3 ) {
                     this.isAdd = false;
                     this.isDelete = true;

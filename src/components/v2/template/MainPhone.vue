@@ -36,27 +36,27 @@
                     <div class="bg-connect-right right"></div>
                 </div>
                 <!-- 第三方企业认证 -->
-                <el-row :gutter="20" class="icon-info icon-info-top" v-if="stepData.authenticationList.length > 0">
+                <el-row :gutter="20" class="icon-info icon-info-top" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
                     <el-col
 						:span="24 / stepData.authenticationList.length"
 						v-for="(item, index) in stepData.authenticationList"
-                        v-if="item.authenticationName"
+                        v-if="item.label"
 						:key="index">
 						<div
 						type="text"
 						class="ellipsis"
 						:class="'factory' + index"
-						@click="thirdActive = index">{{item.authenticationName}}</div>
+						@click="thirdActive = index">{{item.value}}</div>
 					</el-col>
                 </el-row>
-				<el-row class="icon-info" v-if="stepData.authenticationList.length > 0">
+				<el-row class="icon-info" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
 					<el-col
 						class="factory-intro"
-						v-show="thirdActive == index && item.companyName"
+						v-show="thirdActive == index && item.value"
 						:span="24"
 						v-for="(item, index) in stepData.authenticationList"
 						:key="index">
-						{{item.companyName}}
+						{{item.value}}
 						<div class="factory-intro-top"
 						:style="stepData.authenticationList.length == 2 ? (index==1 ?'left:60%;':''): (stepData.authenticationList.length == 3 ? (index==1 ?'left:44%;':(index==2 ?'left:80%;':'')): '')"></div>
 					</el-col>

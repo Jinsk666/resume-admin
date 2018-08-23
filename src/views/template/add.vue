@@ -101,7 +101,7 @@
                 moduleInfos: {}, // 各个步骤的 数据模版
                 // 最终上传的数据
                 resumeTemplateTwoOne: {
-                    authenticationList: [{authenticationName:'', companyName: ''}], // 第三方认证
+                    authenticationList: [{label:'', companyName: ''}], // 第三方认证
                     generalInfoList:[], //基本信息
                     moduleInfos:[],// 模块流程
                     resumeTemplateName: '',//产品名称

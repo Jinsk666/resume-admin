@@ -44,38 +44,35 @@
                 <!-- 表单内容 -->
                 <div class="middle-container">
                     <div class="current-font">当前{{toData.moduleInfos[accordionIndex].moduleName || ''}}流程</div>
-                    <div class="search"></div>
+                    <div class="search">
+                        <el-input prefix-icon="el-icon-search"
+                            v-model="list[toData.moduleInfos[accordionIndex].moduleName].likeParams"
+                            clearable
+                            :placeholder="list[toData.moduleInfos[accordionIndex].moduleName].placeholder"
+                            size="small" style="width:200px; margin-right:20px;">
+                        </el-input>
+                        <el-button type="primary" size="small" @click="handleSearch(1)">搜索</el-button>
+
+                        当前选中数据 编号为 {{toData.moduleInfos[accordionIndex].moduleDataCode}}
+                    </div>
                     <div
+                        class="table-container"
+                        v-show="item.moduleName == accordionName"
                         v-for="(item, index) in toData.moduleInfos"
                         :key="index">
                         <el-table
-                            :data="tableData"
+                            :data="list[item.moduleName].data"
                             highlight-current-row
                             @current-change="handleChange"
                             border
                             style="width: 100%">
                             <el-table-column
-                                prop="imgUrl"
-                                label="图片"
+                                v-for="(item, index) in list[item.moduleName].label"
+                                :key="index"
+                                :prop="item.prop"
+                                :label="item.label"
                                 align="center"
-                                width="180">
-                            </el-table-column>
-                            <el-table-column
-                                prop="uniqueCode"
-                                label="模板编码"
-                                align="center"
-                                width="180">
-                            </el-table-column>
-                            <el-table-column
-                                prop="resumeTemplateName"
-                                align="center"
-                                label="模板名称">
-                            </el-table-column>
-                            <el-table-column
-                                :formatter="formatter"
-                                align="center"
-                                prop="insertTime"
-                                label="创建日期">
+                                :min-width="item.width">
                             </el-table-column>
                         </el-table>
                     </div>
@@ -90,84 +87,89 @@
 </template>
 
 <script>
-    import { deepClone } from '@/utils/index'
-    import { isImg } from '@/utils/index'
-    import  axios  from 'axios'
+    import { getModuleDataList } from '@/api/v2'
+    import { deepClone, step2Class, isImg } from '@/utils'
     export default {
         props: ['stepDialog'],
         data() {
             return {
-                list:{
+                list:{ // 这里必须给 中文名字 或者 英文缩写  因为 要包括所有流程
                     '种植':{ // zz
                         label:[ {prop: 'zzUniqueCode',label: '编号', width: '200' },
                                 {prop: 'zzBatchNumber',label: '种植批次号', width: '200' },
                                 {prop: 'zzMedicineName',label: '药材名称', width: '200' },
-                                {prop: 'zzGermplasmPrimitives',label: '种质/基原', width: '200' },
-                                {prop: 'zzEnterpriseName',label: '企业名称', width: '200' },
+                                {prop: 'selectEnterpriseName',label: '企业名称', width: '200' },
                             ],
-                        placeholder:'编号/种植批次号/药材名称/种质/基原/企业名称',
+                        placeholder:'编号/种植批次号/药材名称/企业名称',
                         likeParams: '',
                         type: 2,
+                        totalCount: 0,
+                        currentPage: 1,
                         data: []
                     },
                     '采收':{ //cs
                         label:[ {prop: 'csUniqueCode',label: '编号', width: '200' },
                                 {prop: 'csBatchNumber',label: '采收批次号', width: '200' },
                                 {prop: 'csPosition',label: '采收部位', width: '200' },
-                                {prop: 'csDate',label: '采收日期', width: '200' },
-                                {prop: 'csEnterpriseName',label: '采收企业主体', width: '200' },
+                                {prop: 'selectEnterpriseName',label: '采收企业主体', width: '200' },
                             ],
-                        placeholder:'编号/采收批次号/采收部位/采收日期/采收企业主体',
+                        placeholder:'编号/采收批次号/采收部位/采收企业主体',
                         likeParams: '',
                         type: 3,
+                        totalCount: 0,
+                        currentPage: 1,
                         data: []
                     },
                     '仓储':{ // cc
                         label:[ {prop: 'ccUniqueCode',label: '编号', width: '200' },
                                 {prop: 'ccBatchCode',label: '入库批次号', width: '200' },
                                 {prop: 'ccClassification',label: '仓储分类', width: '200' },
-                                {prop: 'ccType',label: '仓库类型', width: '200' },
-                                {prop: 'ccEnterpriseName',label: '仓储企业主体', width: '200' },
+                                {prop: 'selectEnterpriseName',label: '仓储企业主体', width: '200' },
                             ],
-                        placeholder:'编号/入库批次号/仓储分类/仓库类型/仓储企业主体',
+                        placeholder:'编号/入库批次号/仓储分类/仓储企业主体',
                         likeParams: '',
                         type: 6,
+                        totalCount: 0,
+                        currentPage: 1,
                         data: []
                     },
                     '加工':{ // jg
                         label:[ {prop: 'jgUniqueCode',label: '编号', width: '200' },
-                                {prop: 'jgType',label: '加工类型', width: '200' },
                                 {prop: 'jgProductName',label: '加工产品名', width: '200' },
                                 {prop: 'jgBatchNumber',label: '加工批次号', width: '200' },
-                                {prop: 'jgEnterpriseName',label: '加工企业主体', width: '200' },
+                                {prop: 'selectEnterpriseName',label: '加工企业主体', width: '200' },
                             ],
-                        placeholder:'编号/加工类型/加工产品名/加工批次号/加工企业主体',
+                        placeholder:'编号/加工产品名/加工批次号/加工企业主体',
                         likeParams: '',
                         type: 4,
+                        totalCount: 0,
+                        currentPage: 1,
                         data: []
                     },
                     '包装':{ // 包装
                         label:[ {prop: 'bzUniqueCode',label: '编号', width: '200' },
                                 {prop: 'bzType',label: '包装类型', width: '200' },
-                                {prop: 'bzPackMethod',label: '包装方式', width: '200' },
                                 {prop: 'bzBatchCode',label: '包装批次号', width: '200' },
-                                {prop: 'bzEnterpriseName',label: '包装企业主体', width: '200' }
+                                {prop: 'selectEnterpriseName',label: '包装企业主体', width: '200' }
                             ],
-                        placeholder:'编号/包装类型/包装方式/包装批次号/包装企业主体',
+                        placeholder:'编号/包装类型/包装批次号/包装企业主体',
                         likeParams: '',
                         type: 5,
+                        totalCount: 0,
+                        currentPage: 1,
                         data: []
                     },
                     '检测':{ // 检测
                         label:[ {prop: 'jcUniqueCode',label: '编号', width: '200' },
-                                {prop: 'jcType',label: '检测类型', width: '200' },
                                 {prop: 'jcProject',label: '检测项目', width: '200' },
                                 {prop: 'jcBatchCode',label: '检测产品批次', width: '200' },
-                                {prop: 'jcEnterpriseName',label: '检测企业主体', width: '200' },
+                                {prop: 'selectEnterpriseName',label: '检测企业主体', width: '200' },
                             ],
-                        placeholder:'编号/检测类型/检测项目/检测产品批次/检测企业主体',
+                        placeholder:'编号/检测项目/检测产品批次/检测企业主体',
                         likeParams: '',
                         type: 7,
+                        totalCount: 0,
+                        currentPage: 1,
                         data: []
                     },
                 },
@@ -187,15 +189,45 @@
                 return this.$store.state.app.accordionName || 0
             }
         },
+        watch: {
+            accordionName(newValue, oldValue) {
+                if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
+                    this.handleSearch(1);
+                }
+            }
+        },
+        mounted() {
+            // debugger   为了缓存 高亮 用 watch  代替;
+            // if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
+            //     this.handleSearch(1);
+            // }
+        },
         methods: {
-            //  步骤移动
+            //弹出框步骤按钮点击
+            handleStep(index, name) {
+                this.$store.commit('ACCORDION_INDEX', index);
+                this.$store.commit('ACCORDION_NAME', name);
+                if( this.list[this.accordionName].data.length == 0 ) {
+                    this.handleSearch(1);
+                }
+            },
+            // 搜索数据
             handleSearch(val) {
-                getModuleDataList(this.list[this.activeId].likeParams, val, this.activeId).then( data => {
-                    this.totalCount = data.data.pageCount * 20;
-                    this.list[this.activeId].data = data.data.moduleDataResponseDto;
-                    this.currentPage = val;
+                if( !val ) val = 1;
+                let choose = this.list[this.accordionName];
+                getModuleDataList(choose.likeParams, val, choose.type).then( data => {
+                    choose.totalCount = data.data.pageCount * 20;
+                    choose.data = data.data.moduleDataResponseDto;
+                    choose.currentPage = val;
                 })
             },
+            // 点击 tr 改变id
+            handleChange(current, old) {
+                console.log(current)
+                let uniqueCode = step2Class(this.accordionName).toLowerCase() + 'UniqueCode';
+                this.toData.moduleInfos[this.accordionIndex].moduleDataCode = current[uniqueCode];
+            },
+            //  步骤移动
             leftMove() {
                 let current = parseInt(this.$refs.moveDom.style.marginLeft || 0);
                 if( current == 0 ) return;
@@ -207,11 +239,6 @@
                 }
                 let current = parseInt(this.$refs.moveDom.style.marginLeft || 0);
                 if( index != -1 && this.toData.moduleInfos.length > 5) this.$refs.moveDom.style.marginLeft = current - 115 + 'px';
-            },
-            //弹出框步骤按钮点击
-            handleStep(val, name) {
-                this.$store.commit('ACCORDION_INDEX', val);
-                this.$store.commit('ACCORDION_NAME', name);
             },
             handleClose() {
                 this.$emit('handleClose');
@@ -228,6 +255,12 @@
 
 <style lang="scss" scoped>
     @import '../../../styles/mixin';
+    .search {
+        padding: 20px 10px
+    }
+    .table-container {
+        padding: 0 10px 10px 10px;
+    }
     .add-farm {
         width: 540px;
         height: 40px;

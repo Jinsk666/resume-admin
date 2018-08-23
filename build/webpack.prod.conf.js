@@ -68,7 +68,7 @@ const webpackConfig = merge(baseWebpackConfig, {
       template: 'index.html',
       inject: true,
       favicon: resolve('favicon.ico'),
-      title: 'resume-admin',
+      title: 'resume-admin-beta',
       minify: {
         removeComments: true,
         collapseWhitespace: true,

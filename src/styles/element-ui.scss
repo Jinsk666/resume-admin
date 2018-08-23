@@ -56,6 +56,35 @@
 }
 
 #app {
+	// table 高亮
+	input {
+		transition: width 0.2s;
+	}
+	.current-row {
+		border: 1px solid #409EFF;
+	}
+	.sidebar-container{
+		.menu-wrapper {
+			.el-menu {
+				.el-menu-item.is-active {
+					background-color: $subItemHover!important;
+					color: #fff!important;
+				}
+				.el-menu-item:hover {
+					background-color: $subItemHover!important;
+					color: #fff!important;
+				}
+			}
+		}
+	}
+	.el-menu--collapse {
+		.el-submenu__title {
+			&:hover {
+				background: $navBarColor!important;
+				color: #fff!important;
+			}
+		}
+	}
 	.el-menu-item.is-active {
 		background-color: $navBarColor!important;
 		color: #fff!important;
@@ -72,6 +101,7 @@
 	.el-dialog__footer {
 		text-align: center;
 		border-top: 1px solid #ddd;
+		padding-top: 20px;
 	}
 	.el-dialog__header {
 		border-bottom: 1px solid #ddd;
@@ -104,9 +134,11 @@
 			display: none!important;
 		}
 	}
-}
-.el-tabs__item {
-  	color:#8ba2b9;
+	// 日期
+	.el-date-editor .el-range-separator {
+		padding: 0;
+	}
+	
 }
 .JG, .ZZ {
 	.el-tabs__nav-wrap {
@@ -115,26 +147,47 @@
 	.el-tabs__item {
 		height: 70px;
 		line-height: 100px;
+		color:#8ba2b9;
+	}
+	.el-tabs__nav {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%)!important;
+	}
+	.el-tabs__item {
+		text-align: center;
+		>span {
+			position: relative;
+		}
 	}
 }
 
-
-.el-tabs__nav-wrap {
-  	height: 40px;
-}
-.el-tabs__nav {
-  //width: 100%;
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%)!important;
-}
-.el-tabs__item {
-	text-align: center;
-	height: 40px;
-	>span {
-		position: relative;
+.step-container {
+	.el-tabs__nav-wrap {
+		height: 40px;
+	}
+	.el-tabs__nav {
+		//width: 100%;
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%)!important;
+	}
+	.el-tabs__item {
+		color:#8ba2b9;
+		text-align: center;
+		height: 40px;
+		>span {
+			position: relative;
+		}
 	}
 }
+.code-container {
+	.el-tabs__header {
+		padding: 20px 20px 0 0;
+		margin-left: 12px;
+	}
+}
+
 
 .avatar-uploader .el-upload {
 	border: 1px dashed #d9d9d9;
@@ -145,4 +198,9 @@
 }
 .avatar-uploader .el-upload:hover {
   	border-color: #409EFF;
+}
+
+// confirm
+.el-message-box__btns, .el-message-box__message p {
+	text-align: center!important;
 }

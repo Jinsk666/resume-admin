@@ -62,12 +62,20 @@
 							<el-upload
 								class="avatar-uploader"
 								action=""
-								:before-upload="uploadFile"
+								:http-request="uploadFile"
 								:show-file-list="false"
 								>
 								<img v-if="ruleForm.logoImgUrl" :src="ruleForm.logoImgUrl" class="avatar">
 								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 							</el-upload>
+							<!-- <el-upload
+								action=""
+								:before-upload="beforeUpload"
+								:http-request="uploadFile"
+								list-type="picture-card"
+								>
+								<i class="el-icon-plus"></i>
+							</el-upload> -->
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -90,6 +98,7 @@
 	import axios from 'axios'
 	import { addFactoryInfo, editFactoryInfo, getCountry, getFactoryInfo, getToken  } from '@/api/login';
 	import { isImg } from '@/utils'
+	import { uploadImg } from '@/utils/upload'
 	import { setFactory, getRefreshToken, setRefreshToken, setToken } from '@/utils/auth'
     export default {
         data() {
@@ -214,34 +223,19 @@
 			countyCnChange(val) {
 				this.ruleForm.countyCn = this.countryMap(val, this.countyCnList);
 			},
-			uploadFile(file) {
-                if( !isImg(file.name) ) {
-                    this.$message({
-                        message: '只能上传图片',
-                        type:'error'
-                    })
-                    return;
-                }
-                var formData = new FormData();
-                formData.append('file', file);
-                formData.append('userId', '0');
-                formData.append('flag', '');
-                formData.append('fileType', '0');
-                axios.post("http://admin.ytbuyer.com/ytfarmapi/file/uploadImage", formData).then((res)=>{
-                     if(res.data.code == 0 && res.data.data.fileUrl){
-                         this.$message({
-                             message:"上传成功",
-                             type:'success'
-                         })
-                         this.ruleForm.logoImgUrl = res.data.data.fileUrl;
-                     }else{
-                        this.$message({
-                            message:res.data.msg,
-                            type:'error'
-                        })
-                    }
-                 })
-                return false;
+			beforeUpload(file){
+				if( !isImg(file.name) ) {
+					this.$message({
+						message: '只能上传图片',
+						type:'error'
+					})
+					return false;
+				}
+			},
+			async uploadFile(params) {
+				let data = await uploadImg(params.file);
+				if( !data ) return;
+				this.ruleForm.logoImgUrl = data.data.fileUrl;
             },
 		},
     }

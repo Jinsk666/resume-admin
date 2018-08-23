@@ -93,7 +93,7 @@
 
 <script>
     import { setMapCode, getCodeList, getResumeList } from '@/api'
-    import { isNumber } from '@/utils'
+    import { isNumber, scrollMore } from '@/utils'
     export default {
         props:[ 'codeDialog', 'resumeCode', 'from'],
         data() {
@@ -145,11 +145,7 @@
             },
             //  产品批次
             loadMore() {
-                let dom = document.querySelectorAll('.code-bottom .el-select-dropdown__wrap')[0];
-                var scrollTop = dom.scrollTop; // 滑动高度
-                var windowHeight = dom.clientHeight; //可视区的高度
-                var scrollHeight = dom.scrollHeight; //滚动条的总高度
-                if(scrollTop + windowHeight == scrollHeight) {
+                scrollMore('.code-bottom .el-select-dropdown__wrap', () => {
                     if( !this.isRemote ) {
                         this.optionsPage++;
                         if( this.optionsPage > this.optionsPageCount ) {
@@ -158,7 +154,14 @@
                         }
                         this.remoteMethod(this.optionsLinkParams, this.optionsPage);
                     }
-                }
+                })
+                // let dom = document.querySelectorAll('.code-bottom .el-select-dropdown__wrap')[0];
+                // var scrollTop = dom.scrollTop; // 滑动高度
+                // var windowHeight = dom.clientHeight; //可视区的高度
+                // var scrollHeight = dom.scrollHeight; //滚动条的总高度
+                // if(scrollTop + windowHeight == scrollHeight) {
+                    
+                // }
             },
             // 数据编码
             handleShow1(val){
@@ -265,7 +268,7 @@
 
 <style lang="scss" scoped>
     .code-container {
-        border-top: 1px solid #ddd;
+        //border-top: 1px solid #ddd;
         padding: 10px;
         overflow: hidden;
         .font, .font2 {

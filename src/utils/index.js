@@ -73,7 +73,7 @@ export const deepClone = obj => {
 		case '仓储': return 'CC';
 		case '加工': return 'JG';
 		case '运输': return 'YS';
-		case '质检': return 'ZJ';
+		case '检测': return 'JC';
 		case '原料': return 'YL';
 	}
  }
@@ -125,7 +125,7 @@ export const throttle = (func, wait, mustRun) => {
 		}
 	};
 };
-
+// 是否是数字
 export const isNumber = val => {
     if( val === "" || val ==null ){
         return false;
@@ -135,4 +135,18 @@ export const isNumber = val => {
     }else{
         return false;
     }
+}
+/**  下拉框加载更多判断
+ * @param ref => .resume-top .el-select-dropdown__wrap
+ * @param cb  =>  回掉函数
+ */
+export const scrollMore = (ref, cb) => {
+	let dom = document.querySelectorAll(ref)[0];
+	var scrollTop = dom.scrollTop; // 滑动高度
+	var windowHeight = dom.clientHeight; //可视区的高度
+	var scrollHeight = dom.scrollHeight; //滚动条的总高度
+	if(scrollTop + windowHeight == scrollHeight) {
+		//TODO:
+		cb();
+	}
 }

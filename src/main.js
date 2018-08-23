@@ -20,7 +20,9 @@ import '@/permission' // permission control
 import VueDND from 'awe-dnd' // 拖拽插件
 Vue.use(VueDND)
 
-Vue.use(ElementUI)
+Vue.use(ElementUI, {
+  //size: 'small'
+})
 
 Vue.config.productionTip = false
 

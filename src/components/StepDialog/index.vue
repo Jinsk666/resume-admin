@@ -351,7 +351,7 @@
                 outerDialogData: [],
                 dialogImageUrl: '',
                 fileDialog: false,
-                step: ['采购','种植','采收', '仓储', '加工', '包装', '质检'],
+                step: ['采购','种植','采收', '仓储', '加工', '包装', '检测'],
                 chooseStep: '采购',
                 addIndex: 0,
                 mouseOverIndex: -1, // 鼠标移入的步骤

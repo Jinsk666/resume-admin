@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 履历批次列表
 export function getCodeList(likeParams, page) {
   return request({
-    url: '/resumeBatchTwo/getList',
+    url: '/resume/V2.0/resumeBatchTwo/getList',
     method: 'post',
     data: {
         likeParams,
@@ -14,7 +14,7 @@ export function getCodeList(likeParams, page) {
 // 对应批次详情
 export function getCodeDetailsList(batchCode, beginTime, endTime, likeParams, page) {
   return request({
-    url: '/resumeBatchTwo/getDetailList',
+    url: '/resume/V2.0/resumeBatchTwo/getDetailList',
     method: 'post',
     data: {
         batchCode,
@@ -28,7 +28,7 @@ export function getCodeDetailsList(batchCode, beginTime, endTime, likeParams, pa
 // 履历批次列表
 export function getResumeList(likeParams, page) {
     return request({
-      url: '/product/getList',
+      url: '/resume/V2.0/product/getList',
       method: 'post',
       data: {
           likeParams,
@@ -39,7 +39,7 @@ export function getResumeList(likeParams, page) {
 // 履历模板
 export function getTemplateModule() {
     return request({
-        url: '/template/getDetail/RT-20180801-000001',
+        url: '/resume/V2.0/template/getDetail/RT-20180801-000001',
         method: 'GET',
         data: {
        }
@@ -48,7 +48,7 @@ export function getTemplateModule() {
 // 添加批次信息
 export function addCode(batchCode, numbers) {
     return request({
-        url: '/resumeBatchTwo/add',
+        url: '/resume/V2.0/resumeBatchTwo/add',
         method: 'POST',
         data: {
 		 	batchCode, numbers
@@ -58,7 +58,7 @@ export function addCode(batchCode, numbers) {
 // 添加对用履历
 export function setMapCode(resumeCode, inputCode, batchCode, startePoint, endPoint) {
     return request({
-		url: '/resumeBatchTwo/correspondeAdd',
+		url: '/resume/V2.0/resumeBatchTwo/correspondeAdd',
 		method: 'POST',
 		data: {
 			resumeCode,
@@ -74,7 +74,7 @@ export function setMapCode(resumeCode, inputCode, batchCode, startePoint, endPoi
 // 添加批次信息
 export function getMapResumeList(likeParams, page, uniqueCode) {
     return request({
-      url: '/resumeBatchTwo/getBatchCorrespondList',
+      url: '/resume/V2.0/resumeBatchTwo/getBatchCorrespondList',
       method: 'POST',
       data: {
 		likeParams, page, uniqueCode
@@ -85,7 +85,7 @@ export function getMapResumeList(likeParams, page, uniqueCode) {
 // 删除 履历
 export const deleteResume = code => {
     return request({
-        url: '/product/delete/' + code,
+        url: '/resume/V2.0/product/delete/' + code,
         method: 'DELETE',
         data: {
         }
@@ -94,7 +94,7 @@ export const deleteResume = code => {
 // 添加 履历
 export const addResume = code => {
     return request({
-        url: '/product/add',
+        url: '/resume/V2.0/product/add',
         method: 'POST',
         data: code
     })
@@ -102,7 +102,7 @@ export const addResume = code => {
 // 修改 履历
 export const editResume = code => {
     return request({
-        url: '/product/edit',
+        url: '/resume/V2.0/product/edit',
         method: 'PUT',
         data: code
     })
@@ -110,7 +110,7 @@ export const editResume = code => {
 // 查找单个 履历数据
 export const getResumeDetails = code => {
     return request({
-        url: '/product/getDetail/' + code,
+        url: '/resume/V2.0/product/getDetail/' + code,
         method: 'GET',
         data: {}
     })

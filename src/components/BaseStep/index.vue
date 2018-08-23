@@ -237,7 +237,7 @@
 		.TJ {
 			@include bis('~@/assets/images/farm.png');
 		}
-		.ZJ {
+		.JC {
 			@include bis('~@/assets/images/quality.png');
 		}
 		.ZZ {

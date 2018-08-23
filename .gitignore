@@ -1,6 +1,7 @@
 .DS_Store
 node_modules/
 resume-admin/
+resume-admin-beta/
 dist/
 npm-debug.log*
 yarn-debug.log*

@@ -10,6 +10,7 @@ const app = {
     stepData: [], // 步骤弹出框 数据
     stepDataClone: [],
     accordionIndex: 0, // 手风琴 展开项的 index
+    accordionName: '', // 手风琴 展开项的 name
     isMaterial: false,
     farmModule: null,
     processModule: null,
@@ -40,6 +41,9 @@ const app = {
     },
     ACCORDION_INDEX: (state, index) => {
       state.accordionIndex = index;
+    },
+    ACCORDION_NAME: (state, name) => {
+      state.accordionName = name;
     },
     IS_MATERIAL: (state, is) => {
       state.isMaterial = is;

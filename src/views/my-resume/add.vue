@@ -201,7 +201,7 @@
                     moduleInfos: []
                 },
                 addStepIndex: 0, //添加步骤的下标
-                baseStep: ['采购','种植','采收', '仓储', '加工', '包装', '质检'],
+                baseStep: ['采购','种植','采收', '仓储', '加工', '包装', '检测'],
                 baseDialog: false, // 基本信息弹出框
                 stepDialog: false, // 添加步骤弹出框
                 materialDialog: false, // 原料名称弹出框

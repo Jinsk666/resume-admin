@@ -50,10 +50,10 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../resume-admin/index.html'),
+    index: path.resolve(__dirname, '../resume-admin-beta/index.html'),
 
     // Paths
-    assetsRoot: path.resolve(__dirname, '../resume-admin'),
+    assetsRoot: path.resolve(__dirname, '../resume-admin-beta'),
     assetsSubDirectory: './static',
 
     /**

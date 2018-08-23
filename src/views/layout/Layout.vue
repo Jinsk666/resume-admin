@@ -111,7 +111,7 @@ export default {
     height: 60px;
     background: $color;
     overflow: hidden;
-    z-index: 999;
+    z-index: 1002;
     .header-left {
         line-height: 60px;
         padding-left: 20px;

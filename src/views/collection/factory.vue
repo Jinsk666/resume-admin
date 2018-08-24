@@ -129,7 +129,7 @@
                         //type: 'warning'
                     }).then(() => {
                         deleteFactory(this.rows.row.uniqueCode).then( data => {
-                            this.tableData.splice( this.rows.$index, 1);
+                            this.enterpriseInfoTwoOneResponseList.splice( this.rows.$index, 1);
                             this.$message.success('删除成功');
                         })
                     }).catch(() => {

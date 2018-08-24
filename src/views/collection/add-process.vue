@@ -4,11 +4,30 @@
             <div class="title2">添加{{tabName}}信息</div>
             <el-form label-width="200px" class="demo-ruleForm">
 				<el-row>
-					<el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 20 : 10 "
+					<el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 22 : 11 "
 						v-for="(item, index) in moduleDataAddDto.generalInfoList"
 						:key="index">
-						<el-form-item v-if="item.dataType == 1 || item.dataType == 2" :label="item.label + ' : '">
-							<el-input v-model="item.value" size="small"></el-input>
+						<el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '">
+							<el-date-picker
+                                size="small"
+                                style="width:100%;"
+                                value-format="timestamp"
+                                :editable="false"
+                                type="date"
+                                v-model="item.value">
+                            </el-date-picker>
+						</el-form-item>
+						<el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '">
+                            <el-date-picker
+                                size="small"
+                                v-model="item.value"
+                                type="daterange"
+                                :editable="false"
+                                value-format="timestamp"
+                                range-separator="至"
+                                start-placeholder="开始"
+                                end-placeholder="结束">
+                            </el-date-picker>
 						</el-form-item>
 						<!-- 下拉框处理 -->
 						<el-form-item v-else-if="item.dataType == 7" :label="item.label + ' : '">
@@ -49,19 +68,30 @@
 								<i class="el-icon-plus"></i>
 							</el-upload>
 						</el-form-item>
+                        <el-form-item v-else :label="item.label + ' : '">
+							<el-input v-model="item.value" size="small"></el-input>
+						</el-form-item>
 					</el-col>
 				</el-row>
                 <!-- 引用外部链接 -->
                 <el-row>
-                    <el-col :span="10">
+                    <el-col :span="22">
                         <el-form-item label="引用外部链接 :">
-                            <el-button type="primary" size="small" icon="el-icon-upload2">引用外部链接</el-button>
+                            <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleOuterLink(moduleDataAddDto, '1')">引用外部链接</el-button>
+                            <div class="outer-link">
+                                <span class="one-outer-link"
+                                    v-for="(item, index) in moduleDataAddDto.externalQuoteList"
+                                    v-if="item.externalURL"
+                                    :key="index">
+                                    <a target="_blank" :href="item.externalURL">{{item.externalName}}</a>
+                                </span>
+                            </div>
                         </el-form-item>
                     </el-col>
-				</el-row>
+                </el-row>
                 	<!-- 文档上传 -->
 				<el-row>
-                    <el-col :span="10">
+                    <el-col :span="22">
                         <el-form-item label="本地文档上传 :">
                             <el-button type="primary" size="small" icon="el-icon-upload2">选择本地文档</el-button>
                         </el-form-item>
@@ -103,11 +133,31 @@
                             <!-- 同上 -->
                             <el-form label-width="200px" class="demo-ruleForm" v-if="moduleDataAddDto.subModelInfoList.length > 0">
                                 <el-row>
-                                    <el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 20 : 10 "
+                                    <el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 22 : 11 "
                                         v-for="(item, index) in item0.generalInfoList"
                                         :key="index">
-                                        <el-form-item v-if="item.dataType == 1 || item.dataType == 2" :label="item.label + ' : '">
-                                            <el-input v-model="item.value" size="small"></el-input>
+                                        <el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '">
+                                            <el-date-picker
+                                                size="small"
+                                                style="width:100%;"
+                                                value-format="timestamp"
+                                                :editable="false"
+                                                type="date"
+                                                v-model="item.value">
+                                            </el-date-picker>
+                                        </el-form-item>
+                                        <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '">
+                                            <el-date-picker
+                                                size="small"
+                                                style="width:100%;"
+                                                v-model="item.value"
+                                                type="daterange"
+                                                :editable="false"
+                                                value-format="timestamp"
+                                                range-separator="至"
+                                                start-placeholder="开始"
+                                                end-placeholder="结束">
+                                            </el-date-picker>
                                         </el-form-item>
                                         <!-- 下拉框处理 -->
                                         <el-form-item v-else-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '">
@@ -162,13 +212,24 @@
                                                 <i class="el-icon-plus"></i>
                                                 </el-upload>
                                         </el-form-item>
+                                        <el-form-item v-else :label="item.label + ' : '">
+                                            <el-input v-model="item.value" size="small"></el-input>
+                                        </el-form-item>
                                     </el-col>
                                 </el-row>
                                 <!-- 引用外部链接 -->
                                 <el-row>
-                                    <el-col :span="10">
+                                    <el-col :span="22">
                                         <el-form-item label="引用外部链接 :">
-                                            <el-button type="primary" size="small" icon="el-icon-upload2">引用外部链接</el-button>
+                                            <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleOuterLink(item0, '2')">引用外部链接</el-button>
+                                            <div class="outer-link">
+                                                <span class="one-outer-link"
+                                                    v-if="item.externalURL"
+                                                    v-for="(item, index) in item0.externalQuoteList"
+                                                    :key="index">
+                                                    <a target="_blank" :href="item.externalURL">{{item.externalName}}</a>
+                                                </span>
+                                            </div>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -192,11 +253,31 @@
                                 <!-- 同上 -->
                                 <el-form label-width="200px" class="demo-ruleForm" v-if="moduleDataAddDto.subModelInfoList[activeIndex].subModelInfoInfoList">
                                     <el-row>
-                                        <el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 20 : 10 "
+                                        <el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 22 : 11 "
                                             v-for="(item, index) in item1.generalInfoList"
                                             :key="index">
-                                            <el-form-item v-if="item.dataType == 1 || item.dataType == 2" :label="item.label + ' : '">
-                                                <el-input v-model="item.value" size="small"></el-input>
+                                            <el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '">
+                                                <el-date-picker
+                                                    size="small"
+                                                    style="width:100%;"
+                                                    value-format="timestamp"
+                                                    :editable="false"
+                                                    type="date"
+                                                    v-model="item.value">
+                                                </el-date-picker>
+                                            </el-form-item>
+                                            <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '">
+                                                <el-date-picker
+                                                    size="small"
+                                                    style="width:100%;"
+                                                    v-model="item.value"
+                                                    type="daterange"
+                                                    :editable="false"
+                                                    value-format="timestamp"
+                                                    range-separator="至"
+                                                    start-placeholder="开始"
+                                                    end-placeholder="结束">
+                                                </el-date-picker>
                                             </el-form-item>
                                             <!-- textarea -->
                                             <el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
@@ -218,6 +299,9 @@
                                                     </el-upload>
                                                 </div>
                                             </el-form-item>
+                                            <el-form-item v-else :label="item.label + ' : '">
+                                                <el-input v-model="item.value" size="small"></el-input>
+                                            </el-form-item>
                                         </el-col>
                                     </el-row>
                                 </el-form>
@@ -234,24 +318,38 @@
                 <el-button size="small">取消</el-button>
             </router-link>
 		</div>
+        <outer-link
+            v-if="outerLinkDialog"
+            :outerData="outerData"
+            :outerLinkDialog="outerLinkDialog"
+            @outerLinkDialogSure="outerLinkDialogSure"
+            @outerLinkDialogCancel="outerLinkDialogCancel"
+            @handleClose="handleClose"
+        >
+        </outer-link>
     </div>
 </template>
 
 <script>
+    import  OuterLink from '@/components/v2/assignment/OuterLink'
     import { getModelList, getModuleData, getFactoryList, addModuleData, editModuleData } from '@/api/v2'
     import { isImg, scrollMore, deepClone } from '@/utils'
     import { uploadImg } from '@/utils/upload'
     import { deleteUrl } from '@/utils/v2'
     export default {
+        components: { OuterLink },
         data() {
             return {
                 activeIndex: '0',
+                outerLinkDialog: false, // 外部链接开关
+                outerData: [], //外部链接传值
+                outerLinkIndex: '', // 区分普通 1  特殊 2
                 loading: false,
                 moduleInfos: {},
                 // 最终上传的数据
                 moduleDataAddDto: {
                     enterpriseSelectName: '', //下拉框企业名称
-                    externalQuoteList: [], //外部引用
+                    externalQuoteList: [{'externalName': '', 'externalURL': ''}], //外部引用
                     generalInfoList: [], //基本信息
                     subModelInfoList: [], // 种植 加工用
                     moduleName: '',  //模块名称
@@ -260,7 +358,7 @@
                     videoUrlList: [], //视频
                     type: null, //类型
                 },
-                options2:[{label: 1, value: '自繁'}, {label: 2, value: '采摘'}],
+                options2:[{label: 1, value: '自繁'}, {label: 2, value: '外采'}],
                 options: [],
                 isRemote: false, // 下拉框是否在 请求数据
                 optionsPage: 1, // 当前页数
@@ -304,6 +402,20 @@
             if( this.id ) {
                 getModuleData( this.id, this.tabId ).then( data => {
                     this.moduleDataAddDto = data.data;
+                    // string -> array
+                    this.moduleDataAddDto.generalInfoList && this.moduleDataAddDto.generalInfoList.forEach( val => {
+                        if( val.value && val.value.indexOf('-_-') != -1 ) val.value = val.value.split('-_-');
+                    })
+                    this.moduleDataAddDto.subModelInfoList && this.moduleDataAddDto.subModelInfoList.forEach( val1 => {
+                        val1.generalInfoList && val1.generalInfoList.forEach( val2 => {
+                            if( val2.value && val2.value.indexOf('-_-') != -1 ) val2.value = val2.value.split('-_-');
+                        })
+                        val1.subModelInfoInfoList && val1.subModelInfoInfoList.forEach( val4 => {
+                            val4.generalInfoList && val4.generalInfoList.forEach( val4 => {
+                                if( val4.value && val4.value.indexOf('-_-') != -1 ) val4.value = val4.value.split('-_-');
+                            })
+                        })
+                    })
                 })
             }
         },
@@ -319,15 +431,33 @@
                 // if( this.tab != 'zz' && this.tab != 'jg' ) {
                 //     this.moduleDataAddDto.moduleName = this.moduleDataAddDto.generalInfoList[0].value || '';
                 // }
+
+                // array => string
+                this.moduleDataAddDto.generalInfoList && this.moduleDataAddDto.generalInfoList.forEach( val => {
+                    if( Array.isArray(val.value) ) val.value = val.value.join('-_-');
+                })
+                this.moduleDataAddDto.subModelInfoList && this.moduleDataAddDto.subModelInfoList.forEach( val1 => {
+                    val1.generalInfoList && val1.generalInfoList.forEach( val2 => {
+                        if( Array.isArray(val2.value) ) val2.value = val2.value.join('-_-');
+                    })
+                    val1.subModelInfoInfoList && val1.subModelInfoInfoList.forEach( val4 => {
+                        val4.generalInfoList && val4.generalInfoList.forEach( val4 => {
+                            if( Array.isArray(val4.value) ) val4.value = val4.value.join('-_-');
+                        })
+                    })
+                })
 				if( this.id ) {
 					editModuleData(this.moduleDataAddDto).then( data => {
 						this.$message.success('修改成功');
-						this.$router.go(-1);
+                        //this.$router.go(-1);
+                        this.$router.push({name: 'collectionProcess', query:{tab: this.tab, tabId: this.tabId, tabName: this.tabName}});
 					})
 				}else {
 					addModuleData(this.moduleDataAddDto).then( data => {
 						this.$message.success('添加成功');
-						this.$router.go(-1);
+                        //this.$router.go(-1);
+                        this.$router.push({name: 'collectionProcess', query:{tab: this.tab, tabId: this.tabId, tabName: this.tabName}});
+
 					})
 				}
             },
@@ -403,7 +533,8 @@
 					})
 					return false;
 				}
-			},
+            },
+            // 0 普通  1 种植 加工 普通 2 种植 加工 添加步骤
 			async uploadFile(params) {
 				let data = await uploadImg(params.file);
 				if( !data ) return;
@@ -421,6 +552,36 @@
                 if( !this.moduleDataAddDto.subModelInfoList[this.activeIndex].subModelInfoInfoList[this.lastIndex].imgUrlList ) this.moduleDataAddDto.subModelInfoList[this.activeIndex].subModelInfoInfoList[this.lastIndex].imgUrlList = [];
 				this.moduleDataAddDto.subModelInfoList[this.activeIndex].subModelInfoInfoList[this.lastIndex].imgUrlList.push( {'name': data.data.fileUrl, 'url': data.data.fileUrl} )
             },
+            // 外部链接
+            outerLinkDialogSure() {
+                let clone = deepClone(this.outerData);
+                if( this.outerLinkIndex == 1 ) {
+                    this.moduleDataAddDto.externalQuoteList = clone;
+                }else if( this.outerLinkIndex == 2 ){
+                    this.moduleDataAddDto.subModelInfoList[this.activeIndex].externalQuoteList = clone;
+                }
+                this.outerLinkDialog = false;
+            },
+            outerLinkDialogCancel(list) {
+                let clone = deepClone(list);
+                if( this.outerLinkIndex == 1 ) {
+                    this.moduleDataAddDto.externalQuoteList = clone;
+                }else if( this.outerLinkIndex == 2 ){
+                    this.moduleDataAddDto.subModelInfoList[this.activeIndex].externalQuoteList = clone;
+                }
+                this.outerLinkDialog = false;
+            },
+            handleClose() {
+                this.outerLinkDialog = false;
+            },
+            handleOuterLink(data, index) {
+                this.outerLinkIndex = index;
+                this.outerLinkDialog = true;
+                this.outerData = data.externalQuoteList;
+                if( !this.outerData || this.outerData.length == 0 ) {
+                    this.outerData = [{'externalName': '', 'externalURL': ''}];
+                }
+            }
             // 数据接入
         },
     }
@@ -428,6 +589,22 @@
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
+    .outer-link {
+        display: inline-block;
+        margin: 0 10px;
+        .one-outer-link {
+            display: inline-block;
+            padding: 0 40px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 5px;
+            background: #fff url('~@/assets/images/v2/outer-link.png') no-repeat 5% center;
+            background-size: 20px 18px;
+        }
+    }
     .tabs-container {
         width: 96%;
         margin-left: 20px;
@@ -523,6 +700,9 @@
         }
         .farm-index {
             padding: 0 10px;
+            width: 96px;
+            text-align: center;
+            display: inline-block;
         }
         .delete {
             position: absolute;
@@ -620,11 +800,6 @@
         margin-top: 8px;
         background:#FFF;
         cursor: pointer;
-    }
-    .todo {
-        font-size: 16px;
-        cursor: pointer;
-        padding: 0 4px;
     }
     .active {
         background: #409EFF;

@@ -4,15 +4,14 @@
             <img src="~@/assets/images/phone-top.png" alt="">
         </div>
         <div class="logo-img">
-            <!-- http://admin.ytbuyer.com/ytfarmapi/file/uploadImage -->
-            <!-- :headers="{processData: false, contentType: false}" -->
             <el-upload
                 class="logo-uploader"
                 action=""
-                :before-upload="uploadFile"
+                :before-upload="beforeUpload"
+                :http-request="uploadFile"
                 :show-file-list="false"
                 >
-                <img v-if="stepData.imgUrl" :src="stepData.imgUrl" class="avatar">
+                <img v-if="stepData.imgUrlList && stepData.imgUrlList[0]" :src="stepData.imgUrlList[0].url" class="avatar">
                 <i v-else class="avatar-uploader-icon"></i>
             </el-upload>
         </div>
@@ -131,8 +130,8 @@
 
 <script>
     import BaseStep from '@/components/v2/assignment/BaseStep';
-    import axios from 'axios'
     import { isImg } from '@/utils/index'
+    import { uploadImg } from '@/utils/upload'
 
     export default {
         name:'MainPhone',
@@ -162,34 +161,20 @@
         },
         methods: {
             // 上传
-            uploadFile(file) {
-                if( !isImg(file.name) ) {
-                    this.$message({
-                        message: '只能上传图片',
-                        type:'error'
-                    })
-                    return;
-                }
-                var formData = new FormData();
-                formData.append('file', file);
-                formData.append('userId', '0');
-                formData.append('flag', '');
-                formData.append('fileType', '0');
-                axios.post("http://admin.ytbuyer.com/ytfarmapi/file/uploadImage", formData).then((res)=>{
-                     if(res.data.code == 0 && res.data.data.fileUrl){
-                         this.$message({
-                             message:"上传成功",
-                             type:'success'
-                         })
-                         this.stepData.imgUrl = res.data.data.fileUrl;
-                     }else{
-                        this.$message({
-                            message:res.data.msg,
-                            type:'error'
-                        })
-                    }
-                 })
-                return false;
+            beforeUpload(file){
+				if( !isImg(file.name) ) {
+					this.$message({
+						message: '只能上传图片',
+						type:'error'
+					})
+					return false;
+				}
+            },
+            async uploadFile(params) {
+				let data = await uploadImg(params.file);
+                if( !data ) return;
+                this.stepData.imgUrlList = [];
+                this.stepData.imgUrlList.push( {'name': data.data.fileUrl, 'url': data.data.fileUrl} )
             },
             // phone 上的编辑按钮
             editStep(index, name) {

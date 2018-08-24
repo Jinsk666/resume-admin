@@ -47,7 +47,7 @@
                     </el-table-column>
                     <el-table-column
                         align="center"
-                        prop="ylEnterpriseName"
+                        prop="selectEnterpriseName"
                         label="所属企业"
                         min-width="200">
                     </el-table-column>

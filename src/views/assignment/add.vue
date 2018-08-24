@@ -55,6 +55,7 @@
         </step-dialog>
         <!-- 模版选择弹出框 -->
         <module-dialog
+            v-if="moduleDialog"
             :moduleDialog="moduleDialog"
             @handleClose="handleClose2"
             @moduleDialogSure="moduleDialogSure"
@@ -73,7 +74,7 @@
     import { deepClone, Step2Class } from '@/utils'
     import { dataPool } from '@/utils/v2'
     import { getModuleList, getModuleDetails } from '@/api/v2'
-    import { addResume, editResume } from '@/api'
+    import { addResume, editResume, getResumeDetails } from '@/api'
     export default {
         components: {/* ThemePicker, */  MainPhone, StepDialog, BaseDialog, ModuleDialog },
         data() {
@@ -87,7 +88,8 @@
                 // 最终上传的数据
                 resumeTemplateTwoOne: {
                     resumeTemplateName: '',//产品名称
-                    imgUrl: '', // 产品图片
+                    imgUrlList: [], // 产品图片
+                    logoUrl: '', // logo
                     skinInfoCode: '', //皮肤
                     templateCode: '', //模板
                     uniqueCode: '', // 唯一编码
@@ -102,7 +104,8 @@
                 // 基本原料
                 material: {
                     resumeTemplateName: '原料',
-                    imgUrl: '',
+                    imgUrlList: [],
+                    logoUrl: '',
                     generalInfoList: [],
                     moduleInfos: []
                 },
@@ -116,7 +119,7 @@
                 outerMaterialName: '',// 原料 名称
                 outerMaterialUrl: '', // 原料 url
                 isLeftActive: false, // 左侧 toggle
-                moduleDialog: true,
+                moduleDialog: false,
             }
         },
         computed: {
@@ -151,8 +154,11 @@
             isEdit() {
                 return this.$route.query.code
             },
-            templateCode() {
+            templateCode() { // 模板 code
                 return this.$route.query.templateCode
+            },
+            code() { // 履历 code
+                return this.$route.query.code
             }
         },
         mounted() {
@@ -161,16 +167,14 @@
         created: function() {
             this.loading = this.$loading({text:'拼命加载中...'});
             // 如果选了 模板 就不显示模板框
-            if( this.templateCode ) {
-                this.moduleDialog = false;
-            }
-            if( !this.templateCode ) {
+            if( !this.templateCode && !this.code) {
+                this.moduleDialog = true;
                 this.isLoadingEnd = true;
                 this.loading.close();
             }else {
-                getModuleDetails( this.templateCode ).then(data => {
-                    this.loading.close();
-                    if( data.data ) {
+                if( this.templateCode ) {
+                    getModuleDetails( this.templateCode ).then(data => {
+                        this.loading.close();
                         let clone = deepClone(data.data);
                         this.resumeTemplateTwoOne = clone;
 
@@ -179,8 +183,22 @@
                         this.$store.commit('SWITCH_STEPDATA_CLONE', clone2);
                         // 显示 手机
                         this.isLoadingEnd = true;
-                    }
-                })
+                    })
+                }else if(this.code) {
+                    getResumeDetails( this.code ).then(data => {
+                        this.loading.close();
+                        let clone = deepClone(data.data);
+                        this.resumeTemplateTwoOne = clone;
+
+                        let clone2 = deepClone(this.resumeTemplateTwoOne);
+                        this.$store.commit('SWITCH_STEPDATA', this.resumeTemplateTwoOne);
+                        this.$store.commit('SWITCH_STEPDATA_CLONE', clone2);
+                        // 显示 手机
+                        this.isLoadingEnd = true;
+
+                        dataPool(clone.moduleInfos, this.globalPool);
+                    })
+                }
             }
         },
         methods: {

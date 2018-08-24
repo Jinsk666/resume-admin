@@ -8,11 +8,11 @@ const Login = r => require.ensure([], () => r( require('../views/login/login') )
 const AccountLogin = r => require.ensure([], () => r( require('../views/login/accountLogin') ), 'accountLogin')
 const Forget = r => require.ensure([], () => r( require('../views/login/forget') ), 'forget')
 const Errors = r => require.ensure([], () => r( require('../views/404') ), 'error')
-const Myresume = r => require.ensure([], () => r( require('../views/my-resume/index') ), 'myresume')
-const Addresume = r => require.ensure([], () => r( require('../views/my-resume/add') ), 'addresume')
-const Listresume = r => require.ensure([], () => r( require('../views/my-resume/list') ), 'listresume')
-const CodeList = r => require.ensure([], () => r( require('../views/code-list/index') ), 'codelist')
-const CodeListDetails = r => require.ensure([], () => r( require('../views/code-list/details') ), 'codelistdetails')
+// const Myresume = r => require.ensure([], () => r( require('../views/my-resume/index') ), 'myresume')
+// const Addresume = r => require.ensure([], () => r( require('../views/my-resume/add') ), 'addresume')
+// const Listresume = r => require.ensure([], () => r( require('../views/my-resume/list') ), 'listresume')
+// const CodeList = r => require.ensure([], () => r( require('../views/code-list/index') ), 'codelist')
+// const CodeListDetails = r => require.ensure([], () => r( require('../views/code-list/details') ), 'codelistdetails')
 const Factory = r => require.ensure([], () => r( require('../views/factory/index') ), 'factory')
 
 /*********   V2   *************/
@@ -38,6 +38,7 @@ const AssignmentAdd = r => require.ensure([], () => r( require('../views/assignm
 const AssignmentQrcode = r => require.ensure([], () => r( require('../views/assignment/qrcode') ), 'assignment-qrcode')
 const AssignmentDetails = r => require.ensure([], () => r( require('../views/assignment/details') ), 'assignment-details')
 const AssignmentProductBatch = r => require.ensure([], () => r( require('../views/assignment/product-batch') ), 'assignment-product-batch')
+const AssignmentMap = r => require.ensure([], () => r( require('../views/assignment/map') ), 'assignment-map')
 
   // 统计
 const StayTunedIndex = r => require.ensure([], () => r( require('../components/v2/static/index') ), 'stay-tuned-index');
@@ -81,58 +82,58 @@ export const constantRouterMap = [
     }]
   },
   // 我的履历
-  {
-    path: '/resume',
-    component: Layout,
-    redirct: '/resume/index',
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        name: 'Resume',
-        component: Myresume,
-        meta: { title: '我的履历', icon: 'resume' },
-      },
-      {
-        path: 'add',
-        name: 'AddResume',
-        component: Addresume,
-        meta: { title: '添加履历', icon: 'form' },
-        hidden: true
-      },
-      {
-        path: 'list',
-        name: 'resumeList',
-        component: Listresume,
-        meta: { title: '对应履历', icon: 'form' },
-        hidden: true
-      }
-    ]
-  },
-  // 编码列表
-  {
-    path: '/list',
-    component: Layout,
-    redirect: '/resume/index',
-    name: 'ListOuter',
-    meta: { title: '编码列表', icon: 'module' },
-    hidden: true,
-    children: [
-      {
-        path: 'index',
-        name: 'List',
-        component: CodeList,
-        meta: { title: '编码列表', icon: 'module' }
-      },
-      {
-        path: 'details',
-        name: 'listDetails',
-        component: CodeListDetails,
-        meta: { title: '编码详情', icon: 'form' },
-        //hidden: true
-      }
-    ]
-  },
+  // {
+  //   path: '/resume',
+  //   component: Layout,
+  //   redirct: '/resume/index',
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'Resume',
+  //       component: Myresume,
+  //       meta: { title: '我的履历', icon: 'resume' },
+  //     },
+  //     {
+  //       path: 'add',
+  //       name: 'AddResume',
+  //       component: Addresume,
+  //       meta: { title: '添加履历', icon: 'form' },
+  //       hidden: true
+  //     },
+  //     {
+  //       path: 'list',
+  //       name: 'resumeList',
+  //       component: Listresume,
+  //       meta: { title: '对应履历', icon: 'form' },
+  //       hidden: true
+  //     }
+  //   ]
+  // },
+  // // 编码列表
+  // {
+  //   path: '/list',
+  //   component: Layout,
+  //   redirect: '/resume/index',
+  //   name: 'ListOuter',
+  //   meta: { title: '编码列表', icon: 'module' },
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: 'index',
+  //       name: 'List',
+  //       component: CodeList,
+  //       meta: { title: '编码列表', icon: 'module' }
+  //     },
+  //     {
+  //       path: 'details',
+  //       name: 'listDetails',
+  //       component: CodeListDetails,
+  //       meta: { title: '编码详情', icon: 'form' },
+  //       //hidden: true
+  //     }
+  //   ]
+  // },
   /****************    V2   **************************/
   // 产品模版
   {
@@ -177,6 +178,7 @@ export const constantRouterMap = [
       { path: 'product-batch', name: 'assignmentProductBatch', component: AssignmentProductBatch, meta: { title: '产品批次管理', icon: 'batch-code' } },
       { path: 'qrcode', name: 'assignmentQrcode', component: AssignmentQrcode, meta: { title: '二维码管理', icon: 'qrcode' } },
       { path: 'details', name: 'assignmentDetails', component: AssignmentDetails, meta: { title: '编码详情', icon: 'module' }, hidden: true },
+      { path: 'map', name: 'assignmentMap', component: AssignmentMap, meta: { title: '对应履历', icon: 'module' }, hidden: true },
     ]
   },
   // 统计分析

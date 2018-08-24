@@ -112,7 +112,7 @@
 
 <script>
     import { getCodeList, addCode } from '@/api'
-    import mapCodeDialog from '@/components/MapCodeDialog'
+    import mapCodeDialog from '@/components/v2/assignment/MapCodeDialog'
     import { formatTime } from '@/utils'
     export default {
         components: { mapCodeDialog },
@@ -141,7 +141,7 @@
             handleSearch(val) {
                 getCodeList(this.search.resumeCode, val).then(((data) => {
                     this.totalCount = data.data.pageCount * 20;
-                    this.tableData = data.data.resumeBatchTwoResponseList;
+                    this.tableData = data.data.resumeBatchTwoOneResponseList;
                     this.currentPage = val;
                 }))
             },

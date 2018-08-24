@@ -7,11 +7,8 @@
 					<el-col :span="( item.dataType == 10 || item.dataType == 9 ) ? 20 : 10 "
 						v-for="(item, index) in moduleDataAddDto.generalInfoList"
 						:key="index">
-						<el-form-item v-if="item.dataType != 9 || (item.dataType == 7 && item.label.indexOf('来源') != -1)" :label="item.label + ' : '">
-							{{item.value}}
-						</el-form-item>
 						<!-- 下拉框处理 -->
-						<el-form-item v-else-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '">
+						<el-form-item v-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '">
 							{{moduleDataAddDto.enterpriseSelectName}}
 						</el-form-item>
 						<!-- 上传图片 -->
@@ -22,13 +19,30 @@
 									:key="index"
 									:src="item.url" alt="">
 						</el-form-item>
+                        <el-form-item v-else-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '" style="z-index:99;">
+                            {{item.value | formatTime('Y-m-d')}}
+                        </el-form-item>
+                        <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '" style="z-index:99;">
+                            {{item.value && item.value.split('-_-')[0] | formatTime('Y-m-d')}} {{item.value ? '~' : ''}} {{item.value && item.value.split('-_-')[1] | formatTime('Y-m-d')}}
+                        </el-form-item>
+                        <el-form-item v-else :label="item.label + ' : '">
+							{{item.value}}
+						</el-form-item>
+
 					</el-col>
 				</el-row>
                 <!-- 引用外部链接 -->
                 <el-row>
-                    <el-col :span="10">
+                    <el-col :span="20">
                         <el-form-item label="引用外部链接 :">
-                            <el-button type="primary" size="small" icon="el-icon-upload2">引用外部链接</el-button>
+                            <div class="outer-link">
+                                <span class="one-outer-link"
+                                    v-for="(item, index) in moduleDataAddDto.externalQuoteList"
+                                    v-if="item.externalURL"
+                                    :key="index">
+                                    <a target="_blank" :href="item.externalURL">{{item.externalName}}</a>
+                                </span>
+                            </div>
                         </el-form-item>
                     </el-col>
 				</el-row>
@@ -88,9 +102,16 @@
                                 </el-row>
                                 <!-- 引用外部链接 -->
                                 <el-row>
-                                    <el-col :span="10">
+                                    <el-col :span="20">
                                         <el-form-item label="引用外部链接 :">
-                                            <el-button type="primary" size="small" icon="el-icon-upload2">引用外部链接</el-button>
+                                            <div class="outer-link">
+                                                <span class="one-outer-link"
+                                                    v-if="item.externalURL"
+                                                    v-for="(item, index) in item0.externalQuoteList"
+                                                    :key="index">
+                                                    <a target="_blank" :href="item.externalURL">{{item.externalName}}</a>
+                                                </span>
+                                            </div>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -175,6 +196,21 @@
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
+    .outer-link {
+        display: inline-block;
+        margin: 0 10px;
+        .one-outer-link {
+            display: inline-block;
+            padding: 0 40px;
+            height: 32px;
+            line-height: 32px;
+            text-align: center;
+            border: 1px solid #ddd;
+            margin: 0 5px;
+            background-size: 20px 20px;
+            //background: url() no-repeat left left;
+        }
+    }
     .show-img {
 		width: 148px;
 		height: 148px;

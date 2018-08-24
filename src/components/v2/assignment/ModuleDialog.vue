@@ -74,6 +74,10 @@
                 if( !this.moduleDialog ) return;
                 getModuleList(this.likeParams, page).then(data => {
                     this.tableData = data.data.resumeTemplateTwoOneResponseList;
+                    // 将图片的列表转为 原来的 imgUrl
+                    this.tableData.forEach((val, index, arr) => {
+                        if( val.imgUrlList && val.imgUrlList[0] ) val.imgUrl = val.imgUrlList[0].url || '';
+                    })
                 })
             },
             moduleDialogSure() {

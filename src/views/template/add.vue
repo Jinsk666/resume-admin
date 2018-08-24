@@ -105,7 +105,8 @@
                     generalInfoList:[], //基本信息
                     moduleInfos:[],// 模块流程
                     resumeTemplateName: '',//产品名称
-                    imgUrl: '', // 产品图片
+                    imgUrlList:[], //产品图片列表
+                    logoUrl: '', // logo
                     uniqueCode: '', // 唯一编码
                     // 原料列表
                     resumeTemplateTwoOnes:[],
@@ -114,7 +115,8 @@
                 material: {
                     authenticationList: [],
                     resumeTemplateName: '',
-                    imgUrl: '',
+                    imgUrlList: [],
+                    logoUrl: '', // logo
                     generalInfoList: [],
                     moduleInfos: [],
                     uniqueCode:''

@@ -20,8 +20,14 @@ import '@/permission' // permission control
 import VueDND from 'awe-dnd' // 拖拽插件
 Vue.use(VueDND)
 
+import * as filters from './filters' // global filters
+
 Vue.use(ElementUI, {
   //size: 'small'
+})
+// 全局 filter
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
 })
 
 Vue.config.productionTip = false

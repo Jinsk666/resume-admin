@@ -7,9 +7,6 @@
 					<el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 20 : 10 "
 						v-for="(item, index) in moduleDataAddDto.generalInfoList"
 						:key="index">
-						<el-form-item v-if="item.dataType == 1 || item.dataType == 2" :label="item.label + ' : '">
-							<el-input v-model="item.value" size="small"></el-input>
-						</el-form-item>
 						<el-form-item v-if="item.dataType == 8" :label="item.label + ' : '">
 							<el-col :span="10">
 								<el-input id="link" v-model="item.value" size="small"></el-input>
@@ -62,6 +59,9 @@
 								<i class="el-icon-plus"></i>
 							</el-upload>
 						</el-form-item>
+						<el-form-item v-else :label="item.label + ' : '">
+							<el-input v-model="item.value" size="small"></el-input>
+						</el-form-item>
 					</el-col>
 				</el-row>
                 	<!-- 文档上传 -->
@@ -89,8 +89,10 @@
             </router-link>
 		</div>
         <data-upload
+			v-if="isDataUpload"
 			@dataUploadSure="dataUploadSure"
 			@dataUploadCancel="dataUploadCancel"
+			@handleClose="handleClose"
 			:isDataUpload="isDataUpload">
 		</data-upload>
     </div>
@@ -249,6 +251,9 @@
 			dataUploadCancel() {
 				this.isDataUpload = false;
 			},
+			handleClose() {
+				this.isDataUpload = false;
+			}
 		},
     }
 </script>

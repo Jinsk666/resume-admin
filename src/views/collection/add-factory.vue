@@ -32,10 +32,11 @@
 							<el-upload
 								class="avatar-uploader"
 								action=""
+								:before-upload="beforeUpload"
 								:http-request="uploadFile"
 								:show-file-list="false"
 								>
-								<img v-if="logoImgUrl" :src="logoImgUrl" class="avatar">
+								<img v-if="moduleDataAddDto.logoUrl" :src="moduleDataAddDto.logoUrl" class="avatar">
 								<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 							</el-upload>
 						</el-form-item>
@@ -71,7 +72,6 @@
             return {
 				isDataUpload: false, // 数据接入弹出框
 				imgList: [], //判断是否重复
-				logoImgUrl: '',
 				moduleDataAddDto: { //上传的数据
 					enterpriseSelectName: '', //下拉框企业名称
 					externalQuoteList: [], //外部引用
@@ -88,6 +88,7 @@
 					moduleName: '',
 					moduleUniqueCode: '', // 接入数据编码
 					imgUrlList: [], // 产品图片
+					logoUrl: '', // logo
 					videoUrlList: [], //视频
 					type: 1
 				},
@@ -142,7 +143,7 @@
 			async uploadFile(params) {
 				let data = await uploadImg(params.file);
 				if( !data ) return;
-				this.logoImgUrl = data.data.fileUrl;
+				this.moduleDataAddDto.logoUrl = data.data.fileUrl;
             },
             handleCancel() {
                 this.$router.go(-1);

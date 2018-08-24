@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div class="block">
-            <router-link :to="{name: 'AddResume'}">
+            <router-link :to="{name: 'assignmentAdd'}">
                 <div class="item add-btn">
                     <div class="add">
                         <i class="el-icon-plus"></i>
@@ -17,7 +17,7 @@
             <div class="item">
                 <div class="item-top">
                     <div class="logo">
-                        <img v-if="item.imgUrl" :src="item.imgUrl" alt="">
+                        <img v-if="item.imgUrlList && item.imgUrlList[0]" :src="item.imgUrlList[0].url" alt="">
                         <img v-else src="~@/assets/images/resume/icon7.png" alt="">
                     </div>
                     <div class="overlay">
@@ -27,7 +27,7 @@
                                 <p>赋码</p>
                             </li>
                             <li>
-                                <router-link :to="{name: 'AddResume', query: {code: item.uniqueCode}}">
+                                <router-link :to="{name: 'assignmentAdd', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon2.png" alt=""></p>
                                     <p>编辑</p>
                                 </router-link>
@@ -37,13 +37,13 @@
                                 <p>预览</p>
                             </li>
                             <li>
-                                <router-link :to="{name: 'AddResume', query: {code: item.uniqueCode, add: 1}}">
+                                <router-link :to="{name: 'assignmentAdd', query: {code: item.uniqueCode, add: 1}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon4.png" alt=""></p>
                                     <p>复制并新建</p>
                                 </router-link>
                             </li>
                             <li>
-                                <router-link :to="{name: 'resumeList', query: {code: item.uniqueCode}}">
+                                <router-link :to="{name: 'assignmentMap', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon5.png" alt=""></p>
                                     <p>查看对应</p>
                                 </router-link>
@@ -92,7 +92,7 @@
 
 <script>
     import { getResumeList, deleteResume } from '@/api'
-    import mapCodeDialog from '@/components/MapCodeDialog'
+    import mapCodeDialog from '@/components/v2/assignment/MapCodeDialog'
     import { formatTime, throttle } from '@/utils'
     export default {
         components: { mapCodeDialog },
@@ -131,7 +131,7 @@
         },
         methods: {
             handlePreview(code){
-                let url = 'http://cs.nongchangyun.cn/resume-portal/#/defaults?resumeCode=' + code;
+                let url = 'http://cs.nongchangyun.cn/resume-portal-beta/#/defaults?resumeCode=' + code;
                 window.open(url);
             },
             deleteDialogSure() {

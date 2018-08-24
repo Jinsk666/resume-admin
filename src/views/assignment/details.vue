@@ -157,7 +157,7 @@
                 if(this.search.time.length != 0) time = getEleTime(this.search.time);
                 getCodeDetailsList(this.search.batchCode, time[0] || '', time[1] || '', this.search.likeParams, val).then( data => {
                     this.totalCount = 20 * data.data.pageCount;
-                    this.tableData = data.data.resumeBatchTwoDetailResponseList;
+                    this.tableData = data.data.resumeBatchTwoOneDetailResponseList;
                     this.currentPage = val;
                 })
             }

@@ -41,7 +41,7 @@
             <div class="item">
                 <div class="item-top">
                     <div class="logo">
-                        <img v-if="item.imgUrl" :src="item.imgUrl" alt="">
+                        <img v-if="item.imgUrlList && item.imgUrlList[0]" :src="item.imgUrlList[0].url" alt="">
                         <img v-else src="~@/assets/images/resume/icon7.png" alt="">
                     </div>
                     <div class="overlay">

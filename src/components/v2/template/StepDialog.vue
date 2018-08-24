@@ -83,9 +83,6 @@
 </template>
 
 <script>
-    import { deepClone } from '@/utils/index'
-    import { isImg } from '@/utils/index'
-    import  axios  from 'axios'
     export default {
         props: ['stepDialog'],
         data() {

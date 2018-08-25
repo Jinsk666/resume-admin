@@ -407,49 +407,49 @@
         color:$color;
     }
     .icon-info {
-			font-size: 14px;
-			.factory0 {
-				@include bis('~@/assets/images/factory-1.png');
-			}
-			.factory1 {
-				@include bis('~@/assets/images/factory-2.png');
-			}
-			.factory2 {
-				@include bis('~@/assets/images/factory-3.png');
-			}
-			.ellipsis  {
-                margin: 10px 0;
-				padding-left: 20px;
-				background-size: 16px 18px;
-				height: 20px;
-				line-height: 19px;
-				font-size: 14px;
-				overflow: hidden;
-				text-overflow: ellipsis;
-				white-space: nowrap;
-				width:100%;
-				display: inline-block;
-				text-align: left;
-			}
-			.factory-intro {
-				width: 100%;
-				background-color: #ededed;
-				color:#666;
-				text-align: left;
-				@include bR(4px);
-				padding: 5px 10px;
-				position: relative;
-				.factory-intro-top {
-					position: absolute;
-					width:15px;
-					height:7px;
-					top: -7px;
-					left: 8%;
-					@include bis('~@/assets/images/cart.png');
-				}
-				.factory-intro-top2{
-					left: 20px;
-				}
-			}
+        font-size: 14px;
+        .factory0 {
+            @include bis('~@/assets/images/factory-1.png');
         }
+        .factory1 {
+            @include bis('~@/assets/images/factory-2.png');
+        }
+        .factory2 {
+            @include bis('~@/assets/images/factory-3.png');
+        }
+        .ellipsis  {
+            margin: 10px 0;
+            padding-left: 20px;
+            background-size: 16px 18px;
+            height: 20px;
+            line-height: 19px;
+            font-size: 14px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            width:100%;
+            display: inline-block;
+            text-align: left;
+        }
+        .factory-intro {
+            width: 100%;
+            background-color: #ededed;
+            color:#666;
+            text-align: left;
+            @include bR(4px);
+            padding: 5px 10px;
+            position: relative;
+            .factory-intro-top {
+                position: absolute;
+                width:15px;
+                height:7px;
+                top: -7px;
+                left: 8%;
+                @include bis('~@/assets/images/cart.png');
+            }
+            .factory-intro-top2{
+                left: 20px;
+            }
+        }
+    }
 </style>

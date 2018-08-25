@@ -18,7 +18,7 @@
 				</el-row>
 				<el-row>
 					<el-col :span="10">
-						<el-form-item label="企业地址 : ">
+						<el-form-item label="行政位置 : ">
 							<el-select v-model="ruleForm.provincesId" placeholder="省" @change="provCnChange" class="country">
 								<el-option
 								v-for="item in provCnList"
@@ -170,7 +170,7 @@
 							this.ruleForm.enterpriseInfoId = Number( this.factoryId )
 							editFactoryInfo(this.ruleForm).then( data => {
 								this.$message.success('修改成功');
-								this.$router.push({name: 'Resume'})
+								this.$router.push({name: 'home'})
 							});
 						}else {
 							addFactoryInfo(this.ruleForm).then( data => {
@@ -185,7 +185,7 @@
 									setToken(data2.data);
 								})
 								this.$message.success('添加成功');
-								this.$router.push({name: 'Resume'})
+								this.$router.push({name: 'home'})
 							});
 						}
 					} else {

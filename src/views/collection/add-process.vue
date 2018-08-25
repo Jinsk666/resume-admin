@@ -120,16 +120,6 @@
             <div class="title2">添加{{tabName}}信息</div>
             <div class="tabs-container">
                 <div class="right-data">
-                    <!-- 文档上传 -->
-                    <el-button type="primary" size="small">
-                        <img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
-                        选择本地文档
-                    </el-button>
-                    <!-- 数据接入 -->
-                    <el-button type="primary" size="small" @click="isDataUpload = true">
-                        <img class="outer-link-icon" src="@/assets/images/v2/get-icon.png" alt="">
-                        选择数据接入
-                    </el-button>
                 </div>
                 <el-tabs style="margin-top: 10px;" v-model="activeIndex">
                     <el-tab-pane
@@ -179,7 +169,7 @@
                                             <el-select
                                                 :popper-append-to-body="false"
                                                 @visible-change="handleShow"
-                                                @change="handleChange2"
+                                                @change="handleChange"
                                                 filterable
                                                 remote
                                                 :remote-method="remoteMethod"
@@ -256,6 +246,28 @@
                                                     <a target="_blank" :href="item.externalURL">{{item.externalName}}</a>
                                                 </span>
                                             </div>
+                                        </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row  v-if="item0.label == '种植基本信息' || item0.label == '加工基本信息'">
+                                    <el-col :span="22">
+                                        <el-form-item label="选择本地文档 :">
+                                        <!-- 文档上传 -->
+                                        <el-button type="primary" size="small">
+                                            <img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+                                            选择本地文档
+                                        </el-button>
+                                    </el-form-item>
+                                    </el-col>
+                                </el-row>
+                                <el-row v-if="item0.label == '种植基本信息' || item0.label == '加工基本信息'">
+                                    <el-col :span="22">
+                                        <el-form-item label="选择数据接入 :">
+                                            <!-- 数据接入 -->
+                                            <el-button type="primary" size="small" @click="isDataUpload = true">
+                                                <img class="outer-link-icon" src="@/assets/images/v2/get-icon.png" alt="">
+                                                选择数据接入
+                                            </el-button>
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -538,13 +550,6 @@
 				this.options.forEach( val => {
 					if( val.uniqueCode == code ) {
 						this.moduleDataAddDto.enterpriseSelectName = val.enterpriseName;
-					}
-				})
-            },
-            handleChange2(code) {
-				this.options.forEach( val => {
-					if( val.uniqueCode == code ) {
-						this.moduleDataAddDto.subModelInfoList[0].enterpriseSelectName = val.enterpriseName;
 					}
 				})
             },

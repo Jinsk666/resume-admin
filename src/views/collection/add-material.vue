@@ -66,16 +66,18 @@
 				<el-row>
                     <el-col :span="10">
                         <el-form-item label="本地文档上传 :">
-							<el-upload
-								class="upload-demo"
-								action=""
-								:http-request="uploadBaseFile"
-								>
-								<el-button type="primary" size="small">
+								<el-button type="primary" size="small" @click="docUpload">
 									<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
 									选择本地文档
 								</el-button>
-							</el-upload>
+								<div class="outer-link">
+									<span class="one-outer-link"
+										v-if="moduleDataAddDto.documentUrlList.length != 0"
+										v-for="(item, index) in moduleDataAddDto.documentUrlList"
+										:key="index">
+										<a target="_blank" :href="item.url">{{item.name}}</a>
+									</span>
+								</div>
                         </el-form-item>
                     </el-col>
 				</el-row>
@@ -124,6 +126,7 @@
 				isDataUpload: false, // 数据接入弹出框
 				// 最终上传的数据
                 moduleDataAddDto: {
+					documentUrlList: [], //上传文档
 					enterpriseSelectName: '', //下拉框企业名称
 					externalQuoteList: [], //外部引用
 					generalInfoList: [], //基本信息
@@ -267,12 +270,45 @@
 			},
 			handleClose() {
 				this.isDataUpload = false;
+			},
+			// 上传文档
+			docUpload() {
+				window.oss_upload_err = false;
+				window.oss_upload = null;
+				window.oss_upload_name = null;
+				let dom = document.getElementById('selectfiles');
+				dom.click();
+				var timer;
+				timer = setInterval( ()=> {
+					if(window.oss_upload) {
+						clearInterval(timer);
+						timer = null;
+						this.moduleDataAddDto.documentUrlList.push({'name': window.oss_upload_name, 'url': window.oss_upload })
+						this.$message.success('上传成功');
+					}else if(window.oss_upload_err !== false) {
+						this.$message.error('上传失败');
+					}
+				},1000)
 			}
 		},
     }
 </script>
 
 <style lang="scss" scoped>
+	.outer-link {
+        display: inline-block;
+        margin: 0 10px;
+        .one-outer-link {
+            display: inline-block;
+            padding: 0 40px;
+            height: 32px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin: 0 5px;
+        }
+    }
 	.outer-link-icon {
 		width: 14px;
 	}

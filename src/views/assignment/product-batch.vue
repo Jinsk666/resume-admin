@@ -56,7 +56,7 @@
                     </div>
                 </div>
                 <div class="item-bottom">
-                    <div class="name ellipsis name-title" :title="item.productName">{{item.productName}}</div>
+                    <div class="name ellipsis name-title" :title="item.resumeTemplateName">{{item.resumeTemplateName}}</div>
                     <div class="name ellipsis name-code" :title="item.uniqueCode">{{item.uniqueCode}}</div>
                     <div class="time">
                         <div class="left">时间: {{item.insertTime | formatTime('Y-m-d')}}</div>

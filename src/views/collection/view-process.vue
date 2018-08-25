@@ -85,7 +85,7 @@
                                         :key="index">
                                         <!-- 下拉框处理 -->
                                         <el-form-item v-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '">
-                                            {{item0.enterpriseSelectName}}
+                                            {{moduleDataAddDto.enterpriseSelectName}}
                                         </el-form-item>
                                         <!-- 上传图片 -->
                                         <el-form-item v-else-if="item.dataType == 9 && item0.imgUrlList" :label="item.label + ' : '" style="z-index:99;">

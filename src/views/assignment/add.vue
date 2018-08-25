@@ -197,6 +197,7 @@
                     })
                 }else if(this.code) {
                     getResumeDetails( this.code ).then(data => {
+                        data.data.resumeTemplateTwoOnes = data.data.resumeDataTwoOnes;
                         this.loading.close();
                         let clone = deepClone(data.data);
                         this.resumeTemplateTwoOne = clone;

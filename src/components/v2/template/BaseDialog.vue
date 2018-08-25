@@ -73,7 +73,7 @@
                 <el-table-column
                 align="center"
                     prop="value"
-                    label="公司名称"
+                    label="机构名称"
                     min-width="150">
                     <template slot-scope="scope">
                         <el-input v-model="scope.row.value" size="small"></el-input>

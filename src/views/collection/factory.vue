@@ -42,7 +42,7 @@
                     <el-table-column
                     align="center"
                         prop="enterprisePosition"
-                        label="企业位置"
+                        label="企业地址"
                         min-width="200">
                     </el-table-column>
                     <el-table-column

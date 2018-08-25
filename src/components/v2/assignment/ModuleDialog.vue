@@ -9,7 +9,7 @@
             width="700px">
             <div class="container">
                 <div class="header">
-                    <el-input prefix-icon="el-icon-search" v-model="likeParams" clearable placeholder="输入关键字" size="small" style="width:200px; margin-right:20px;"></el-input>
+                    <el-input prefix-icon="el-icon-search" v-model="likeParams" clearable placeholder="模版编码/模版名称" size="small" style="width:200px; margin-right:20px;"></el-input>
                     <el-button type="primary" size="small" @click="handleSearch(1)">搜索</el-button>
                 </div>
                 <div class="content">

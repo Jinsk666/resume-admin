@@ -47,7 +47,7 @@
 						type="text"
 						class="ellipsis"
 						:class="'factory' + index"
-						@click="thirdActive = index">{{item.value}}</div>
+						@click="thirdActive = index">{{item.label}}</div>
 					</el-col>
                 </el-row>
 				<el-row class="icon-info" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">

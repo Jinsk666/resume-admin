@@ -53,7 +53,7 @@
 						</el-form-item>
 						<!-- textarea -->
 						<el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
-							<el-input type="textarea" :rows="5" v-model="item.value" placeholder="最多输入1000字"></el-input>
+							<el-input type="textarea" :rows="5" v-model="item.value" placeholder="请输入文本"></el-input>
 						</el-form-item>
 						<!-- 上传图片 -->
 						<el-form-item v-else-if="item.dataType == 9" :label="item.label + ' : '" style="z-index:99;">
@@ -201,6 +201,7 @@
                                             style="width:100%"
                                             placeholder="请选择"
                                             size="small"
+                                            @change="fromChange"
                                             v-model="item.value">
                                             <el-option
                                                 v-for="item in options2"
@@ -211,7 +212,7 @@
                                         </el-form-item>
                                         <!-- textarea -->
                                         <el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
-                                            <el-input type="textarea" :rows="5" v-model="item.value" placeholder="最多输入1000字"></el-input>
+                                            <el-input type="textarea" :rows="5" v-model="item.value" placeholder="请输入文本"></el-input>
                                         </el-form-item>
                                         <!-- 上传图片 -->
                                         <el-form-item v-else-if="item.dataType == 9"
@@ -227,6 +228,12 @@
                                                 >
                                                 <i class="el-icon-plus"></i>
                                                 </el-upload>
+                                        </el-form-item>
+                                        <el-form-item v-else-if="item.label == '种苗供应商'"  :label="item.label + ' : '">
+                                            <el-input :disabled="!resourceFrom" v-model="item.value" size="small"></el-input>
+                                        </el-form-item>
+                                        <el-form-item v-else-if="item.label == '采购批次号'" :label="item.label + ' : '">
+                                            <el-input :disabled="!resourceFrom" v-model="item.value" size="small"></el-input>
                                         </el-form-item>
                                         <el-form-item v-else :label="item.label + ' : '">
                                             <el-input v-model="item.value" size="small"></el-input>
@@ -300,7 +307,7 @@
                                             </el-form-item>
                                             <!-- textarea -->
                                             <el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
-                                                <el-input type="textarea" :rows="5" v-model="item.value" placeholder="最多输入1000字"></el-input>
+                                                <el-input type="textarea" :rows="5" v-model="item.value" placeholder="请输入文本"></el-input>
                                             </el-form-item>
                                             <!-- 上传图片 -->
                                             <el-form-item v-else-if="item.dataType == 9" :label="item.label + ' : '" style="z-index:99;">
@@ -333,7 +340,7 @@
         </div>
 		<div class="footer">
 			<el-button type="primary" size="small" @click="submitForm" style="margin:20px;">保存</el-button>
-            <router-link :to="{name: 'collectionMaterial'}">
+            <router-link :to="{name: 'collectionProcess', query: {tab: tab, tabId: tabId, tabName: tabName}}">
                 <el-button size="small">取消</el-button>
             </router-link>
 		</div>
@@ -371,6 +378,7 @@
         components: { OuterLink, DataUpload },
         data() {
             return {
+                resourceFrom: true,
                 activeIndex: '0',
                 isDataUpload: false, // 数据接入开关
                 outerLinkDialog: false, // 外部链接开关
@@ -457,6 +465,13 @@
             }
         },
         methods: {
+            fromChange(val) {
+                if( val == '外采' ) {
+                    this.resourceFrom = true;
+                }else {
+                    this.resourceFrom = false;
+                }
+            },
             // 看 点的是哪个步骤
             conso(a) {
                 this.lastIndex = a;

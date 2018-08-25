@@ -67,5 +67,4 @@ export const uploadFileDemo = file => {
             console.log(err)
         })
     })
-    
 }

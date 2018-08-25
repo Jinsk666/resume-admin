@@ -44,7 +44,7 @@
                     label="URL"
                     min-width="150">
                     <template slot-scope="scope">
-                        <el-input v-model="scope.row.externalURL" size="small"></el-input>
+                        <el-input v-model="scope.row.externalURL" size="small" placeholder="http://"></el-input>
                     </template>
                 </el-table-column>
             </el-table>

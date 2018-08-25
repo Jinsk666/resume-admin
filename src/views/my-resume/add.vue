@@ -118,7 +118,7 @@
         </step-dialog>
         <!-- 填写原料弹出框 -->
         <el-dialog
-            title="添加生产流程"
+            title="添加原料名称"
             :visible.sync="materialDialog"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
@@ -132,8 +132,8 @@
                 <h3 class="add-entry" @click="addMaterialSure">立即填写更多原料信息</h3>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="materialDialog = false" size="small">取 消</el-button>
                 <el-button type="primary" @click="materialDialogSure" size="small">确 定</el-button>
+                <el-button @click="materialDialog = false" size="small">取 消</el-button>
             </span>
         </el-dialog>
         <!-- 填写原料外链弹出框 -->

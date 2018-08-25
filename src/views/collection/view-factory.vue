@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container">
-            <div class="title2">原料信息</div>
+            <div class="title2">企业信息</div>
             <el-form label-width="200px" class="demo-ruleForm">
 				<el-row>
 					<el-col :span="( item.dataType == 10 ) ? 20 : 10 "

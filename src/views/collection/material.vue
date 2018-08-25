@@ -15,7 +15,7 @@
         </div>
         <div class="code-container">
             <div class="container-top">
-                <div class="left">原料信息列表列表</div>
+                <div class="left">原料信息列表</div>
                 <div class="right">
                     <router-link :to="{name: 'collectionAddMaterial'}">
                         <el-button size="small" type="danger" round>添加原料</el-button>

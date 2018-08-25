@@ -31,7 +31,7 @@
                     <span>{{item.resumeTemplateName}}</span>
                     <span
                         @click.stop="deleteMaterial(index)"
-                        v-show="mouseoverMaterialIndex == index"
+                        v-show="mouseoverMaterialIndex == index && !isView"
                         class="el-icon-circle-close material-close">
                     </span>
                 </div>
@@ -61,7 +61,7 @@
         </step-dialog>
         <!-- 填写原料弹出框 -->
         <el-dialog
-            title="添加生产流程"
+            title="添加原料名称"
             :visible.sync="materialDialog"
             :close-on-click-modal="false"
             :close-on-press-escape="false"
@@ -74,8 +74,8 @@
                 <el-input v-model="materialName" autofocus="true" placeholder="请填写原料名称"></el-input>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="materialDialog = false" size="small">取 消</el-button>
                 <el-button type="primary" @click="materialDialogSure" size="small">确 定</el-button>
+                <el-button @click="materialDialog = false" size="small">取 消</el-button>
             </span>
         </el-dialog>
     </div>

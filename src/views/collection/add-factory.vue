@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container">
-            <div class="title2">添加原料信息</div>
+            <div class="title2">企业信息</div>
             <el-form label-width="200px" class="demo-ruleForm">
 				<el-row>
 					<el-col :span="( item.dataType == 10 ) ? 20 : 10 "
@@ -12,7 +12,7 @@
 						</el-form-item>
 						<!-- textarea -->
 						<el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
-							<el-input type="textarea" :rows="5" v-model="item.value" placeholder="最多输入1000字"></el-input>
+							<el-input type="textarea" :rows="5" v-model="item.value" placeholder="请输入文本"></el-input>
 						</el-form-item>
 						<!-- 上传图片 -->
 						<el-form-item v-else-if="item.label == '企业图片'" :label="item.label + ' : '" style="z-index:99;">
@@ -101,7 +101,6 @@
 		},
 		mounted() {
 			if( this.id ){ // 修改
-			debugger
 				getFactory(this.id).then( data => {
 					this.moduleDataAddDto = data.data;
 				})

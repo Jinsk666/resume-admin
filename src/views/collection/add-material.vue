@@ -42,7 +42,7 @@
 						</el-form-item>
 						<!-- textarea -->
 						<el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
-							<el-input type="textarea" :rows="5" v-model="item.value" placeholder="最多输入1000字"></el-input>
+							<el-input type="textarea" :rows="5" v-model="item.value" placeholder="请输入文本"></el-input>
 						</el-form-item>
 						<!-- 上传图片 -->
 						<el-form-item v-else-if="item.dataType == 9" :label="item.label + ' : '" style="z-index:99;">

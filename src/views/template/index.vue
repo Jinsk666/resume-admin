@@ -47,8 +47,10 @@
                     <div class="overlay">
                         <ul>
                             <li>
-                                <p class="circle"><img src="~@/assets/images/resume/icon1.png" alt=""></p>
-                                <p>赋码</p>
+                                <router-link :to="{name: 'templateAdd', query: {code: item.uniqueCode}}">
+                                    <p class="circle"><img src="~@/assets/images/resume/icon1.png" alt=""></p>
+                                    <p>赋码</p>
+                                </router-link>
                             </li>
                             <li>
                                 <router-link :to="{name: 'templateAdd', query: {code: item.uniqueCode,view: 1}}">

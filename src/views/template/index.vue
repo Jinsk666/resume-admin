@@ -47,7 +47,7 @@
                     <div class="overlay">
                         <ul>
                             <li>
-                                <router-link :to="{name: 'templateAdd', query: {code: item.uniqueCode}}">
+                                <router-link :to="{name: 'assignmentAdd', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon1.png" alt=""></p>
                                     <p>赋码</p>
                                 </router-link>

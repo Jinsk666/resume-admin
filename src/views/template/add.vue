@@ -277,6 +277,7 @@
                 this.stepData.resumeTemplateName = this.stepData.generalInfoList[0].value || '';
                 let clone = deepClone(this.stepData);
                 this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
+                this.stroeData = clone;
             },
             // 添加原料
             addMaterial() {
@@ -326,6 +327,7 @@
             },
             // 保存数据
             saveData() {
+                debugger
                 if( this.resumeTemplateTwoOne.resumeTemplateName == ''){
                     this.$message.error('请输入产品名称');
                     return;

@@ -57,8 +57,8 @@
                     </div>
                     <div
                         class="table-container"
-                        v-show="item.moduleName == accordionName"
                         v-for="(item, index) in toData.moduleInfos"
+                        v-show="item.moduleName == accordionName && index == accordionIndex"
                         :key="index">
                         <el-table
                             :data="list[item.moduleName].data"

@@ -62,8 +62,8 @@
                                 </span>
                                 <el-dropdown-menu slot="dropdown">
                                         <el-dropdown-item command="view">查看</el-dropdown-item>
-                                        <el-dropdown-item command="edit">修改</el-dropdown-item>
-                                        <el-dropdown-item command="publish">发布</el-dropdown-item>
+                                        <el-dropdown-item command="edit" v-if="rows.row && rows.row.state == 0">修改</el-dropdown-item>
+                                        <el-dropdown-item command="publish" v-if="rows.row && rows.row.state == 0">发布</el-dropdown-item>
                                         <el-dropdown-item command="delete">删除</el-dropdown-item>
                                 </el-dropdown-menu>
                             </el-dropdown>
@@ -131,7 +131,11 @@
                     this.$router.push({name: 'collectionAddMaterial', query: { id: this.rows.row.ylUniqueCode  }})
                 } else if( val == 'publish' ) {
                     let col = this.rows.row;
-                    publishModuleData( col.ylUniqueCode, 1, col.selectEnterpriseName, col.selectEnterpriseCode  ).then( data => {
+                    if( !col.selectEnterpriseCode || !col.selectEnterpriseName ) {
+                        this.$message.error('该条数据没有企业信息，请填写企业信息');
+                        return;
+                    }
+                    publishModuleData( col.ylUniqueCode, 1, col.selectEnterpriseCode, col.selectEnterpriseName  ).then( data => {
                         this.$message.success('发布成功');
                     })
                 } else {

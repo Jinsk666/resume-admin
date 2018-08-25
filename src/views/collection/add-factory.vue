@@ -46,7 +46,10 @@
                 <el-row>
                     <el-col :span="10">
                         <el-form-item label="本地文档上传 :" prop="enterpriseName">
-                            <el-button type="primary" size="small" icon="el-icon-upload2">选择本地文档</el-button>
+                            <el-button type="primary" size="small">
+								<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+								选择本地文档
+							</el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -56,7 +59,6 @@
 			<el-button type="primary" size="small" @click="submitForm" style="margin:20px;">保存</el-button>
             <el-button size="small" @click="handleCancel">取消</el-button>
 		</div>
-        <data-upload :isDataUpload="isDataUpload"></data-upload>
     </div>
 </template>
 
@@ -65,9 +67,7 @@
 	import { isImg } from '@/utils'
 	import { deleteUrl } from '@/utils/v2'
 	import { uploadImg } from '@/utils/upload'
-    import DataUpload from '@/components/v2/collection/DataUpload'
     export default {
-        components: { DataUpload },
         data() {
             return {
 				isDataUpload: false, // 数据接入弹出框
@@ -101,6 +101,7 @@
 		},
 		mounted() {
 			if( this.id ){ // 修改
+			debugger
 				getFactory(this.id).then( data => {
 					this.moduleDataAddDto = data.data;
 				})
@@ -153,6 +154,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.outer-link-icon {
+		width: 14px;
+	}
 	.title {
 		height: 50px;
 		line-height: 50px;

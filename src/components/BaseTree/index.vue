@@ -8,7 +8,7 @@
               <div class="tree-line-right treeLineRight"></div>
               <div class="farm-img" @click="viewMore(0)">
                 <img v-if="toData.data[0].imgUrlList"
-                    :src="toData.data[0].imgUrlList[0]"/>
+                    :src="toData.data[0].imgUrlList[0].url"/>
                 <img v-else
                     src="~@/assets/images/no-img.png"/>
               </div>
@@ -28,7 +28,7 @@
               <div class="tree-line-right treeLineRight"></div>
               <div class="farm-img" @click="viewMore(0)">
                 <img v-if="toData.data[0].imgUrlList"
-                    :src="toData.data[0].imgUrlList[0]"/>
+                    :src="toData.data[0].imgUrlList[0].url"/>
                 <img v-else
                     src="~@/assets/images/no-img.png"/>
               </div>
@@ -47,7 +47,7 @@
                 <div class="tree-line-left treeLineleft"></div>
                 <div class="farm-img" @click="viewMore(index + 1)">
                   <img v-if="item.imgUrlList"
-                      :src="item.imgUrlList[0]"/>
+                      :src="item.imgUrlList[0].url"/>
                   <img v-else
                       src="~@/assets/images/no-img.png"/>
                 </div>
@@ -64,7 +64,7 @@
                 <div class="tree-line-right treeLineRight"></div>
                 <div class="farm-img" @click="viewMore(index + 1)">
                   <img v-if="item.imgUrlList"
-                      :src="item.imgUrlList[0]"/>
+                      :src="item.imgUrlList[0].url"/>
                   <img v-else
                       src="~@/assets/images/no-img.png"/>
                 </div>

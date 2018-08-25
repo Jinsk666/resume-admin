@@ -79,4 +79,14 @@ export const setModule = data => {
     }
  }
 
+ export const materialData = code => {
+    return new Promise( (resolve, reject) => {
+        getModuleData(code, 1).then( data => {
+            resolve(data.data);
+        }).catch( err => {
+            reject(err);
+        })
+    })
+ }
+
 

@@ -57,7 +57,7 @@
                                 </router-link>
                             </li>
                             <li>
-                                <router-link :to="{name: 'templateAdd', query: {code: item.uniqueCode}}">
+                                <router-link :to="{name: 'templateAdd', query: {code: item.uniqueCode, edit: 1}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon2.png" alt=""></p>
                                     <p>编辑</p>
                                 </router-link>

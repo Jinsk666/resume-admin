@@ -171,6 +171,7 @@
         mounted() {
             // let rootDom = document.querySelectorAll('.menu-wrapper')[0];
             // rootDom.querySelector('.el-menu-item').classList.add('is-active');
+            this.$store.commit('IS_MATERIAL', false);
         },
         created: function() {
             this.loading = this.$loading({text:'拼命加载中...'});

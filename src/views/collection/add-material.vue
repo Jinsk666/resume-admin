@@ -51,8 +51,6 @@
 								:before-upload="beforeUpload"
 								:http-request="uploadFile"
 								:on-remove="removeUpload"
-								:on-success="successUpload"
-								@on-change="changeUpload"
 								list-type="picture-card"
 								:file-list="moduleDataAddDto.imgUrlList"
 								>
@@ -68,7 +66,16 @@
 				<el-row>
                     <el-col :span="10">
                         <el-form-item label="本地文档上传 :">
-                            <el-button type="primary" size="small" icon="el-icon-upload2">选择本地文档</el-button>
+							<el-upload
+								class="upload-demo"
+								action=""
+								:http-request="uploadBaseFile"
+								>
+								<el-button type="primary" size="small">
+									<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+									选择本地文档
+								</el-button>
+							</el-upload>
                         </el-form-item>
                     </el-col>
 				</el-row>
@@ -76,7 +83,10 @@
 				<el-row>
                     <el-col :span="10">
                         <el-form-item label="数据接入 :">
-                            <el-button type="primary" size="small" icon="el-icon-upload2" @click="isDataUpload = true">数据接入</el-button>
+                            <el-button type="primary" size="small" @click="isDataUpload = true">
+								<img class="outer-link-icon" src="@/assets/images/v2/get-icon.png" alt="">
+								选择数据接入
+							</el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -93,7 +103,8 @@
 			@dataUploadSure="dataUploadSure"
 			@dataUploadCancel="dataUploadCancel"
 			@handleClose="handleClose"
-			:isDataUpload="isDataUpload">
+			:isDataUpload="isDataUpload"
+			:type="1">
 		</data-upload>
     </div>
 </template>
@@ -102,7 +113,7 @@
 	import { getModelList, addModuleData, editModuleData, getModuleData, getFactoryList } from '@/api/v2'
 	import { isImg, scrollMore } from '@/utils'
 	import { setModule } from '@/utils/v2'
-	import { uploadImg } from '@/utils/upload'
+	import { uploadImg, uploadFileDemo } from '@/utils/upload'
     import DataUpload from '@/components/v2/collection/DataUpload'
     export default {
         components: { DataUpload },
@@ -176,12 +187,6 @@
 					})
 				}
 			},
-			changeUpload(response,file,fileList){
-				debugger
-			},
-			successUpload(response,file,fileList) {
-				debugger
-			},
 			// 上传图片相关
 			removeUpload(file, fileList) {
 				this.moduleDataAddDto.imgUrlList = deleteUrl(file.url, this.moduleDataAddDto.imgUrlList)
@@ -199,6 +204,9 @@
 				let data = await uploadImg(params.file);
 				if( !data ) return;
 				this.moduleDataAddDto.imgUrlList.push( {'name': data.data.fileUrl, 'url': data.data.fileUrl} )
+			},
+			async uploadBaseFile(params) {
+				let data = await uploadFileDemo(params.file)
 			},
 			// 下拉框处理
 			handleShow(val) {
@@ -245,8 +253,14 @@
                 })
 			},
 			// 数据接入
-			dataUploadSure() {
+			dataUploadSure(code) {
 				this.isDataUpload = false;
+				this.mainLoading = this.$loading({text:'拼命加载中...'});
+				getModuleData( code, 1 ).then( data => {
+					this.mainLoading.close();
+					this.moduleDataAddDto = data.data;
+					this.moduleDataAddDto.moduleUniqueCode = code;
+				})
 			},
 			dataUploadCancel() {
 				this.isDataUpload = false;
@@ -259,6 +273,9 @@
 </script>
 
 <style lang="scss" scoped>
+	.outer-link-icon {
+		width: 14px;
+	}
 	.title {
 		height: 50px;
 		line-height: 50px;

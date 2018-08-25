@@ -130,18 +130,6 @@ export const getModuleData = ( uniqueCode, type ) => {
 
 
 // 企业相关
-  //发布数据的企业
-  export const getStaticFactoryList = (likeParams, page, type) => {
-    return request({
-      url: '/resume/V2.1/releaseEnterpriseTwoOne/getList',
-      method: 'post',
-      data: {
-        likeParams,
-        page,
-        type
-      }
-    })
-  }
 
   // 获取企业列表
   export const getFactoryList = (likeParams, page, type) => {
@@ -185,6 +173,31 @@ export const getModuleData = ( uniqueCode, type ) => {
       url: '/resume/V2.1/enterpriseInfoTwoOne/getDetail/' + code,
       method: 'get',
       data: {}
+    })
+  }
+  //发布数据的企业
+  export const getStaticFactoryList = (likeParams, page, type) => {
+    return request({
+      url: '/resume/V2.1/releaseEnterpriseTwoOne/getList',
+      method: 'post',
+      data: {
+        likeParams,
+        page,
+        type
+      }
+    })
+  }
+  // 数据接入列表
+  export const getStaticModuleList = (enterpriseInfoSelectCode, likeParams, page, type) => {
+    return request({
+      url: '/resume/V2.1/moduleData/getAccessList',
+      method: 'post',
+      data: {
+        enterpriseInfoSelectCode,
+        likeParams,
+        page,
+        type
+      }
     })
   }
 

@@ -107,7 +107,7 @@
 		border-bottom: 1px solid #ddd;
 	}
 	.el-dialog__body .el-form-item__content .el-input {
-		width: 159px;
+		//width: 159px;
 	}
 	.el-menu {
 		border-right: 1px solid #e6e6e6;
@@ -207,6 +207,9 @@
 
 .tabs-container {
 	.el-form-item__content {
-		line-height: 41px;
+		line-height: 39px;
 	}
+}
+.el-tabs__item.is-active {
+	color: $color;
 }

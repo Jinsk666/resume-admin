@@ -53,7 +53,7 @@
                         </el-input>
                         <el-button type="primary" size="small" @click="handleSearch(1)">搜索</el-button>
 
-                        当前选中数据 编号为 {{toData.moduleInfos[accordionIndex].moduleDataCode}}
+                        当前选中数据 编号为 {{toDataClone.moduleInfos[accordionIndex].moduleDataCode}}
                     </div>
                     <div
                         class="table-container"
@@ -189,18 +189,18 @@
                 return this.$store.state.app.accordionName || 0
             }
         },
-        watch: {
-            accordionName(newValue, oldValue) {
-                if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
-                    this.handleSearch(1);
-                }
-            }
-        },
+        // watch: {
+        //     accordionName(newValue, oldValue) {
+        //         if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
+        //             this.handleSearch(1);
+        //         }
+        //     }
+        // },
         mounted() {
-            // debugger   为了缓存 高亮 用 watch  代替;
-            // if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
-            //     this.handleSearch(1);
-            // }
+            debugger   //为了缓存 高亮 用 watch  代替;
+            if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
+                this.handleSearch(1);
+            }
         },
         methods: {
             //弹出框步骤按钮点击

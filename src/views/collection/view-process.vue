@@ -83,11 +83,8 @@
                                     <el-col :span="( item.dataType == 10 || item.dataType == 9 ) ? 20 : 10 "
                                         v-for="(item, index) in item0.generalInfoList"
                                         :key="index">
-                                        <el-form-item v-if="item.dataType != 9 || (item.dataType == 7 && item.label.indexOf('来源') != -1)" :label="item.label + ' : '">
-                                            {{item.value}}
-                                        </el-form-item>
                                         <!-- 下拉框处理 -->
-                                        <el-form-item v-else-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '">
+                                        <el-form-item v-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '">
                                             {{item0.enterpriseSelectName}}
                                         </el-form-item>
                                         <!-- 上传图片 -->
@@ -97,6 +94,15 @@
                                                 v-for="(item, index) in item0.imgUrlList"
                                                 :key="index"
                                                 :src="item.url" alt="">
+                                        </el-form-item>
+                                        <el-form-item v-else-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '" style="z-index:99;">
+                                            {{item.value | formatTime('Y-m-d')}}
+                                        </el-form-item>
+                                        <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '" style="z-index:99;">
+                                            {{item.value && item.value.split('-_-')[0] | formatTime('Y-m-d')}} {{item.value ? '~' : ''}} {{item.value && item.value.split('-_-')[1] | formatTime('Y-m-d')}}
+                                        </el-form-item>
+                                        <el-form-item v-else :label="item.label + ' : '">
+                                            {{item.value}}
                                         </el-form-item>
                                     </el-col>
                                 </el-row>
@@ -135,16 +141,22 @@
                                         <el-col :span="( item.dataType == 10 || item.dataType == 9 ) ? 20 : 10 "
                                             v-for="(item, index) in item1.generalInfoList"
                                             :key="index">
-                                            <el-form-item v-if="item.dataType != 9 || (item.dataType == 7 && item.label.indexOf('来源') != -1)" :label="item.label + ' : '">
-                                                {{item.value}}
-                                            </el-form-item>
                                             <!-- 上传图片 -->
-                                            <el-form-item v-else-if="item.dataType == 9 && item1.imgUrlList" :label="item.label + ' : '" style="z-index:99;">
+                                            <el-form-item v-if="item.dataType == 9 && item1.imgUrlList" :label="item.label + ' : '" style="z-index:99;">
                                                 <img
                                                     class="show-img"
                                                     v-for="(item, index) in item1.imgUrlList"
                                                     :key="index"
                                                     :src="item.url" alt="">
+                                            </el-form-item>
+                                            <el-form-item v-else-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '" style="z-index:99;">
+                                                {{item.value | formatTime('Y-m-d')}}
+                                            </el-form-item>
+                                            <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '" style="z-index:99;">
+                                                {{item.value && item.value.split('-_-')[0] | formatTime('Y-m-d')}} {{item.value ? '~' : ''}} {{item.value && item.value.split('-_-')[1] | formatTime('Y-m-d')}}
+                                            </el-form-item>
+                                            <el-form-item v-else :label="item.label + ' : '">
+                                                {{item.value}}
                                             </el-form-item>
                                         </el-col>
                                     </el-row>
@@ -196,6 +208,9 @@
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
+    .outer-link-icon {
+        width: 14px;
+    }
     .outer-link {
         display: inline-block;
         margin: 0 10px;
@@ -203,12 +218,13 @@
             display: inline-block;
             padding: 0 40px;
             height: 32px;
-            line-height: 32px;
+            line-height: 30px;
             text-align: center;
             border: 1px solid #ddd;
+            border-radius: 4px;
             margin: 0 5px;
-            background-size: 20px 20px;
-            //background: url() no-repeat left left;
+            background: #fff url('~@/assets/images/v2/outer-link.png') no-repeat 5% center;
+            background-size: 20px 18px;
         }
     }
     .show-img {

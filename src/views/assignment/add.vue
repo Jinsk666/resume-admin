@@ -47,6 +47,7 @@
         </base-dialog>
         <!-- 步骤弹出框 -->
         <step-dialog
+            v-if="stepDialog"
             :stepDialog="stepDialog"
             @handleClose="handleClose"
             @stepDialogSure="stepDialogSure"
@@ -63,6 +64,14 @@
             >
 
         </module-dialog>
+        <materials-dialog
+            v-if="materialMapDialog"
+            :materialMapDialog="materialMapDialog"
+            @MaterialMapDialogSure="MaterialMapDialogSure"
+            @MaterialMapDialogCancel="MaterialMapDialogCancel"
+            @handleClose="handleClose"
+            >
+        </materials-dialog>
     </div>
 </template>
 
@@ -71,12 +80,13 @@
     import StepDialog from '@/components/v2/assignment/StepDialog'
     import BaseDialog from '@/components/v2/template/BaseDialog'
     import ModuleDialog from '@/components/v2/assignment/ModuleDialog'
+    import MaterialsDialog from '@/components/v2/assignment/MaterialDialog' // 原料对应数据弹出框
     import { deepClone, Step2Class } from '@/utils'
-    import { dataPool } from '@/utils/v2'
+    import { dataPool, materialData } from '@/utils/v2'
     import { getModuleList, getModuleDetails } from '@/api/v2'
     import { addResume, editResume, getResumeDetails } from '@/api'
     export default {
-        components: {/* ThemePicker, */  MainPhone, StepDialog, BaseDialog, ModuleDialog },
+        components: {/* ThemePicker, */  MainPhone, StepDialog, BaseDialog, ModuleDialog, MaterialsDialog },
         data() {
             return {
                 globalPool: {}, //承载数据的数据池  可能很大 不放入 store
@@ -114,6 +124,7 @@
                 baseDialog: false, // 基本信息弹出框
                 stepDialog: false, // 添加步骤弹出框
                 materialDialog: false, // 原料名称弹出框
+                materialMapDialog: false, // 原料对应数据弹出框
                 outerMaterialDialog: false, //
                 materialName: '', // 新添加的原料名称
                 outerMaterialName: '',// 原料 名称
@@ -213,6 +224,7 @@
                 this.baseDialog = false;
                 this.stepDialog = false;
                 this.materialDialog = false;
+                this.materialMapDialog = false;
             },
             //右侧列表点击  主要是改变 storeData 分辨是 产品流程 还是 原料流程
             handleProductModule() {
@@ -240,7 +252,11 @@
             // },
             // 基本信息弹出
             clickBase() {
-                this.baseDialog = true;
+                if( this.isMaterial !== false ) {
+                    this.materialMapDialog = true;
+                }else {
+                    this.baseDialog = true;
+                }
             },
             baseDialogCancel() {
                 // 取消 需要拿到副本 重新设置 storeData
@@ -290,6 +306,8 @@
                     this.$message.error('请输入产品名称');
                     return;
                 }
+                debugger
+                this.resumeTemplateTwoOne.resumeDataTwoOnes = this.resumeTemplateTwoOne.resumeTemplateTwoOnes;
                 if( !this.isEdit || this.$route.query.add) {
                     addResume(this.resumeTemplateTwoOne).then( data => {
                         this.$message.success('保存成功.')
@@ -328,6 +346,25 @@
                     });
                 });
             },
+            // 原料
+            MaterialMapDialogSure(code) {
+                this.materialMapDialog = false;
+                //  请求原料数据 扔进数据池
+                materialData(this.stepData.uniqueCode).then( data => {
+                    debugger
+                    this.stepData.generalInfoList = data.generalInfoList;
+                    this.stepData.imgUrlList = data.imgUrlList;
+                    this.stepData.logoUrl = data.logoUrl;
+                    this.stepData.enterpriseName = data.enterpriseSelectName;
+                    this.stepData.resumeTemplateName = data.moduleName;
+                    let clone = deepClone(this.stepData);
+                    this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
+                    this.stroeData = clone;
+                })
+            },
+            MaterialMapDialogCancel() {
+                this.materialMapDialog = false;
+            }
         },
     }
 </script>

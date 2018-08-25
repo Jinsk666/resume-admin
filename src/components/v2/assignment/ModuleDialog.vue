@@ -24,6 +24,9 @@
                             label="图片"
                             align="center"
                             width="180">
+                            <template slot-scope="scope">
+                                    <img v-if="scope.row.imgUrl" :src="scope.row.imgUrl" alt="" style="width:50px;">
+                            </template>
                         </el-table-column>
                         <el-table-column
                             prop="uniqueCode"
@@ -105,7 +108,7 @@
         margin-bottom: 20px;
     }
     .content{
-        max-height:200px;
+        max-height:400px;
         overflow-y: auto;
     }
 </style>

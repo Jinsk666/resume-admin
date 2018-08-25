@@ -25,15 +25,17 @@
 					v-if="stepData.globalPool[stepData.data.moduleDataCode].imgUrlList"
 					v-for="(item, index) in stepData.globalPool[stepData.data.moduleDataCode].imgUrlList"
 					:key="(index + 100)">
-					<el-col :span="24"><img :src="item" class="acc-img"></el-col>
+					<el-col :span="24"><img :src="item.url" class="acc-img"></el-col>
 				</el-row>
 				<el-row
 					class="acc-row factory-info"
-					v-if="stepData.globalPool[stepData.data.moduleDataCode].generalInfoList && item.label.indexOf('图片') == -1 && item.label.indexOf('上传检测报告') == -1"
+					v-if="stepData.globalPool[stepData.data.moduleDataCode].generalInfoList && item.dataType != 9"
 					v-for="(item, index) in stepData.globalPool[stepData.data.moduleDataCode].generalInfoList"
 					:key="(index + 200)">
 					<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
 					<el-col v-if="dateList.includes(item.dataType)" :span="16"><div class="right t">{{item.value | formatTime('Y-m-d')}}</div></el-col>
+					<el-col v-else-if="dateRangeList.includes(item.dataType)" :span="16"><div class="right t">{{item.value && item.value.split('-_-')[0] | formatTime('Y-m-d')}} ~ {{item.value && item.value.split('-_-')[1] | formatTime('Y-m-d')}} </div></el-col>
+					<el-col v-else-if="item.label.indexOf('企业') != -1" :span="16"><div class="right t">{{stepData.globalPool[stepData.data.moduleDataCode].enterpriseSelectName}}</div></el-col>
 					<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 				</el-row>
 			</div>
@@ -64,15 +66,17 @@
 							class="acc-row"
 							v-for="(item, index1) in item.imgUrlList"
 							:key="(index1 + 400)">
-							<el-col :span="24"><img :src="item" class="acc-img"></el-col>
+							<el-col :span="24"><img :src="item.url" class="acc-img"></el-col>
 						</el-row>
 						<el-row
 							class="acc-row factory-info"
 							v-for="(item, index) in item.generalInfoList"
-							v-if="item.label.indexOf('图片') == -1"
+							v-if="item.dataType != 9"
 							:key="(index + 500)">
 							<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
 							<el-col v-if="dateList.includes(item.dataType)" :span="16"><div class="right t">{{item.value | formatTime('Y-m-d')}}</div></el-col>
+							<el-col v-else-if="dateRangeList.includes(item.dataType)" :span="16"><div class="right t">{{item.value && item.value.split('-_-')[0] | formatTime('Y-m-d')}} ~ {{item.value && item.value.split('-_-')[1] | formatTime('Y-m-d')}} </div></el-col>
+							<el-col v-else-if="item.label.indexOf('企业') != -1" :span="16"><div class="right t">{{item.enterpriseSelectName}}</div></el-col>
 							<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 						</el-row>
 					</div>
@@ -90,9 +94,9 @@
 								<img src="@/assets/images/jg-point.png" alt="">
 							</span>
 							<span class="circle" v-else></span>
-							<div v-if="item2.imgUrlList"><img :src="item2.imgUrlList[0]" alt="图片"></div>
+							<div v-if="item2.imgUrlList"><img :src="item2.imgUrlList[0].url" alt="图片"></div>
 							<div>工序名称: {{item2.generalInfoList[0].value}}</div>
-							<div>生产时间段: {{item2.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
+							<div>生产时间段: {{item2.generalInfoList[1].value && item2.generalInfoList[1].value.split('-_-')[0] | formatTime('Y-m-d')}} ~ {{item2.generalInfoList[1].value && item2.generalInfoList[1].value.split('-_-')[1] | formatTime('Y-m-d')}}</div>
 						</div>
 					</div>
 				</el-tab-pane>
@@ -111,7 +115,8 @@
         data() {
             return {
 				activeName2: '0h',
-				dateList: [3, 4, 5, 6],
+				dateList: [3, 4],
+				dateRangeList: [5, 6],
             }
 		},
 		filters: {

@@ -17,7 +17,7 @@ export const uploadImg = file => {
     formData.append('userId', '0');
     formData.append('flag', '');
     formData.append('fileType', '0');
-    return new Promise((resolve, reject)=> {
+    return new Promise((resolve, reject) => {
         axios.post("http://admin.ytbuyer.com/ytfarmapi/file/uploadImage", formData).then( res => {
             if(res.data.code == 0 && res.data.data.fileUrl){
                 Message({
@@ -37,22 +37,35 @@ export const uploadImg = file => {
                 message: err,
                 type:'error'
             })
-            reject('')
+            reject(err)
         })
     })
 }
 
 // oss 直传
-export const uploadFile = file => {
-    let client = new OSS({
-        region: '',
-        accessKeyId: '',
-        accessKeySecret: '',
-        bucket: '',
+export const uploadFileDemo = file => {
+    var client = new OSS({
+        region: 'oss-cn-beijing',
+        accessKeyId: 'LTAIChOnMI18Wf3p',
+        accessKeySecret: 'wXXbrIkoXHmKh1WN2Ixp60HGl3wVay',
+        bucket: 'acsm-erp',
     })
-    client.multipartUpload(file.name, file).then( res => {
-        console.log(res)
-    }).catch( err => {
-        console.log(err)
+    return new Promise( (resolve, reject) => {
+        client.multipartUpload(file.name, file).then( res => {
+            Message({
+                message:"上传成功",
+                type:'success'
+            })
+            resolve(res)
+            console.log(res)
+        }).catch( err => {
+            Message({
+                message: err,
+                type:'error'
+            })
+            reject(err)
+            console.log(err)
+        })
     })
+    
 }

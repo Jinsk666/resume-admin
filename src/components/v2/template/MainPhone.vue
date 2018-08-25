@@ -3,7 +3,7 @@
         <div class="phone-top">
             <img src="~@/assets/images/phone-top.png" alt="">
         </div>
-        <div class="logo-img">
+        <div class="logo-img" v-if="isMaterial === false">
             <el-upload
                 class="logo-uploader"
                 action=""
@@ -145,6 +145,9 @@
             },
             isView() {
                 return this.$route.query.view
+            },
+            isEdit() {
+                return this.$route.query.edit
             }
         },
         methods: {

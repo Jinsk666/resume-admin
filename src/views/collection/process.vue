@@ -39,6 +39,7 @@
                                     align="center"
                                     :prop="item.prop"
                                     :label="item.label"
+                                    :formatter="formatter"
                                     :min-width="item.width">
                                 </el-table-column>
                                 <el-table-column
@@ -52,8 +53,8 @@
                                             </span>
                                             <el-dropdown-menu slot="dropdown">
                                                     <el-dropdown-item command="view">查看</el-dropdown-item>
-                                                    <el-dropdown-item command="edit">修改</el-dropdown-item>
-                                                    <el-dropdown-item command="publish">发布</el-dropdown-item>
+                                                    <el-dropdown-item command="edit" v-if="rows.row && rows.row.state == 0">修改</el-dropdown-item>
+                                                    <el-dropdown-item command="publish" v-if="rows.row && rows.row.state == 0">发布</el-dropdown-item>
                                                     <el-dropdown-item command="delete">删除</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
@@ -168,6 +169,12 @@
             this.handleSearch(1);
         },
         methods: {
+            formatter(row, column, cellValue, index) {
+                if( column.label == '采收日期' && row.csDate ) {
+                    return formatTime(cellValue, 'Y-m-d')
+                }
+                return cellValue;
+            },
             inputFocus(e){
                 console.log(e)
                 e.path[0].style.width = '400px';
@@ -198,15 +205,18 @@
             },
             // 下拉框点击
             handleCommand(val) {
-                console.log(val)
                 if( val == 'view' ) {
                     this.$router.push({name: 'collectionViewProcess', query: {id: this.rows.row[this.tab + 'UniqueCode'], tab: this.tab, tabId: this.tabId, tabName: this.tabName}})
                 } else if( val == 'edit' ) {
                     this.$router.push({name: 'collectionAddProcess', query: {id: this.rows.row[this.tab + 'UniqueCode'], tab: this.tab, tabId: this.tabId, tabName: this.tabName}})
                 } else if( val == 'publish' ) {
                     let col = this.rows.row;
-                        publishModuleData( col[[this.tab + 'UniqueCode']], Number(this.tabId), col.selectEnterpriseName, col.selectEnterpriseCode  ).then( data => {
-                            this.$message.success('发布成功');
+                    if( !col.selectEnterpriseCode || !col.selectEnterpriseName ) {
+                        this.$message.error('该条数据没有企业信息，请填写企业信息');
+                        return;
+                    }
+                    publishModuleData( col[[this.tab + 'UniqueCode']], Number(this.tabId), col.selectEnterpriseCode, col.selectEnterpriseName  ).then( data => {
+                        this.$message.success('发布成功');
                     })
                 }else if ( val == 'delete' ){
                     this.$confirm('确定要删除吗', '提示', {

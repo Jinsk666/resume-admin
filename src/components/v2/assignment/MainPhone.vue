@@ -67,9 +67,11 @@
 					v-show="stepData.generalInfoList.length > 0 "
 					:span="24"
 					v-for="(item, index) in stepData.generalInfoList"
+                    v-if="item.dataType != 9"
 					:key="index">
-                    <el-col v-if="item.label != 'IMG'" :span="8"><div class="left">{{item.label}}</div></el-col>
-                    <el-col v-if="item.label != 'IMG'" :span="16"><div class="right t">{{item.value}}</div></el-col>
+                    <el-col  :span="8"><div class="left">{{item.label}}</div></el-col>
+                    <el-col v-if="item.label.indexOf('企业') == -1"  :span="16"><div class="right t">{{item.value}}</div></el-col>
+                    <el-col v-else  :span="16"><div class="right t">{{stepData.enterpriseName}}</div></el-col>
                 </el-row>
             </div>
             <!-- 折叠开始 -->
@@ -88,10 +90,10 @@
                         <div
                             class="acc-row acc-phone-material">
                             <span
-                                v-for="(item, index) in stepData.productInfos"
+                                v-for="(item, index) in stepData.resumeTemplateTwoOnes"
                                 :key="index"
                                 class="ellipsis phone-material">
-                                {{item.productName}}
+                                {{item.resumeTemplateName}}
                             </span>
                         </div>
                         <!-- 原料外链 -->
@@ -247,7 +249,8 @@
         background: $color;
         border-radius: 4px;
         text-align: center;
-        position: relative;
+        position: absolute;
+        right: 20px;
         z-index: 9;
         cursor: pointer;
         i {

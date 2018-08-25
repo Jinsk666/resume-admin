@@ -77,7 +77,10 @@
                 <el-row>
                     <el-col :span="22">
                         <el-form-item label="引用外部链接 :">
-                            <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleOuterLink(moduleDataAddDto, '1')">引用外部链接</el-button>
+                            <el-button type="primary" size="small" @click="handleOuterLink(moduleDataAddDto, '1')">
+                                <img class="outer-link-icon" src="@/assets/images/v2/outer-link-icon.png" alt="">
+                                引用外部链接
+                            </el-button>
                             <div class="outer-link">
                                 <span class="one-outer-link"
                                     v-for="(item, index) in moduleDataAddDto.externalQuoteList"
@@ -93,7 +96,10 @@
 				<el-row>
                     <el-col :span="22">
                         <el-form-item label="本地文档上传 :">
-                            <el-button type="primary" size="small" icon="el-icon-upload2">选择本地文档</el-button>
+                            <el-button type="primary" size="small" @click="handleInnerDoc(moduleDataAddDto, '1')">
+                                <img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+                                选择本地文档
+                            </el-button>
                         </el-form-item>
                     </el-col>
 				</el-row>
@@ -101,7 +107,10 @@
 				<el-row>
                     <el-col :span="10">
                         <el-form-item label="数据接入 :">
-                            <el-button type="primary" size="small" icon="el-icon-upload2" @click="isDataUpload = true">数据接入</el-button>
+                            <el-button type="primary" size="small" @click="isDataUpload = true">
+                                <img class="outer-link-icon" src="@/assets/images/v2/get-icon.png" alt="">
+                                选择数据接入
+                            </el-button>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -112,9 +121,15 @@
             <div class="tabs-container">
                 <div class="right-data">
                     <!-- 文档上传 -->
-                    <el-button type="primary" size="small" icon="el-icon-upload2">选择本地文档</el-button>
+                    <el-button type="primary" size="small">
+                        <img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+                        选择本地文档
+                    </el-button>
                     <!-- 数据接入 -->
-                    <el-button type="primary" size="small" icon="el-icon-upload2" @click="isDataUpload = true">数据接入</el-button>
+                    <el-button type="primary" size="small" @click="isDataUpload = true">
+                        <img class="outer-link-icon" src="@/assets/images/v2/get-icon.png" alt="">
+                        选择数据接入
+                    </el-button>
                 </div>
                 <el-tabs style="margin-top: 10px;" v-model="activeIndex">
                     <el-tab-pane
@@ -164,6 +179,7 @@
                                             <el-select
                                                 :popper-append-to-body="false"
                                                 @visible-change="handleShow"
+                                                @change="handleChange2"
                                                 filterable
                                                 remote
                                                 :remote-method="remoteMethod"
@@ -221,7 +237,10 @@
                                 <el-row>
                                     <el-col :span="22">
                                         <el-form-item label="引用外部链接 :">
-                                            <el-button type="primary" size="small" icon="el-icon-upload2" @click="handleOuterLink(item0, '2')">引用外部链接</el-button>
+                                            <el-button type="primary" size="small" @click="handleOuterLink(item0, '2')">
+                                                <img class="outer-link-icon" src="@/assets/images/v2/outer-link-icon.png" alt="">
+                                                引用外部链接
+                                            </el-button>
                                             <div class="outer-link">
                                                 <span class="one-outer-link"
                                                     v-if="item.externalURL"
@@ -318,6 +337,7 @@
                 <el-button size="small">取消</el-button>
             </router-link>
 		</div>
+        <!-- 外部链接 -->
         <outer-link
             v-if="outerLinkDialog"
             :outerData="outerData"
@@ -327,24 +347,37 @@
             @handleClose="handleClose"
         >
         </outer-link>
+        <!-- 数据接入 -->
+        <data-upload
+			v-if="isDataUpload"
+			@dataUploadSure="dataUploadSure"
+			@dataUploadCancel="dataUploadCancel"
+			@handleClose="handleClose"
+			:isDataUpload="isDataUpload"
+			:type="tabId">
+		</data-upload>
     </div>
 </template>
 
 <script>
-    import  OuterLink from '@/components/v2/assignment/OuterLink'
+    import OuterLink from '@/components/v2/collection/OuterLink'
+    import DataUpload from '@/components/v2/collection/DataUpload'
+
     import { getModelList, getModuleData, getFactoryList, addModuleData, editModuleData } from '@/api/v2'
     import { isImg, scrollMore, deepClone } from '@/utils'
     import { uploadImg } from '@/utils/upload'
     import { deleteUrl } from '@/utils/v2'
     export default {
-        components: { OuterLink },
+        components: { OuterLink, DataUpload },
         data() {
             return {
                 activeIndex: '0',
+                isDataUpload: false, // 数据接入开关
                 outerLinkDialog: false, // 外部链接开关
                 outerData: [], //外部链接传值
-                outerLinkIndex: '', // 区分普通 1  特殊 2
+                outerLinkIndex: '', // 区分普通 1  特殊 2   数据接入不用这个 因为就在最外层
                 loading: false,
+                mainLoading: false,
                 moduleInfos: {},
                 // 最终上传的数据
                 moduleDataAddDto: {
@@ -385,6 +418,7 @@
             }
         },
         mounted() {
+            this.mainLoading = this.$loading({text:'拼命加载中...'});
             this.remoteMethod();// 获取企业列表
             getModelList().then( data => {
                 data.data.forEach( val => {
@@ -398,8 +432,10 @@
                 this.tjModule = tjModule;
                 let jgModule = deepClone(this.moduleInfos['加工'].subModelInfoList[1].subModelInfoInfoList[0]);
                 this.jgModule = jgModule;
+                this.mainLoading.close();
             })
             if( this.id ) {
+                // 下面还有一个 调用此方法
                 getModuleData( this.id, this.tabId ).then( data => {
                     this.moduleDataAddDto = data.data;
                     // string -> array
@@ -416,6 +452,7 @@
                             })
                         })
                     })
+                    this.mainLoading.close();
                 })
             }
         },
@@ -488,7 +525,14 @@
 						this.moduleDataAddDto.enterpriseSelectName = val.enterpriseName;
 					}
 				})
-			},
+            },
+            handleChange2(code) {
+				this.options.forEach( val => {
+					if( val.uniqueCode == code ) {
+						this.moduleDataAddDto.subModelInfoList[0].enterpriseSelectName = val.enterpriseName;
+					}
+				})
+            },
 			loadMore() {
                 scrollMore('.code-bottom .el-select-dropdown__wrap', () => {
                     if( !this.isRemote ) {
@@ -573,6 +617,7 @@
             },
             handleClose() {
                 this.outerLinkDialog = false;
+                this.isDataUpload = false;
             },
             handleOuterLink(data, index) {
                 this.outerLinkIndex = index;
@@ -581,14 +626,46 @@
                 if( !this.outerData || this.outerData.length == 0 ) {
                     this.outerData = [{'externalName': '', 'externalURL': ''}];
                 }
-            }
+            },
             // 数据接入
+            handleInnerDoc() {
+                this.isDataUpload = true;
+            },
+            dataUploadSure(code) {
+                this.isDataUpload = false;
+                this.mainLoading = this.$loading({text:'拼命加载中...'});
+                getModuleData( code, this.tabId ).then( data => {
+                    this.moduleDataAddDto = data.data;
+                    // string -> array
+                    this.moduleDataAddDto.generalInfoList && this.moduleDataAddDto.generalInfoList.forEach( val => {
+                        if( val.value && val.value.indexOf('-_-') != -1 ) val.value = val.value.split('-_-');
+                    })
+                    this.moduleDataAddDto.subModelInfoList && this.moduleDataAddDto.subModelInfoList.forEach( val1 => {
+                        val1.generalInfoList && val1.generalInfoList.forEach( val2 => {
+                            if( val2.value && val2.value.indexOf('-_-') != -1 ) val2.value = val2.value.split('-_-');
+                        })
+                        val1.subModelInfoInfoList && val1.subModelInfoInfoList.forEach( val4 => {
+                            val4.generalInfoList && val4.generalInfoList.forEach( val4 => {
+                                if( val4.value && val4.value.indexOf('-_-') != -1 ) val4.value = val4.value.split('-_-');
+                            })
+                        })
+                    })
+                    this.moduleDataAddDto.moduleUniqueCode = code;
+                    this.mainLoading.close();
+                })
+            },
+            dataUploadCancel() {
+                this.isDataUpload = false;
+            }
         },
     }
 </script>
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
+    .outer-link-icon {
+        width: 14px;
+    }
     .outer-link {
         display: inline-block;
         margin: 0 10px;
@@ -596,7 +673,7 @@
             display: inline-block;
             padding: 0 40px;
             height: 32px;
-            line-height: 32px;
+            line-height: 30px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 4px;
@@ -613,6 +690,7 @@
             position: absolute;
             top: 0px;
             right: 20px;
+            z-index: 999;
         }
     }
     .title {
@@ -689,9 +767,10 @@
         }
     }
     .farm-container {
-        overflow: hidden;
+        position: relative;
         margin: 10px 32px 10px 20px;
         color: #409EFF;
+        height: 36px;
         .line {
             height: 1px;
             min-width: 86%;
@@ -706,8 +785,8 @@
         }
         .delete {
             position: absolute;
-            top: 6px;
-            right: 32px;
+            top: -4px;
+            right: 18px;
             width: 28px;
             height: 28px;
             line-height: 28px;

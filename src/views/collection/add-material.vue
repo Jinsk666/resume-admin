@@ -57,7 +57,7 @@
 								<i class="el-icon-plus"></i>
 							</el-upload>
 						</el-form-item>
-						<el-form-item v-else :label="item.label + ' : '">
+						<el-form-item v-else :label="item.label + ' : '" :required="item.required ? true : false">
 							<el-input v-model="item.value" size="small"></el-input>
 						</el-form-item>
 					</el-col>
@@ -119,7 +119,7 @@
 <script>
 	import { getModelList, addModuleData, editModuleData, getModuleData, getFactoryList } from '@/api/v2'
 	import { isImg, scrollMore } from '@/utils'
-	import { setModule } from '@/utils/v2'
+	import { setModule, factoryId2FactoryName, generalValidate } from '@/utils/v2'
 	import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
     import DataUpload from '@/components/v2/collection/DataUpload'
     export default {
@@ -163,6 +163,9 @@
 				getModuleData( this.id, 1 ).then( data => {
 					this.mainLoading.close();
 					this.moduleDataAddDto = data.data;
+					// 外层企业重新赋值
+					let factoryId = factoryId2FactoryName(data.data);
+					factoryId && this.handleChange(factoryId)
 				})
 			}else {
 				getModelList().then( data => {
@@ -183,6 +186,14 @@
 				// 给 外部链接
 				let external = document.getElementById('link').value;
 				if( external ) this.moduleDataAddDto.externalQuoteList.push( {externalName: external, externalURL: external} );
+				else this.moduleDataAddDto.externalQuoteList = [];
+				// 验证必填
+				let validate = generalValidate( this.moduleDataAddDto );
+				if( validate ){
+					this.$message.error(validate + '是必填字段');
+					return;
+				}
+
 				if( this.id ) {
 					editModuleData(this.moduleDataAddDto).then( data => {
 						this.$message.success('修改成功');
@@ -257,7 +268,11 @@
                     this.optionsPageCount = data.data.pageCount;
                     this.options = this.options.concat(data.data.enterpriseInfoTwoOneResponseList);
                     this.loading = false;
-                    this.isRemote = false;
+					this.isRemote = false;
+					// 外层企业重新赋值
+					if( !this.id ) return;
+					let factoryId = factoryId2FactoryName(this.moduleDataAddDto);
+					factoryId && this.handleChange(factoryId)
                 })
 			},
 			// 数据接入

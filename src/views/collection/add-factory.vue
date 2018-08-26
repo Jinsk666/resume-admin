@@ -7,7 +7,7 @@
 					<el-col :span="( item.dataType == 10 ) ? 20 : 10 "
 						v-for="(item, index) in moduleDataAddDto.generalInfoList"
 						:key="index">
-						<el-form-item v-if="item.dataType == 1 || item.dataType == 2" :label="item.label + ' : '">
+						<el-form-item v-if="item.dataType == 1 || item.dataType == 2" :label="item.label + ' : '" :required="item.required ? true : false">
 							<el-input v-model="item.value" size="small"></el-input>
 						</el-form-item>
 						<!-- textarea -->
@@ -78,7 +78,7 @@
 <script>
 	import { addFactory, editFactory, getFactory } from '@/api/v2'
 	import { isImg } from '@/utils'
-	import { deleteUrl } from '@/utils/v2'
+	import { deleteUrl, generalValidate } from '@/utils/v2'
 	import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
 
     export default {
@@ -91,13 +91,13 @@
 					enterpriseSelectName: '', //下拉框企业名称
 					externalQuoteList: [], //外部引用
 					generalInfoList: [
-						{label: '企业名称', value: '', dataType:'1'},
-						{label: '企业地址', value: '', dataType:'1'},
-						{label: '统一社会信用代码', value: '', dataType:'1'},
-						{label: '企业负责人', value: '', dataType:'1'},
-						{label: '企业简介', value: '', dataType:'10'},
-						{label: '企业图片', value: '', dataType:'9'},
-						{label: '企业Logo', value: '', dataType:'9'},
+						{label: '企业名称', value: '', dataType:'1', required: 1},
+						{label: '企业地址', value: '', dataType:'1', required: 0},
+						{label: '统一社会信用代码', value: '', dataType:'1', required: 1},
+						{label: '企业负责人', value: '', dataType:'1', required: 0},
+						{label: '企业简介', value: '', dataType:'10', required: 0},
+						{label: '企业图片', value: '', dataType:'9', required: 0},
+						{label: '企业Logo', value: '', dataType:'9', required: 0}
 					], //基本信息
 					subModelInfoList: [], // 种植 加工用
 					moduleName: '',
@@ -124,6 +124,13 @@
 		methods: {
 			submitForm() {
 				this.moduleDataAddDto.moduleName = this.moduleDataAddDto.generalInfoList[0].value || '';
+				// 验证必填
+				let validate = generalValidate( this.moduleDataAddDto );
+				if( validate ){
+					this.$message.error(validate + '是必填字段');
+					return;
+				}
+
 				if( !this.id ) {
 					addFactory(this.moduleDataAddDto).then( data => {
 						this.$message.success('添加成功');

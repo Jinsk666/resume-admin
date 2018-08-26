@@ -7,7 +7,7 @@
 					<el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 22 : 11 "
 						v-for="(item, index) in moduleDataAddDto.generalInfoList"
 						:key="index">
-						<el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '">
+						<el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '" :required="item.required ? true : false">
 							<el-date-picker
                                 size="small"
                                 style="width:100%;"
@@ -17,7 +17,7 @@
                                 v-model="item.value">
                             </el-date-picker>
 						</el-form-item>
-						<el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '">
+						<el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '" :required="item.required ? true : false">
                             <el-date-picker
                                 size="small"
                                 v-model="item.value"
@@ -30,7 +30,7 @@
                             </el-date-picker>
 						</el-form-item>
 						<!-- 下拉框处理 -->
-						<el-form-item v-else-if="item.dataType == 7" :label="item.label + ' : '">
+						<el-form-item v-else-if="item.dataType == 7" :label="item.label + ' : '" :required="item.required ? true : false">
 							<el-select
 								:popper-append-to-body="false"
 								@visible-change="handleShow"
@@ -68,7 +68,7 @@
 								<i class="el-icon-plus"></i>
 							</el-upload>
 						</el-form-item>
-                        <el-form-item v-else :label="item.label + ' : '">
+                        <el-form-item v-else :label="item.label + ' : '" :required="item.required ? true : false">
 							<el-input v-model="item.value" size="small"></el-input>
 						</el-form-item>
 					</el-col>
@@ -130,7 +130,7 @@
 			</el-form>
         </div>
         <div class="container" v-else-if="tab == 'zz' || tab == 'jg'">
-            <div class="title2">添加{{tabName}}信息</div>
+            <div class="title2">{{tabName}}信息</div>
             <div class="tabs-container">
                 <div class="right-data">
                 </div>
@@ -154,7 +154,7 @@
                                     <el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 22 : 11 "
                                         v-for="(item, index) in item0.generalInfoList"
                                         :key="index">
-                                        <el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '">
+                                        <el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '" :required="item.required ? true : false">
                                             <el-date-picker
                                                 size="small"
                                                 style="width:100%;"
@@ -164,7 +164,7 @@
                                                 v-model="item.value">
                                             </el-date-picker>
                                         </el-form-item>
-                                        <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '">
+                                        <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '" :required="item.required ? true : false">
                                             <el-date-picker
                                                 size="small"
                                                 style="width:100%;"
@@ -178,7 +178,7 @@
                                             </el-date-picker>
                                         </el-form-item>
                                         <!-- 下拉框处理 -->
-                                        <el-form-item v-else-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '">
+                                        <el-form-item v-else-if="item.dataType == 7 && item.label.indexOf('企业') != -1" :label="item.label + ' : '" :required="item.required ? true : false">
                                             <el-select
                                                 :popper-append-to-body="false"
                                                 @visible-change="handleShow"
@@ -199,7 +199,7 @@
                                                 </el-option>
                                             </el-select>
                                         </el-form-item>
-                                        <el-form-item v-else-if="item.dataType == 7 && item.label.indexOf('来源') != -1" :label="item.label + ' : '">
+                                        <el-form-item v-else-if="item.dataType == 7 && item.label.indexOf('来源') != -1" :label="item.label + ' : '" :required="item.required ? true : false">
                                         <el-select
                                             style="width:100%"
                                             placeholder="请选择"
@@ -214,7 +214,7 @@
                                         </el-select>
                                         </el-form-item>
                                         <!-- textarea -->
-                                        <el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
+                                        <el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '" :required="item.required ? true : false">
                                             <el-input type="textarea" :rows="5" v-model="item.value" placeholder="请输入文本"></el-input>
                                         </el-form-item>
                                         <!-- 上传图片 -->
@@ -232,13 +232,14 @@
                                                 <i class="el-icon-plus"></i>
                                                 </el-upload>
                                         </el-form-item>
+                                        <!-- 判断 -->
                                         <el-form-item v-else-if="item.label == '种苗供应商'"  :label="item.label + ' : '">
                                             <el-input :disabled="!resourceFrom" v-model="item.value" size="small"></el-input>
                                         </el-form-item>
                                         <el-form-item v-else-if="item.label == '采购批次号'" :label="item.label + ' : '">
                                             <el-input :disabled="!resourceFrom" v-model="item.value" size="small"></el-input>
                                         </el-form-item>
-                                        <el-form-item v-else :label="item.label + ' : '">
+                                        <el-form-item v-else :label="item.label + ' : '" :required="item.required ? true : false">
                                             <el-input v-model="item.value" size="small"></el-input>
                                         </el-form-item>
                                     </el-col>
@@ -319,7 +320,7 @@
                                         <el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 22 : 11 "
                                             v-for="(item, index) in item1.generalInfoList"
                                             :key="index">
-                                            <el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '">
+                                            <el-form-item v-if="item.dataType == 3 || item.dataType == 4" :label="item.label + ' : '" :required="item.required ? true : false">
                                                 <el-date-picker
                                                     size="small"
                                                     style="width:100%;"
@@ -329,7 +330,7 @@
                                                     v-model="item.value">
                                                 </el-date-picker>
                                             </el-form-item>
-                                            <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '">
+                                            <el-form-item v-else-if="item.dataType == 5 || item.dataType == 6" :label="item.label + ' : '" :required="item.required ? true : false">
                                                 <el-date-picker
                                                     size="small"
                                                     style="width:100%;"
@@ -362,7 +363,7 @@
                                                     </el-upload>
                                                 </div>
                                             </el-form-item>
-                                            <el-form-item v-else :label="item.label + ' : '">
+                                            <el-form-item v-else :label="item.label + ' : '" :required="item.required ? true : false">
                                                 <el-input v-model="item.value" size="small"></el-input>
                                             </el-form-item>
                                         </el-col>
@@ -409,6 +410,7 @@
 
     import { getModelList, getModuleData, getFactoryList, addModuleData, editModuleData } from '@/api/v2'
     import { isImg, scrollMore, deepClone } from '@/utils'
+    import { factoryId2FactoryName, generalValidate, isInnerOrOuter } from '@/utils/v2'
     import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
 
     import { deleteUrl } from '@/utils/v2'
@@ -500,6 +502,19 @@
                         })
                     })
                     this.mainLoading.close();
+                    // 自繁 还是 外采
+                    if( this.tabName == '种植' ){
+                        this.resourceFrom = isInnerOrOuter(this.moduleDataAddDto.subModelInfoList[0]);
+                    }
+                    // 外层企业重新赋值
+                    let fac = null;
+                    if( this.tabName == '种植' || this.tabName == '加工' ) {
+                        fac = this.moduleDataAddDto.subModelInfoList[0];
+                    }else {
+                        fac = this.moduleDataAddDto;
+                    }
+					let factoryId = factoryId2FactoryName(fac);
+					factoryId && this.handleChange(factoryId)
                 })
             }
         },
@@ -537,6 +552,37 @@
                         })
                     })
                 })
+                // 必填项 处理
+                if( this.tabName == '种植' || this.tabName == '加工'){
+                    for( var i = 0; i < this.moduleDataAddDto.subModelInfoList.length; i++ ){
+                        var val = this.moduleDataAddDto.subModelInfoList[i];
+                        if( val.generalInfoList && val.generalInfoList.length > 0 ) {
+                            var validate = generalValidate( val );
+                            if( validate ){
+                                this.$message.error(validate + '是必填字段');
+                                return;
+                            }
+                        }else if( val.subModelInfoInfoList && val.subModelInfoInfoList.length > 0 ) {
+                            for( var j = 0; j < val.subModelInfoInfoList.length; j++){
+                                var b = val.subModelInfoInfoList[j];
+                                if( b.generalInfoList && b.generalInfoList.length > 0 ) {
+                                    var validate = generalValidate( b );
+                                    if( validate ){
+                                        this.$message.error(validate + '是必填字段');
+                                        return;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }else {
+                    let validate = generalValidate( this.moduleDataAddDto );
+                    if( validate ){
+                        this.$message.error(validate + '是必填字段');
+                        return;
+                    }
+                }
 				if( this.id ) {
 					editModuleData(this.moduleDataAddDto).then( data => {
 						this.$message.success('修改成功');
@@ -603,6 +649,17 @@
                     this.options = this.options.concat(data.data.enterpriseInfoTwoOneResponseList);
                     this.loading = false;
                     this.isRemote = false;
+
+                    // 外层企业重新赋值
+                    if( !this.id ) return;
+                    let fac = null;
+                    if( this.tabName == '种植' || this.tabName == '加工' ) {
+                        fac = this.moduleDataAddDto.subModelInfoList[0];
+                    }else {
+                        fac = this.moduleDataAddDto;
+                    }
+					let factoryId = factoryId2FactoryName(fac);
+					factoryId && this.handleChange(factoryId)
                 })
             },
             // 上传图片相关

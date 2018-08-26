@@ -66,10 +66,6 @@
         <div class="container" v-else-if="tab == 'zz' || tab == 'jg'">
             <div class="title2">{{tabName}}信息</div>
             <div class="tabs-container">
-                <div class="right-data">
-                    <!-- 文档上传 -->
-                    <el-button type="primary" size="small" icon="el-icon-upload2">选择本地文档</el-button>
-                </div>
                 <el-tabs style="margin-top: 10px;" v-model="activeIndex">
                     <el-tab-pane
                         v-for="(item0, index0) in moduleDataAddDto.subModelInfoList"

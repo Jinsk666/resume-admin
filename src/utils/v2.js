@@ -78,7 +78,7 @@ export const setModule = data => {
         }(type, code))
     }
  }
-
+ // 获取原料 数据
  export const materialData = code => {
     return new Promise( (resolve, reject) => {
         getModuleData(code, 1).then( data => {
@@ -87,6 +87,41 @@ export const setModule = data => {
             reject(err);
         })
     })
+ }
+// 企业 id 获取
+ export const factoryId2FactoryName = arr => {
+     if( !arr ) return '';
+     for( let i = 0; arr.generalInfoList && i < arr.generalInfoList.length; i++){
+        let val = arr.generalInfoList[i];
+        if( val.dataType == 7  && val.label.indexOf('企业') != -1 ) {
+            return val.value;
+        }
+     }
+     return '';
+ }
+
+ // 验证 generalInfoList 的必填项
+
+ export const generalValidate = arr => {
+    for( let i = 0; arr.generalInfoList && i < arr.generalInfoList.length; i++){
+        let val = arr.generalInfoList[i];
+        if( val.required  && (val.value == '' || val.value == null || val.value == undefined) ) {
+            return val.label;
+        }
+    }
+    return '';
+ }
+
+ // 判断 种植基本信息里 繁殖材料来源 是 自繁 还是外采
+    // 自繁 返回 true
+ export const isInnerOrOuter = arr => {
+    for( let i = 0; arr.generalInfoList && i < arr.generalInfoList.length; i++){
+        let val = arr.generalInfoList[i];
+        if( val.label == '繁殖材料来源' && val.value == '自繁') {
+            return false
+        }
+    }
+    return true
  }
 
 

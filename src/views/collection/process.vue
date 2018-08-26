@@ -55,7 +55,7 @@
                                                     <el-dropdown-item command="view">查看</el-dropdown-item>
                                                     <el-dropdown-item command="edit" v-if="rows.row && rows.row.state == 0">修改</el-dropdown-item>
                                                     <el-dropdown-item command="publish" v-if="rows.row && rows.row.state == 0">发布</el-dropdown-item>
-                                                    <el-dropdown-item command="delete">删除</el-dropdown-item>
+                                                    <el-dropdown-item command="delete" v-if="rows.row && rows.row.state == 0">删除</el-dropdown-item>
                                             </el-dropdown-menu>
                                         </el-dropdown>
                                     </template>

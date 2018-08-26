@@ -185,7 +185,7 @@
 				this.moduleDataAddDto.moduleName = this.moduleDataAddDto.generalInfoList[0].value || '原料';
 				// 给 外部链接
 				let external = document.getElementById('link').value;
-				if( external ) this.moduleDataAddDto.externalQuoteList.push( {externalName: external, externalURL: external} );
+				if( external ) this.moduleDataAddDto.externalQuoteList = [ {externalName: external, externalURL: external} ];
 				else this.moduleDataAddDto.externalQuoteList = [];
 				// 验证必填
 				let validate = generalValidate( this.moduleDataAddDto );

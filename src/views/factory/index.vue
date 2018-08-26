@@ -145,15 +145,22 @@
 					getCountry(0).then( data => {
 						this.provCnList = data.data;
 					})
-					if( this.ruleForm.provincesId ) {
+					if( this.ruleForm.provincesId && this.ruleForm.provCn) {
 						getCountry(this.ruleForm.provincesId).then( data => {
 							this.cityCnList = data.data;
 						})
+					}else {
+						this.ruleForm.provincesId = '';
 					}
-					if( this.ruleForm.cityId ) {
+					if( this.ruleForm.cityId && this.ruleForm.cityCn) {
 						getCountry(this.ruleForm.cityId).then( data => {
 							this.countyCnList = data.data;
 						})
+					}else {
+						this.ruleForm.cityId == '';
+					}
+					if( !this.ruleForm.countyId || !this.ruleForm.countyCn) {
+						this.ruleForm.countyId == '';
 					}
 				})
 			}else {

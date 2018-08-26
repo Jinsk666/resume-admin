@@ -106,7 +106,7 @@
         methods: {
             // 搜索按钮
             handleSearch(val) {
-                getFactoryList(this.search.resumeCode, val, 0).then( data => {
+                getFactoryList(this.search.resumeCode, val, 1).then( data => {
                     this.totalCount = data.data.pageCount * 20;
                     this.enterpriseInfoTwoOneResponseList = data.data.enterpriseInfoTwoOneResponseList;
                     this.currentPage = val;

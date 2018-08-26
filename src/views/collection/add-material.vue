@@ -253,7 +253,7 @@
                 this.optionsLinkParams = query;
                 this.isRemote = true;
                 this.loading = true;
-                getFactoryList(this.optionsLinkParams, this.optionsPage, 1).then(data => {
+                getFactoryList(this.optionsLinkParams, this.optionsPage, 2).then(data => {
                     this.optionsPageCount = data.data.pageCount;
                     this.options = this.options.concat(data.data.enterpriseInfoTwoOneResponseList);
                     this.loading = false;

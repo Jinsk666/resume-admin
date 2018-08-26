@@ -64,7 +64,7 @@
 				</el-row>
                 	<!-- 文档上传 -->
 				<el-row>
-                    <el-col :span="10">
+                    <el-col :span="20">
                         <el-form-item label="本地文档上传 :">
 								<el-button type="primary" size="small" @click="docUpload">
 									<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">

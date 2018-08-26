@@ -50,12 +50,12 @@
                                 <p class="circle"><img src="~@/assets/images/resume/icon1.png" alt=""></p>
                                 <p>赋码</p>
                             </li>
-                            <li>
+                            <!-- <li>
                                 <router-link :to="{name: 'assignmentAdd', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon2.png" alt=""></p>
                                     <p>编辑</p>
                                 </router-link>
-                            </li>
+                            </li> -->
                             <li @click="handlePreview(item.uniqueCode)">
                                 <p class="circle"><img src="~@/assets/images/resume/icon3.png" alt=""></p>
                                 <p>预览</p>
@@ -158,7 +158,7 @@
         },
         methods: {
             handleSearch(){
-                getResumeList(search.likeParams, 1).then(data => {
+                getResumeList(this.search.likeParams, 1).then(data => {
                     this.resumeList = data.data.resumeDataTwoOneResponseList;
                 })
             },
@@ -221,6 +221,13 @@
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
+    .search-header {
+        border-radius: 6px;
+        padding: 12px;
+    }
+    .search-btn {
+        margin-left: 20px;
+    }
     .deleteDialog-container {
         text-align: center;
     }

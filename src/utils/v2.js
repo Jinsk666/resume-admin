@@ -124,4 +124,29 @@ export const setModule = data => {
     return true
  }
 
+ // 判断编码
+ const moduleInfosIsCode = arr => {
+     for( let i = 0; i < arr.moduleInfos.length; i++ ) {
+         if( arr.moduleInfos[i].moduleDataCode == '' || arr.moduleInfos[i].moduleDataCode == null ) {
+             return false
+         }
+     }
+     return true;
+ }
+
+ export const isHaveCode = arr => {
+    if( moduleInfosIsCode(arr) ){
+        if( arr.resumeTemplateTwoOnes && arr.resumeTemplateTwoOnes.length > 0 ) {
+            for( let i = 0; i < arr.resumeTemplateTwoOnes.length; i++ ) {
+                let row = arr.resumeTemplateTwoOnes[i];
+                if( !row.uniqueCode ) return false;
+                if( !moduleInfosIsCode(row) ) return false;
+            }
+        }
+    }else {
+        return false;
+    }
+    return true;
+ }
+
 

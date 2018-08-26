@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container" v-if="tab != 'zz' && tab != 'jg'">
-            <div class="title2">添加{{tabName}}信息</div>
+            <div class="title2">{{tabName}}信息</div>
             <el-form label-width="200px" class="demo-ruleForm">
 				<el-row> <!-- 9图片 10富文本 8 链接-->
 					<el-col :span="( item.dataType == 10 || item.dataType == 9 ) ? 20 : 10 "
@@ -186,7 +186,7 @@
             </div>
         </div>
 		<div class="footer">
-            <router-link :to="{name: 'collectionProcess'}">
+            <router-link :to="{name: 'collectionProcess', query: {tab: tab, tabId: tabId, tabName: tabName}}">
                 <el-button size="small">取消</el-button>
             </router-link>
 		</div>

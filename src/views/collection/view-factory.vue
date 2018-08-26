@@ -19,7 +19,7 @@
 								:src="item.url" alt="">
 						</el-form-item>
 						<!-- 上传图片 -->
-						<el-form-item v-else-if="item.label == '企业LOGO'" :label="item.label + ' : '" style="z-index:99;">
+						<el-form-item v-else-if="item.label == '企业Logo'" :label="item.label + ' : '" style="z-index:99;">
 							<img class="show-img" v-if="moduleDataAddDto.logoUrl" :src="moduleDataAddDto.logoUrl" alt="">
 						</el-form-item>
 					</el-col>

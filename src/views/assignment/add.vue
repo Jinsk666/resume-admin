@@ -29,11 +29,11 @@
                     @mouseover="mouseoverMaterialIndex = index"
                     @mouseout="mouseoverMaterialIndex = -1">
                     <span>{{item.resumeTemplateName}}</span>
-                    <span
+                    <!-- <span
                         @click.stop="deleteMaterial(index)"
                         v-show="mouseoverMaterialIndex == index"
                         class="el-icon-circle-close material-close">
-                    </span>
+                    </span> -->
                 </div>
             </div>
         </div>
@@ -82,7 +82,7 @@
     import ModuleDialog from '@/components/v2/assignment/ModuleDialog'
     import MaterialsDialog from '@/components/v2/assignment/MaterialDialog' // 原料对应数据弹出框
     import { deepClone, Step2Class } from '@/utils'
-    import { dataPool, materialData } from '@/utils/v2'
+    import { dataPool, materialData, isHaveCode } from '@/utils/v2'
     import { getModuleList, getModuleDetails } from '@/api/v2'
     import { addResume, editResume, getResumeDetails } from '@/api'
     export default {
@@ -307,8 +307,12 @@
                     this.$message.error('请输入产品名称');
                     return;
                 }
-                debugger
                 this.resumeTemplateTwoOne.resumeDataTwoOnes = this.resumeTemplateTwoOne.resumeTemplateTwoOnes;
+                 // 限制编码 如果任何一个没有对应数据 就不能保存
+                if( !isHaveCode(this.resumeTemplateTwoOne) ) {
+                    this.$message.error( '原料以及流程环节必须选择信息' );
+                    return;
+                }
                 if( !this.isEdit || this.$route.query.add) {
                     addResume(this.resumeTemplateTwoOne).then( data => {
                         this.$message.success('保存成功.')

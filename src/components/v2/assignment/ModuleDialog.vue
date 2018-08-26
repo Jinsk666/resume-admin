@@ -108,7 +108,7 @@
         margin-bottom: 20px;
     }
     .content{
-        max-height:400px;
+        max-height:300px;
         overflow-y: auto;
     }
 </style>

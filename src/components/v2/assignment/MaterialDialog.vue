@@ -43,8 +43,8 @@
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="MaterialMapDialogCancel" size="small">取 消</el-button>
                 <el-button type="primary" @click="MaterialMapDialogSure" size="small">保 存</el-button>
+                <el-button @click="MaterialMapDialogCancel" size="small">取 消</el-button>
             </span>
         </el-dialog>
     </div>
@@ -122,6 +122,8 @@
     }
     .table-container {
         padding: 0 10px 10px 10px;
+        max-height:300px;
+        overflow: auto;
     }
     .add-farm {
         width: 540px;

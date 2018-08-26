@@ -295,6 +295,9 @@
                 let clone = deepClone(this.material);
                 clone.resumeTemplateName = this.materialName;
                 this.resumeTemplateTwoOne.resumeTemplateTwoOnes.push(clone);
+                this.$store.commit('SWITCH_STEPDATA', this.resumeTemplateTwoOne);
+                let dataClone = deepClone(this.resumeTemplateTwoOne);
+                this.$store.commit('SWITCH_STEPDATA_CLONE', dataClone);
             },
             handleCommand(val) {
                 if( val == 'inner' ) {

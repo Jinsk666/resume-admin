@@ -260,6 +260,8 @@
     }
     .table-container {
         padding: 0 10px 10px 10px;
+        max-height:300px;
+        overflow: auto;
     }
     .add-farm {
         width: 540px;

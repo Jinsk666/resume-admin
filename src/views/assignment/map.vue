@@ -3,7 +3,7 @@
         <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
-                    placeholder="对应溯源码/溯源码类型"
+                    placeholder="对应溯源码"
                     size="small"
                     prefix-icon="el-icon-search"
                     v-model="search.resumeCode">

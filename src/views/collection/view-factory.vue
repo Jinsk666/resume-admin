@@ -24,11 +24,18 @@
 						</el-form-item>
 					</el-col>
 				</el-row>
-                <!-- 文档上传 -->
+				<!-- 文档上传 -->
                 <el-row>
-                    <el-col :span="10">
-                        <el-form-item label="本地文档上传 :" prop="enterpriseName">
-                            <a style="color: #409eff;" target="_blank" href=""></a>
+                    <el-col :span="20">
+                        <el-form-item label="本地文档上传 :" >
+                            <div class="outer-link-file">
+								<span class="one-outer-link"
+									v-for="(item, index) in moduleDataAddDto.documentUrlList"
+									v-if="item.url"
+									:key="index">
+									<a target="_blank" :href="item.url">{{item.name}}</a>
+								</span>
+							</div>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -68,6 +75,21 @@
 </script>
 
 <style lang="scss" scoped>
+	.outer-link-file {
+        display: inline-block;
+        margin: 0 10px;
+        .one-outer-link {
+            display: inline-block;
+			padding: 0 40px;
+			font-size:12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+			margin: 0 5px;
+			height: 35px;
+			line-height:32px;
+        }
+    }
 	.show-img {
 		width: 148px;
 		height: 148px;

@@ -314,9 +314,9 @@
                 this.stepDialog = false;
                 let clone = deepClone(this.stepDataClone);
                 this.$store.commit('SWITCH_STEPDATA', clone);
-                this.stroeData = clone;
                 // 如果选中项是最后一项 比如 accordionIndx == 7 但是 要恢复到 6 项  accordionIndex 下标越界 要重置
                 this.$store.commit('ACCORDION_INDEX', 0);
+                this.stroeData = clone;
             },
             addStepDialogSure(index, name) {
                 index = index + 1;

@@ -82,7 +82,7 @@
 				<el-row>
 					<el-col :span="10">
 						<el-form-item label="企业简介 : " prop="description">
-							<el-input type="textarea" :rows="5" v-model="ruleForm.description" placeholder="最多输入1000字"></el-input>
+							<el-input type="textarea" :rows="5" v-model="ruleForm.description" placeholder="最多输入1000字" ref="moreFont"></el-input>
 						</el-form-item>
 					</el-col>
 				</el-row>
@@ -97,7 +97,7 @@
 <script>
 	import axios from 'axios'
 	import { addFactoryInfo, editFactoryInfo, getCountry, getFactoryInfo, getToken  } from '@/api/login';
-	import { isImg } from '@/utils'
+	import { isImg, getByteLen } from '@/utils'
 	import { uploadImg } from '@/utils/upload'
 	import { setFactory, getRefreshToken, setRefreshToken, setToken } from '@/utils/auth'
     export default {

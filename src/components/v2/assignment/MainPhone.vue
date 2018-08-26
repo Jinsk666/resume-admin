@@ -21,7 +21,7 @@
         <div class="container clearfix">
             <div class="intro">
                 <div class="intro-name ellipsis">
-                    {{stepData.productName || '产品名称'}}
+                    {{stepData.resumeTemplateName || '产品名称'}}
                 </div>
             </div>
             <div ref="baseDom" class="intro-content clear"

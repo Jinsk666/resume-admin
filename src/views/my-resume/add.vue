@@ -1,7 +1,7 @@
 <template>
     <div class="add-container" v-show="isLoadingEnd">
         <!-- <theme-picker></theme-picker> -->
-        <div id="container">
+        <!-- <div id="container">
             <div id="selectfiles" class="btn-op borderright">
 				换图
 			</div>
@@ -9,7 +9,7 @@
 			<a style="display: none" id="postfiles1" href="javascript:void(0);" onclick="apply(18);"></a>
 			<a style="display: none" id="callback" href="javascript:void(0);" onclick="callback();"></a>
 			<input type="hidden" id="commentFileUrl" name="commentFileUrl" />
-        </div>
+        </div> -->
         <div class="phone-container">
             <main-phone
                 @editStep="editStep"

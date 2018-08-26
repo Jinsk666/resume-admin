@@ -48,7 +48,7 @@ export const uploadFileDemo = file => {
         region: 'oss-cn-beijing',
         accessKeyId: 'LTAIChOnMI18Wf3p',
         accessKeySecret: 'wXXbrIkoXHmKh1WN2Ixp60HGl3wVay',
-        bucket: 'acsm-erp',
+        bucket: 'acsm-erp'
     })
     return new Promise( (resolve, reject) => {
         client.multipartUpload(file.name, file).then( res => {
@@ -57,14 +57,26 @@ export const uploadFileDemo = file => {
                 type:'success'
             })
             resolve(res)
-            console.log(res)
         }).catch( err => {
             Message({
                 message: err,
                 type:'error'
             })
             reject(err)
-            console.log(err)
         })
     })
+}
+
+export const isAcceptFile = file => {
+    let unit = file.name.split('.');
+    let last = unit[unit.length - 1];
+    let arr = ['txt','doc','docx','xls','xlsx','pdf'];
+    if( arr.indexOf(last) == -1 ){
+        return false
+    }
+    return true
+}
+
+export const setOssUrl = (file,arr) => {
+    arr.push({'name':file.name, 'url': 'http://img9.farmeasy.cn/' + file.name})
 }

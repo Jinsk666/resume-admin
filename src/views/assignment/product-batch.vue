@@ -1,5 +1,29 @@
 <template>
     <div class="content">
+        <div class="search-header clearfix">
+            <div class="left code-input">
+                <el-input
+                    size="small"
+                    placeholder="模板名称/编号"
+                    prefix-icon="el-icon-search"
+                    v-model="search.likeParams">
+                </el-input>
+            </div>
+            <!-- <div class="left">
+                <el-date-picker
+                    size="small"
+                    v-model="search.time"
+                    type="daterange"
+                    value-format="timestamp"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </div> -->
+            <div class="left search-btn">
+                  <el-button size="small" type="primary" @click="handleSearch(1)">搜索</el-button>
+            </div>
+        </div>
         <div class="block">
             <router-link :to="{name: 'assignmentAdd'}">
                 <div class="item add-btn">
@@ -98,6 +122,9 @@
         components: { mapCodeDialog },
         data() {
             return {
+                search: {
+                    likeParams: '',
+                },
                 loading: '',
                 resumeList: [],
                 codeDialog: false, // 驸马弹出框
@@ -130,6 +157,11 @@
             })
         },
         methods: {
+            handleSearch(){
+                getResumeList(search.likeParams, 1).then(data => {
+                    this.resumeList = data.data.resumeDataTwoOneResponseList;
+                })
+            },
             handlePreview(code){
                 let url = 'http://cs.nongchangyun.cn/resume-portal-beta/#/defaults?resumeCode=' + code;
                 window.open(url);
@@ -178,6 +210,8 @@
                         this.resumeList = this.resumeList.concat( data.data.resumeDataTwoOneResponseList );
                         this.currentPage++; // 页数 + 1
                         this.isLoaded = true; // 可以继续加载
+                    }).catch( e => {
+                        this.loading.close();
                     })
                 }
             }

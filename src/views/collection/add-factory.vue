@@ -42,17 +42,30 @@
 						</el-form-item>
 					</el-col>
 				</el-row>
-                <!-- 文档上传 -->
-                <el-row>
-                    <el-col :span="10">
-                        <el-form-item label="本地文档上传 :" prop="enterpriseName">
-                            <el-button type="primary" size="small">
-								<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
-								选择本地文档
-							</el-button>
+                	<!-- 文档上传 -->
+				<el-row>
+                    <el-col :span="20">
+                        <el-form-item label="本地文档上传 :">
+								<el-button type="primary" size="small" @click="docUpload">
+									<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+									选择本地文档
+								</el-button>
+								<input type="file" ref="docFile" @change="uploadBaseFile" style="display:none;">
+								<div class="outer-link-file">
+									<span class="one-outer-link"
+										v-for="(item, index) in moduleDataAddDto.documentUrlList"
+										v-if="item.url"
+										:key="index">
+										<a target="_blank" :href="item.url">{{item.name}}</a>
+										<span
+											@click.stop="deleteDoc(index)"
+											class="el-icon-circle-close doc-delete">
+										</span>
+									</span>
+								</div>
                         </el-form-item>
                     </el-col>
-                </el-row>
+				</el-row>
 			</el-form>
         </div>
 		<div class="footer">
@@ -66,13 +79,15 @@
 	import { addFactory, editFactory, getFactory } from '@/api/v2'
 	import { isImg } from '@/utils'
 	import { deleteUrl } from '@/utils/v2'
-	import { uploadImg } from '@/utils/upload'
+	import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
+
     export default {
         data() {
             return {
 				isDataUpload: false, // 数据接入弹出框
 				imgList: [], //判断是否重复
 				moduleDataAddDto: { //上传的数据
+					documentUrlList: [],
 					enterpriseSelectName: '', //下拉框企业名称
 					externalQuoteList: [], //外部引用
 					generalInfoList: [
@@ -147,12 +162,65 @@
             },
             handleCancel() {
                 this.$router.go(-1);
-            }
+			},
+			// 上传文档
+			docUpload() {
+				this.$refs.docFile.click();
+			},
+			async uploadBaseFile(e) {
+				if ( !isAcceptFile(e.target.files[0]) ){
+					this.$message.error('只允许上传 txt,doc,docx,xls,xlsx,pdf 结尾的文件');
+					return;
+				}
+				let data = await uploadFileDemo(e.target.files[0]);
+				setOssUrl(data, this.moduleDataAddDto.documentUrlList);
+			},
+			deleteDoc(index) {
+                this.$confirm('确定要删除吗', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    //type: 'warning'
+                }).then(() => {
+                    this.moduleDataAddDto.documentUrlList.splice(index, 1);
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功'
+                    });
+                }).catch((err) => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+			}
 		},
     }
 </script>
 
 <style lang="scss" scoped>
+	.outer-link-file {
+        display: inline-block;
+        margin: 0 10px;
+        .one-outer-link {
+            display: inline-block;
+			padding: 0 10px 0 22px;
+			font-size:12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+			margin: 0 5px;
+			height: 35px;
+			cursor: pointer;
+			line-height:32px;
+			.doc-delete {
+				color: red;
+				visibility: hidden;
+			}
+			&:hover .doc-delete{
+				visibility: inherit;
+			}
+        }
+    }
 	.outer-link-icon {
 		width: 14px;
 	}

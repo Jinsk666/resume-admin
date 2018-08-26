@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container" v-if="mainLoading">
-            <div class="title2">添加原料信息</div>
+            <div class="title2">原料信息</div>
             <el-form label-width="200px" class="demo-ruleForm">
 				<el-row>
 					<el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 20 : 10 "
@@ -70,12 +70,17 @@
 									<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
 									选择本地文档
 								</el-button>
-								<div class="outer-link">
+								<input type="file" ref="docFile" @change="uploadBaseFile" style="display:none;">
+								<div class="outer-link-file">
 									<span class="one-outer-link"
-										v-if="moduleDataAddDto.documentUrlList.length != 0"
 										v-for="(item, index) in moduleDataAddDto.documentUrlList"
+										v-if="item.url"
 										:key="index">
 										<a target="_blank" :href="item.url">{{item.name}}</a>
+										<span
+											@click.stop="deleteDoc(index)"
+											class="el-icon-circle-close doc-delete">
+										</span>
 									</span>
 								</div>
                         </el-form-item>
@@ -115,7 +120,7 @@
 	import { getModelList, addModuleData, editModuleData, getModuleData, getFactoryList } from '@/api/v2'
 	import { isImg, scrollMore } from '@/utils'
 	import { setModule } from '@/utils/v2'
-	import { uploadImg, uploadFileDemo } from '@/utils/upload'
+	import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
     import DataUpload from '@/components/v2/collection/DataUpload'
     export default {
         components: { DataUpload },
@@ -203,13 +208,13 @@
 					return false;
 				}
 			},
+			beforeUpload1(file){
+				//return true
+			},
 			async uploadFile(params) {
 				let data = await uploadImg(params.file);
 				if( !data ) return;
 				this.moduleDataAddDto.imgUrlList.push( {'name': data.data.fileUrl, 'url': data.data.fileUrl} )
-			},
-			async uploadBaseFile(params) {
-				let data = await uploadFileDemo(params.file)
 			},
 			// 下拉框处理
 			handleShow(val) {
@@ -271,42 +276,78 @@
 			handleClose() {
 				this.isDataUpload = false;
 			},
-			// 上传文档
+			// 上传文档  web 直传  废弃
 			docUpload() {
-				window.oss_upload_err = false;
-				window.oss_upload = null;
-				window.oss_upload_name = null;
-				let dom = document.getElementById('selectfiles');
-				dom.click();
-				var timer;
-				timer = setInterval( ()=> {
-					if(window.oss_upload) {
-						clearInterval(timer);
-						timer = null;
-						this.moduleDataAddDto.documentUrlList.push({'name': window.oss_upload_name, 'url': window.oss_upload })
-						this.$message.success('上传成功');
-					}else if(window.oss_upload_err !== false) {
-						this.$message.error('上传失败');
-					}
-				},1000)
+				this.$refs.docFile.click();
+				// window.oss_upload_err = false;
+				// window.oss_upload = null;
+				// window.oss_upload_name = null;
+				// let dom = document.getElementById('selectfiles');
+				// dom.click();
+				// var timer;
+				// timer = setInterval( ()=> {
+				// 	if(window.oss_upload) {
+				// 		clearInterval(timer);
+				// 		timer = null;
+				// 		this.moduleDataAddDto.documentUrlList.push({'name': window.oss_upload_name, 'url': window.oss_upload })
+				// 		this.$message.success('上传成功');
+				// 	}else if(window.oss_upload_err !== false) {
+				// 		this.$message.error('上传失败');
+				// 	}
+				// },1000)
+			},
+			async uploadBaseFile(e) {
+				if ( !isAcceptFile(e.target.files[0]) ){
+					this.$message.error('只允许上传 txt,doc,docx,xls,xlsx,pdf 结尾的文件');
+					return;
+				}
+				let data = await uploadFileDemo(e.target.files[0]);
+				setOssUrl(data, this.moduleDataAddDto.documentUrlList);
+			},
+			deleteDoc(index) {
+                this.$confirm('确定要删除吗', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    //type: 'warning'
+                }).then(() => {
+                    this.moduleDataAddDto.documentUrlList.splice(index, 1);
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功'
+                    });
+                }).catch((err) => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
 			}
 		},
     }
 </script>
 
 <style lang="scss" scoped>
-	.outer-link {
+	.outer-link-file {
         display: inline-block;
         margin: 0 10px;
         .one-outer-link {
             display: inline-block;
-            padding: 0 40px;
-            height: 32px;
-            line-height: 30px;
+			padding: 0 10px 0 22px;
+			font-size:12px;
             text-align: center;
             border: 1px solid #ddd;
             border-radius: 4px;
-            margin: 0 5px;
+			margin: 0 5px;
+			height: 35px;
+			cursor: pointer;
+			line-height:32px;
+			.doc-delete {
+				color: red;
+				visibility: hidden;
+			}
+			&:hover .doc-delete{
+				visibility: inherit;
+			}
         }
     }
 	.outer-link-icon {

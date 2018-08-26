@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="container" v-if="tab != 'zz' && tab != 'jg'">
-            <div class="title2">添加{{tabName}}信息</div>
+            <div class="title2">{{tabName}}信息</div>
             <el-form label-width="200px" class="demo-ruleForm">
 				<el-row>
 					<el-col :span="( item.dataType == 10 || item.dataType == 9 || item.dataType == 8) ? 22 : 11 "
@@ -93,13 +93,26 @@
                     </el-col>
                 </el-row>
                 	<!-- 文档上传 -->
-				<el-row>
-                    <el-col :span="22">
+                <el-row>
+                    <el-col :span="10">
                         <el-form-item label="本地文档上传 :">
-                            <el-button type="primary" size="small" @click="handleInnerDoc(moduleDataAddDto, '1')">
-                                <img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
-                                选择本地文档
-                            </el-button>
+								<el-button type="primary" size="small" @click="docUpload">
+									<img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+									选择本地文档
+								</el-button>
+								<input type="file" ref="docFile" @change="uploadBaseFile" style="display:none;">
+								<div class="outer-link-file">
+									<span class="one-outer-link"
+										v-for="(item, index) in moduleDataAddDto.documentUrlList"
+										v-if="item.url"
+										:key="index">
+										<a target="_blank" :href="item.url">{{item.name}}</a>
+                                        <span
+											@click.stop="deleteDoc(index)"
+											class="el-icon-circle-close doc-delete">
+										</span>
+									</span>
+								</div>
                         </el-form-item>
                     </el-col>
 				</el-row>
@@ -251,13 +264,25 @@
                                 </el-row>
                                 <el-row  v-if="item0.label == '种植基本信息' || item0.label == '加工基本信息'">
                                     <el-col :span="22">
-                                        <el-form-item label="选择本地文档 :">
-                                        <!-- 文档上传 -->
-                                        <el-button type="primary" size="small">
-                                            <img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
-                                            选择本地文档
-                                        </el-button>
-                                    </el-form-item>
+                                        <el-form-item label="本地文档上传 :">
+                                                <el-button type="primary" size="small" @click="docUpload2">
+                                                    <img class="outer-link-icon" src="@/assets/images/v2/get-upload.png" alt="">
+                                                    选择本地文档
+                                                </el-button>
+                                                <input type="file" ref="docFileTwo" @change="uploadBaseFile" style="display:none;">
+                                                <div class="outer-link-file">
+                                                    <span class="one-outer-link"
+                                                        v-for="(item, index) in moduleDataAddDto.documentUrlList"
+                                                        v-if="item.url"
+                                                        :key="index">
+                                                        <a target="_blank" :href="item.url">{{item.name}}</a>
+                                                        <span
+                                                            @click.stop="deleteDoc(index)"
+                                                            class="el-icon-circle-close doc-delete">
+                                                        </span>
+                                                    </span>
+                                                </div>
+                                        </el-form-item>
                                     </el-col>
                                 </el-row>
                                 <el-row v-if="item0.label == '种植基本信息' || item0.label == '加工基本信息'">
@@ -384,7 +409,8 @@
 
     import { getModelList, getModuleData, getFactoryList, addModuleData, editModuleData } from '@/api/v2'
     import { isImg, scrollMore, deepClone } from '@/utils'
-    import { uploadImg } from '@/utils/upload'
+    import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
+
     import { deleteUrl } from '@/utils/v2'
     export default {
         components: { OuterLink, DataUpload },
@@ -401,6 +427,7 @@
                 moduleInfos: {},
                 // 最终上传的数据
                 moduleDataAddDto: {
+                    documentUrlList: [], //上传文档
                     enterpriseSelectName: '', //下拉框企业名称
                     externalQuoteList: [{'externalName': '', 'externalURL': ''}], //外部引用
                     generalInfoList: [], //基本信息
@@ -676,13 +703,69 @@
             },
             dataUploadCancel() {
                 this.isDataUpload = false;
-            }
+            },
+            // 上传文档
+			docUpload() {
+				this.$refs.docFile.click();
+            },
+            docUpload2() {
+				this.$refs.docFileTwo[0].click();
+			},
+			async uploadBaseFile(e) {
+				if ( !isAcceptFile(e.target.files[0]) ){
+					this.$message.error('只允许上传 txt,doc,docx,xls,xlsx,pdf 结尾的文件');
+					return;
+				}
+				let data = await uploadFileDemo(e.target.files[0]);
+				setOssUrl(data, this.moduleDataAddDto.documentUrlList);
+            },
+            deleteDoc(index) {
+                this.$confirm('确定要删除吗', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    //type: 'warning'
+                }).then(() => {
+                    this.moduleDataAddDto.documentUrlList.splice(index, 1);
+                    this.$message({
+                        type: 'success',
+                        message: '删除成功'
+                    });
+                }).catch((err) => {
+                    this.$message({
+                        type: 'info',
+                        message: '已取消删除'
+                    });
+                });
+			}
         },
     }
 </script>
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
+    .outer-link-file {
+        display: inline-block;
+        margin: 0 10px;
+        .one-outer-link {
+           display: inline-block;
+			padding: 0 10px 0 22px;
+			font-size:12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+			margin: 0 5px;
+			height: 35px;
+			cursor: pointer;
+			line-height:32px;
+			.doc-delete {
+				color: red;
+				visibility: hidden;
+			}
+			&:hover .doc-delete{
+				visibility: inherit;
+			}
+        }
+    }
     .outer-link-icon {
         width: 14px;
     }

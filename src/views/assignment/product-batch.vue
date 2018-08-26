@@ -163,7 +163,8 @@
                 })
             },
             handlePreview(code){
-                let url = 'http://cs.nongchangyun.cn/resume-portal-beta/#/defaults?resumeCode=' + code;
+                //let url = 'http://cs.nongchangyun.cn/resume-portal-beta/#/defaults?resumeCode=' + code;
+                let url = 'http://erp.farmeasy.cn/resume-portal-beta/#/defaults?resumeCode=' + code;
                 window.open(url);
             },
             deleteDialogSure() {

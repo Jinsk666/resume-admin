@@ -176,6 +176,7 @@
             
         },
         created: function() {
+            this.$store.commit('IS_MATERIAL', false);
             this.loading = this.$loading({text:'拼命加载中...'});
             // 如果选了 模板 就不显示模板框
             if( !this.templateCode && !this.code) {

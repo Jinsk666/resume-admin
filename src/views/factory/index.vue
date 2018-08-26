@@ -53,7 +53,7 @@
 				</el-row>
 				<el-row>
 					<el-col :span="10">
-						<el-form-item label="统一社会信用代码 : ">
+						<el-form-item label="统一社会信用代码 : " prop="creditCode">
 							<el-input v-model="ruleForm.creditCode"></el-input>
 						</el-form-item>
 					</el-col>
@@ -120,6 +120,9 @@
 				rules: {
 					enterpriseName: [
 						{ required: true, message: '请输入企业名称', trigger: 'blur' },
+					],
+					creditCode: [
+						{ required: true, message: '请输入统一社会信用代码', trigger: 'blur' }
 					],
 					description:[
 						{max: 1000, message: '最多输入 1000 字'}

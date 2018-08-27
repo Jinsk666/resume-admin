@@ -142,9 +142,9 @@
 			if( Number(this.factoryId) ) {
 				getFactoryInfo(this.factoryId).then( data => {
 					this.ruleForm = data.data;
-					if( data.data.cityId == 0 ) this.ruleForm.cityId = '';
-					if( data.data.countyId == 0 ) this.ruleForm.countyId = '';
-					if( data.data.provincesId == 0 ) this.ruleForm.provincesId = '';
+					if( data.data.provincesId == 0  || ( !this.ruleForm.provincesId || !this.ruleForm.provCn )) this.ruleForm.provincesId = '';
+					if( data.data.cityId == 0  || ( !this.ruleForm.cityId || !this.ruleForm.cityCn )) this.ruleForm.cityId = '';
+					if( data.data.countyId == 0 || ( !this.ruleForm.countyId || !this.ruleForm.countyCn )) this.ruleForm.countyId = '';
 					getCountry(0).then( data => {
 						this.provCnList = data.data;
 					})
@@ -161,9 +161,6 @@
 						})
 					}else {
 						this.ruleForm.cityId == '';
-					}
-					if( !this.ruleForm.countyId || !this.ruleForm.countyCn) {
-						this.ruleForm.countyId == '';
 					}
 				})
 			}else {

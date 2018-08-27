@@ -68,11 +68,11 @@
 			.el-menu {
 				.el-menu-item.is-active {
 					background-color: $subItemHover!important;
-					color: #fff!important;
+					color: rgb(74,74,74)!important;
 				}
 				.el-menu-item:hover {
 					background-color: $subItemHover!important;
-					color: #fff!important;
+					color: rgb(74,74,74)!important;
 				}
 			}
 		}
@@ -110,7 +110,7 @@
 		//width: 159px;
 	}
 	.el-menu {
-		border-right: 1px solid #e6e6e6;
+		//border-right: 1px solid #e6e6e6;
 	}
 	.el-tabs--border-card {
 		border: 0;
@@ -212,4 +212,20 @@
 }
 .el-tabs__item.is-active {
 	color: $color;
+}
+
+// 左侧导航栏修改
+
+.el-submenu.is-active.is-opened {
+	.el-submenu__title{
+		background: $color!important;
+		color: #fff!important;
+	}
+}
+
+.menu-wrapper .el-submenu.is-active {
+	.el-submenu__title {
+		background: $color!important;
+		color: #fff!important;
+	}
 }

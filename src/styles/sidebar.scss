@@ -139,12 +139,12 @@
     .el-menu-item {
       &:hover {
         background: $subItemHover!important;
-        color: #fff!important;
+        color: rgb(74, 74, 74)!important;
       }
     }
     .el-menu-item.is-active {
       background: $subItemHover!important;
-      color: #fff!important;
+      color: rgb(74, 74, 74)!important;
     }
   }
 }

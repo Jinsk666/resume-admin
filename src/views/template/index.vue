@@ -3,7 +3,7 @@
         <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
-                    size="small"
+                    size="medium"
                     placeholder="模板名称/编号"
                     prefix-icon="el-icon-search"
                     v-model="search.likeParams">
@@ -136,6 +136,7 @@
             handleSearch(page) {
                 getModuleList(this.search.likeParams, page).then(data => {
                     this.resumeList = data.data.resumeTemplateTwoOneResponseList;
+                    this.isLoaded = true; // 可以继续加载
                 })
             },
             deleteModule(resumeCode, index) {
@@ -190,22 +191,21 @@
     }
     .content {
         width: 100%;
-        padding: 20px;
+        padding: 10px 20px;
         //background: #FFF;
         overflow: hidden;
     }
     .search-header {
-        border-radius: 6px;
         padding: 12px;
     }
     .code-input {
         width: 230px;
-        margin-right: 20px;
+        margin-right: 10px;
     }
     .search-btn{
-        margin-left: 20px;
         //height: 40px;
         //line-height: 38px;
+        margin-top: 2px;
     }
     .block {
         float: left;

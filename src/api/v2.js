@@ -64,14 +64,16 @@ export function deleteModule(code) {
 /*******  溯源数据模块   ************/
 
 // 获取步骤列表
-export const getModuleDataList = (likeParams, page, type) => {
+export const getModuleDataList = (likeParams, page, type, beginTime, endTime) => {
   return request({
     url: '/resume/V2.1/moduleData/getList',
     method: 'post',
     data: {
       likeParams: likeParams,
       page: page,
-      type: Number(type)
+      type: Number(type),
+      beginTime: beginTime,
+      endTime: endTime
     }
   })
 }
@@ -132,14 +134,16 @@ export const getModuleData = ( uniqueCode, type ) => {
 // 企业相关
 
   // 获取企业列表
-  export const getFactoryList = (likeParams, page, type) => {
+  export const getFactoryList = (likeParams, page, type, beginTime, endTime) => {
     return request({
       url: '/resume/V2.1/enterpriseInfoTwoOne/getList',
       method: 'post',
       data: {
         likeParams,
         page,
-        type
+        type,
+        beginTime,
+        endTime
       }
     })
   }
@@ -198,6 +202,15 @@ export const getModuleData = ( uniqueCode, type ) => {
         page,
         type
       }
+    })
+  }
+
+  // 首页调用接口
+
+  export const homeRequest = () => {
+    return request({
+      url : '/resume/V2.1/enterpriseInfoTwoOne/synchronizationData',
+      method: 'put',
     })
   }
 

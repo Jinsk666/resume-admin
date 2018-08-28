@@ -3,7 +3,7 @@
         <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
-                    size="small"
+                    size="medium"
                     placeholder="模板名称/编号"
                     prefix-icon="el-icon-search"
                     v-model="search.likeParams">
@@ -154,12 +154,14 @@
         mounted() {
             getResumeList('', 1).then(data => {
                 this.resumeList = data.data.resumeDataTwoOneResponseList;
+                this.isLoaded = true; // 可以继续加载
             })
         },
         methods: {
             handleSearch(){
                 getResumeList(this.search.likeParams, 1).then(data => {
                     this.resumeList = data.data.resumeDataTwoOneResponseList;
+                    this.isLoaded = true; // 可以继续加载
                 })
             },
             handlePreview(code){
@@ -216,6 +218,7 @@
                         this.isLoaded = true; // 可以继续加载
                     }).catch( e => {
                         this.loading.close();
+                        this.isLoaded = true; // 可以继续加载
                     })
                 }
             }
@@ -226,20 +229,23 @@
 <style lang="scss" scoped>
     @import '../../styles/mixin';
     .search-header {
-        border-radius: 6px;
-        padding: 12px;
+        padding: 15px;
     }
     .search-btn {
-        margin-left: 20px;
+        margin-left: 10px;
+        margin-top: 2px;
     }
     .deleteDialog-container {
         text-align: center;
     }
     .content {
         width: 100%;
-        padding: 20px;
+        padding: 10px 20px;
         //background: #FFF;
         overflow: hidden;
+    }
+    .code-input {
+        width: 230px;
     }
     .block {
         float: left;

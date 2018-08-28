@@ -14,7 +14,8 @@
 							<!-- 提示信息 -->
 							<el-col :span="10">
 								<el-tooltip class="item" effect="light" content="消费者在查看原料信息时, 会直接跳转到该链接地址" placement="bottom-start">
-									<i class="el-icon-question" style="font-size:30px; margin-top: 4px;"></i>
+									<!-- <i class="el-icon-question" style="font-size:30px; margin-top: 4px;"></i> -->
+									<img src="@/assets/images/v2/icon-tooltip.png" alt="" id="tooltip">
 								</el-tooltip>
 							</el-col>
 						</el-form-item>
@@ -193,7 +194,7 @@
 					this.$message.error(validate + '是必填字段');
 					return;
 				}
-
+				// 新增 还是 修改
 				if( this.id ) {
 					editModuleData(this.moduleDataAddDto).then( data => {
 						this.$message.success('修改成功');
@@ -247,7 +248,7 @@
 				})
 			},
 			loadMore() {
-                scrollMore('.code-bottom .el-select-dropdown__wrap', () => {
+                scrollMore('.demo-ruleForm .el-select-dropdown__wrap', () => {
                     if( !this.isRemote ) {
                         this.optionsPage++;
                         if( this.optionsPage > this.optionsPageCount ) {
@@ -342,6 +343,10 @@
 </script>
 
 <style lang="scss" scoped>
+	#tooltip {
+		width: 26px;
+		margin-left: 10px;
+	}
 	.outer-link-file {
         display: inline-block;
         margin: 0 10px;
@@ -379,10 +384,10 @@
 	}
 	.container {
 		width: 98%;
-		margin: 20px auto;
+		margin: 15px auto;
 		background: #fff;
 		.title2 {
-			width: 90%;
+			width: 95%;
 			height: 50px;
 			line-height: 50px;
 			border-bottom: 1px dashed #ccc;

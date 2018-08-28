@@ -6,11 +6,22 @@
                     placeholder="编号/名称/批次号/所属企业"
                     size="small"
                     prefix-icon="el-icon-search"
-                    v-model="search.resumeCode">
+                    v-model="ready.resumeCode">
                 </el-input>
             </div>
+            <div class="left">
+                <el-date-picker
+                    size="small"
+                    v-model="ready.time"
+                    type="daterange"
+                    value-format="timestamp"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
             <div class="right search-btn">
-                  <el-button size="small" type="primary" @click="handleSearch(1)">搜索</el-button>
+                  <el-button size="small" type="primary" @click="handleSearchBtn(1)">搜索</el-button>
             </div>
         </div>
         <div class="code-container">
@@ -32,6 +43,13 @@
                         prop="ylUniqueCode"
                         label="编号"
                         min-width="200">
+                    </el-table-column>
+                    <el-table-column
+                        align="center"
+                        prop="insertTime"
+                        label="创建时间"
+                        :formatter="formatter"
+                        min-width="120">
                     </el-table-column>
                     <el-table-column
                         align="center"
@@ -87,23 +105,24 @@
 
 <script>
     import { getModuleDataList, deleteModuleData, publishModuleData } from '@/api/v2'
-    import { formatTime } from '@/utils'
+    import { formatTime, deepClone } from '@/utils'
     export default {
         components: {  },
         data() {
             return {
                 currentPage: 1,
                 innerDialog: false, // 内部履历弹出框
+                ready: { // 预备搜索条件 //点击搜索 时 使用
+                    resumeCode: '',
+                    time:[]
+                },
                 search: { // 搜索条件
                     resumeCode: '',
+                    time:[]
                 },
                 totalCount: 20,
                 moduleDataResponseDto: [],
-                rows: {},
-                innerCode: {
-                    time: '',
-                    count: '',
-                }
+                rows: {}
             }
         },
         mounted() {
@@ -112,11 +131,20 @@
         methods: {
             // 搜索按钮
             handleSearch(val) {
-                getModuleDataList(this.search.resumeCode, val, 1).then(((data) => {
+                this.moduleDataResponseDto = [];
+                if( this.search.time == null ) this.search.time = [];
+                let beginTime = this.search.time[0] || '';
+                let endTime = this.search.time[1] || '';
+                getModuleDataList(this.search.resumeCode, val, 1,beginTime, endTime).then(((data) => {
                     this.totalCount = data.data.pageCount * 20;
                     this.moduleDataResponseDto = data.data.moduleDataResponseDto;
                     this.currentPage = val;
                 }))
+            },
+            handleSearchBtn(val) {
+                let clone = deepClone(this.ready);
+                this.search = clone;
+                this.handleSearch(val);
             },
             // 下拉点击
             clickDropdown(row) {
@@ -159,22 +187,26 @@
                     });
                 }
             },
+            // 格式化时间
+            formatter(row, column, cellValue, index) {
+                return formatTime(cellValue, 'Y-m-d')
+            },
         }
     }
 </script>
 
 <style lang="scss" scoped>
     .code-list {
-        padding: 20px;
+        padding: 15px;
     }
     .search-header {
-        border-radius: 6px;
         background: #FFF;
         padding: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     .code-input {
         width: 260px;
+        margin-right: 10px;
     }
     .search-btn {
         padding-right: 20px;
@@ -188,7 +220,6 @@
     }
     .code-container {
         background: #FFF;
-        border-radius: 6px;
         .container-top {
             .left {
                 font-weight: 400;
@@ -201,7 +232,7 @@
             line-height: 60px;
         }
         .container-table {
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #ebeef5;
         }
     }
     .pagination {

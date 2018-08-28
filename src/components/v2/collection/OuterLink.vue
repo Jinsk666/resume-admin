@@ -7,7 +7,7 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
         :before-close="handleClose"
-        width="548px">
+        width="648px">
             <el-table
                 :data="outerData"
                 stripe

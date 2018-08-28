@@ -3,14 +3,25 @@
         <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
-                    placeholder="编号/企业名称/企业位置/企业负责人"
+                    placeholder="编号/创建时间/企业名称/企业位置/企业负责人"
                     size="small"
                     prefix-icon="el-icon-search"
-                    v-model="search.resumeCode">
+                    v-model="ready.resumeCode">
                 </el-input>
             </div>
+            <div class="left">
+                <el-date-picker
+                    size="small"
+                    v-model="ready.time"
+                    type="daterange"
+                    value-format="timestamp"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
             <div class="right search-btn">
-                  <el-button size="small" type="primary" @click="handleSearch(1)">搜索</el-button>
+                  <el-button size="small" type="primary" @click="handleSearchBtn(1)">搜索</el-button>
             </div>
         </div>
         <div class="code-container">
@@ -31,6 +42,13 @@
                         align="center"
                         prop="uniqueCode"
                         label="编号"
+                        min-width="200">
+                    </el-table-column>
+                    <el-table-column
+                        align="center"
+                        prop="insertTime"
+                        :formatter="formatter"
+                        label="创建时间"
                         min-width="200">
                     </el-table-column>
                     <el-table-column
@@ -86,14 +104,19 @@
 
 <script>
     import { getFactoryList, deleteFactory } from '@/api/v2'
-    import { formatTime } from '@/utils'
+    import { formatTime, deepClone } from '@/utils'
     export default {
         components: {  },
         data() {
             return {
                 currentPage: 1,
+                ready: { // 搜索条件
+                    resumeCode: '',
+                    time: [],
+                },
                 search: { // 搜索条件
                     resumeCode: '',
+                    time: [],
                 },
                 totalCount: 20,
                 enterpriseInfoTwoOneResponseList: [],
@@ -106,11 +129,20 @@
         methods: {
             // 搜索按钮
             handleSearch(val) {
-                getFactoryList(this.search.resumeCode, val, 1).then( data => {
+                this.enterpriseInfoTwoOneResponseList = [];
+                if( this.search.time == null ) this.search.time = [];
+                let beginTime = this.search.time[0] || '';
+                let endTime = this.search.time[1] || '';
+                getFactoryList(this.search.resumeCode, val, 1, beginTime, endTime).then( data => {
                     this.totalCount = data.data.pageCount * 20;
                     this.enterpriseInfoTwoOneResponseList = data.data.enterpriseInfoTwoOneResponseList;
                     this.currentPage = val;
                 })
+            },
+            handleSearchBtn(val) {
+                let clone = deepClone(this.ready);
+                this.search = clone;
+                this.handleSearch(val);
             },
             clickDropdown(row) {
                 this.rows = row;
@@ -139,23 +171,27 @@
                         });
                     });
                 }
-            }
+            },
+            // 格式化时间
+            formatter(row, column, cellValue, index) {
+                return formatTime(cellValue, 'Y-m-d')
+            },
         },
     }
 </script>
 
 <style lang="scss" scoped>
     .code-list {
-        padding: 20px;
+        padding: 15px;
     }
     .search-header {
-        border-radius: 6px;
         background: #FFF;
         padding: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     .code-input {
-        width: 260px;
+        width: 320px;
+        margin-right: 10px;
     }
     .search-btn {
         padding-right: 20px;
@@ -169,7 +205,6 @@
     }
     .code-container {
         background: #FFF;
-        border-radius: 6px;
         .container-top {
             .left {
                 font-weight: 400;
@@ -182,7 +217,7 @@
             line-height: 60px;
         }
         .container-table {
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #ebeef5;
         }
     }
     .pagination {

@@ -662,6 +662,10 @@
                 border-radius: 6px;
                 margin: 20px auto;
                 cursor: pointer;
+                &:hover {
+                    color: $color;
+                    border-color: $color;
+                }
             }
         }
     }
@@ -682,7 +686,7 @@
         z-index:8;
         position: relative;
         margin-top: 20px;
-        border: 1px dashed #ccc;
+        border: 1px dashed #ebeef5;
         border-radius: 6px;
         .current-font {
             color: #19A9E8;

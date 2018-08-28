@@ -3,17 +3,19 @@
 	width: 100%;
 	height: 100%;
 	background: #fff;
+	position: relative;
 }
 img{
   	display: block;
 }
 .login-side{
-	@include wh(33%, 100%);
+	@include wh(475px, 100%);
+	overflow-y: hidden;
 	float: left;
-	position: relative;
+	position: absolute;
 	.side-img{
-		width: 100%;
-		height: 100%;
+		width: auto;
+		min-height: 760px;
 	}
 	.side-icon{
 		width: 49px;
@@ -24,11 +26,12 @@ img{
 	}
 }
 .side-img{
-  	height: 100%;
+	  height: 100%;
 }
 .login-content{
-	@include wh(67%, 100%);
-	float: left;
+	width: calc(100% - 475px);
+	height: 100%;
+	float: right;
 	position: relative;
 	.login-detail{
 		width: 336px;

@@ -179,6 +179,7 @@
 
 <style lang="scss" scoped>
     .dialog-container {
-        //text-align: center;
+        position: relative;
+        top: 12px;
     }
 </style>

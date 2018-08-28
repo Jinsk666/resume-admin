@@ -31,10 +31,14 @@
 </template>
 
 <script>
+    import { homeRequest } from '@/api/v2'
     export default {
         data() {
             return {
             }
+        },
+        created() {
+             homeRequest()
         },
     }
 </script>

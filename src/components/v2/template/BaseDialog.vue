@@ -6,7 +6,7 @@
         :close-on-click-modal="false"
         :close-on-press-escape="false"
         :before-close="handleClose"
-        width="548px">
+        width="648px">
         <div v-if="toData.generalInfoList">
             <el-form :inline="true" ref="productInfoDom" label-width="80px" size="mini">
                 <el-form-item
@@ -14,10 +14,12 @@
                     :key="index"
                     :label="item.label+' : '"
                     :prop="item.label"
+                    
                 >
                     <el-input
                         v-model="item.value"
                         v-if="item.label != '简要介绍' && item.label.indexOf('时间') == -1"
+                        style="width:200px;"
                         :placeholder="item.describe">
                     </el-input>
                     <el-input
@@ -26,7 +28,7 @@
                         :placeholder="item.describe"
                         v-model="item.value"
                         rows="4"
-                        style="width:408px;">
+                        style="width:490px;">
                         </el-input>
                         <el-date-picker
                         v-if="item.label.indexOf('时间') != -1"

@@ -138,7 +138,7 @@ export const isNumber = val => {
 }
 /**  下拉框加载更多判断
  * @param ref => .resume-top .el-select-dropdown__wrap
- * @param cb  =>  回掉函数
+ * @param cb  =>  callback
  */
 export const scrollMore = (ref, cb) => {
 	let dom = document.querySelectorAll(ref)[0];

@@ -3,17 +3,26 @@
         <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
-                    style="width:300px"
-                    @focus="inputFocus"
-                    @blur="inputBlur"
+                    
                     :placeholder="list[tabId].placeholder"
                     size="small"
                     prefix-icon="el-icon-search"
-                    v-model="list[tabId].likeParams">
+                    v-model="ready[tabId].likeParams">
                 </el-input>
             </div>
+            <div class="left">
+                <el-date-picker
+                    size="small"
+                    v-model="ready[tabId].time"
+                    type="daterange"
+                    value-format="timestamp"
+                    range-separator="至"
+                    start-placeholder="开始日期"
+                    end-placeholder="结束日期">
+                </el-date-picker>
+            </div>
             <div class="right search-btn">
-                  <el-button size="small" type="primary" @click="handleSearch(1)">搜索</el-button>
+                  <el-button size="small" type="primary" @click="handleSearchBtn(1)">搜索</el-button>
             </div>
         </div>
         <div class="code-container">
@@ -81,7 +90,7 @@
 
 <script>
     import { publishModuleData, deleteModuleData, getModuleDataList } from '@/api/v2'
-    import { formatTime, step2Class } from '@/utils'
+    import { formatTime, step2Class, deepClone } from '@/utils'
     export default {
         data() {
             return {
@@ -92,71 +101,109 @@
                 currentPage: 1,
                 totalCount: 20,
                 rows: {},
+                ready:{
+                    '2':{ // zz
+                        likeParams: '',
+                        time: [],
+                    },
+                    '3':{ //cs
+                        likeParams: '',
+                        time: [],
+                    },
+                    '6':{ // cc
+                        likeParams: '',
+                        time: [],
+                    },
+                    '4':{ // jg
+                        likeParams: '',
+                        time: [],
+                    },
+                    '5':{ // 包装
+                        likeParams: '',
+                        time: [],
+                    },
+                    '7':{ // 检测
+                        likeParams: '',
+                        time: [],
+                    },
+                },
                 list:{
                     '2':{ // zz
-                        label:[ {prop: 'zzUniqueCode',label: '编号', width: '200' },
-                                {prop: 'zzBatchNumber',label: '种植批次号', width: '200' },
-                                {prop: 'zzMedicineName',label: '药材名称', width: '200' },
-                                {prop: 'zzGermplasmPrimitives',label: '种质/基原', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '企业名称', width: '200' },
+                        label:[ {prop: 'zzUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'zzBatchNumber',label: '种植批次号', width: '180' },
+                                {prop: 'zzMedicineName',label: '药材名称', width: '180' },
+                                {prop: 'zzGermplasmPrimitives',label: '种质/基原', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '企业名称', width: '180' },
                             ],
-                        placeholder:'编号/种植批次号/药材名称/种质/基原/企业名称',
+                        placeholder:'编号/创建时间/种植批次号/药材名称/种质/基原/企业名称',
                         likeParams: '',
+                        time: [],
                         data: []
                     },
                     '3':{ //cs
-                        label:[ {prop: 'csUniqueCode',label: '编号', width: '200' },
-                                {prop: 'csBatchNumber',label: '采收批次号', width: '200' },
-                                {prop: 'csPosition',label: '采收部位', width: '200' },
-                                {prop: 'csDate',label: '采收日期', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '采收企业主体', width: '200' },
+                        label:[ {prop: 'csUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'csBatchNumber',label: '采收批次号', width: '180' },
+                                {prop: 'csPosition',label: '采收部位', width: '180' },
+                                {prop: 'csDate',label: '采收日期', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '采收企业主体', width: '180' },
                             ],
-                        placeholder:'编号/采收批次号/采收部位/采收日期/采收企业主体',
+                        placeholder:'编号/创建时间/采收批次号/采收部位/采收日期/采收企业主体',
                         likeParams: '',
+                        time: [],
                         data: []
                     },
                     '6':{ // cc
-                        label:[ {prop: 'ccUniqueCode',label: '编号', width: '200' },
-                                {prop: 'ccBatchCode',label: '入库批次号', width: '200' },
-                                {prop: 'ccClassification',label: '仓储分类', width: '200' },
-                                {prop: 'ccType',label: '仓库类型', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '仓储企业主体', width: '200' },
+                        label:[ {prop: 'ccUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'ccBatchCode',label: '入库批次号', width: '180' },
+                                {prop: 'ccClassification',label: '仓储分类', width: '180' },
+                                {prop: 'ccType',label: '仓库类型', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '仓储企业主体', width: '180' },
                             ],
-                        placeholder:'编号/入库批次号/仓储分类/仓库类型/仓储企业主体',
+                        placeholder:'编号/创建时间/入库批次号/仓储分类/仓库类型/仓储企业主体',
                         likeParams: '',
+                        time: [],
                         data: []
                     },
                     '4':{ // jg
-                        label:[ {prop: 'jgUniqueCode',label: '编号', width: '200' },
-                                {prop: 'jgType',label: '加工类型', width: '200' },
-                                {prop: 'jgProductName',label: '加工产品名', width: '200' },
-                                {prop: 'jgBatchNumber',label: '加工批次号', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '加工企业主体', width: '200' },
+                        label:[ {prop: 'jgUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'jgType',label: '加工类型', width: '180' },
+                                {prop: 'jgProductName',label: '加工产品名', width: '180' },
+                                {prop: 'jgBatchNumber',label: '加工批次号', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '加工企业主体', width: '180' },
                             ],
-                        placeholder:'编号/加工类型/加工产品名/加工批次号/加工企业主体',
+                        placeholder:'编号/创建时间/加工类型/加工产品名/加工批次号/加工企业主体',
                         likeParams: '',
+                        time: [],
                         data: []
                     },
                     '5':{ // 包装
-                        label:[ {prop: 'bzUniqueCode',label: '编号', width: '200' },
-                                {prop: 'bzType',label: '包装类型', width: '200' },
-                                {prop: 'bzPackMethod',label: '包装方式', width: '200' },
-                                {prop: 'bzBatchCode',label: '包装批次号', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '包装企业主体', width: '200' }
+                        label:[ {prop: 'bzUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'bzType',label: '包装类型', width: '180' },
+                                {prop: 'bzPackMethod',label: '包装方式', width: '180' },
+                                {prop: 'bzBatchCode',label: '包装批次号', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '包装企业主体', width: '180' }
                             ],
-                        placeholder:'编号/包装类型/包装方式/包装批次号/包装企业主体',
+                        placeholder:'编号/创建时间/包装类型/包装方式/包装批次号/包装企业主体',
                         likeParams: '',
+                        time: [],
                         data: []
                     },
                     '7':{ // 检测
-                        label:[ {prop: 'jcUniqueCode',label: '编号', width: '200' },
-                                {prop: 'jcType',label: '检测类型', width: '200' },
-                                {prop: 'jcProject',label: '检测项目', width: '200' },
-                                {prop: 'jcBatchCode',label: '检测产品批次', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '检测企业主体', width: '200' },
+                        label:[ {prop: 'jcUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'jcType',label: '检测类型', width: '180' },
+                                {prop: 'jcProject',label: '检测项目', width: '180' },
+                                {prop: 'jcBatchCode',label: '检测产品批次', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '检测企业主体', width: '180' },
                             ],
-                        placeholder:'编号/检测类型/检测项目/检测产品批次/检测企业主体',
+                        placeholder:'编号/创建时间/检测类型/检测项目/检测产品批次/检测企业主体',
                         likeParams: '',
+                        time: [],
                         data: []
                     },
                 },
@@ -173,6 +220,9 @@
                 if( column.label == '采收日期' && row.csDate ) {
                     return formatTime(cellValue, 'Y-m-d')
                 }
+                if( column.label == '创建时间' && row.insertTime ){
+                    return formatTime(cellValue, 'Y-m-d')
+                }
                 return cellValue;
             },
             inputFocus(e){
@@ -184,11 +234,21 @@
             },
             // 搜索按钮
             handleSearch(val) {
-                getModuleDataList(this.list[this.tabId].likeParams, val, this.tabId).then( data => {
+                this.moduleDataResponseDto = [];
+                if( this.list[this.tabId].time == null ) this.list[this.tabId].time = [];
+                let beginTime = this.list[this.tabId].time[0] || '';
+                let endTime = this.list[this.tabId].time[1] || '';
+                getModuleDataList(this.list[this.tabId].likeParams, val, this.tabId, beginTime, endTime).then( data => {
                     this.totalCount = data.data.pageCount * 20;
                     this.list[this.tabId].data = data.data.moduleDataResponseDto;
                     this.currentPage = val;
                 })
+            },
+            handleSearchBtn(val) {
+                let clone = deepClone(this.ready[this.tabId]);
+                this.list[this.tabId].likeParams = clone.likeParams;
+                this.list[this.tabId].time = clone.time;
+                this.handleSearch(val);
             },
             // tab 点击
             handleTabClick(tab, event) {
@@ -245,16 +305,16 @@
 
 <style lang="scss" scoped>
     .code-list {
-        padding: 20px;
+        padding: 15px;
     }
     .search-header {
-        border-radius: 6px;
         background: #FFF;
         padding: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     .code-input {
-        width: 260px;
+        width: 420px;
+        margin-right: 10px;
     }
     .search-btn {
         padding-right: 20px;
@@ -268,8 +328,6 @@
     }
     .code-container {
         background: #FFF;
-        border-radius: 6px;
-        //padding: 20px;
         .container-top {
             .left {
                 font-weight: 400;
@@ -282,7 +340,7 @@
             line-height: 60px;
         }
         .container-table {
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #ebeef5;
         }
     }
     .pagination {

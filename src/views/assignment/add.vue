@@ -354,6 +354,10 @@
             },
             // 原料
             MaterialMapDialogSure(code) {
+                if( !this.stepData.uniqueCode ) {
+                    this.$message('请选择一条数据后保存');
+                    return;
+                }
                 this.materialMapDialog = false;
                 //  请求原料数据 扔进数据池
                 materialData(this.stepData.uniqueCode).then( data => {
@@ -485,6 +489,10 @@
                 border-radius: 6px;
                 margin: 20px auto;
                 cursor: pointer;
+                &:hover {
+                    color: $color;
+                    border-color: $color;
+                }
             }
         }
     }
@@ -505,7 +513,7 @@
         z-index:8;
         position: relative;
         margin-top: 20px;
-        border: 1px dashed #ccc;
+        border: 1px dashed #ebeef5;
         border-radius: 6px;
         .current-font {
             color: #19A9E8;

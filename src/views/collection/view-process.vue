@@ -286,7 +286,7 @@
 	}
 	.container {
 		width: 98%;
-		margin: 20px auto;
+		margin: 15px auto;
 		background: #fff;
 		.title2 {
 			width: 96%;
@@ -498,7 +498,7 @@
         z-index:8;
         position: relative;
         margin-top: 20px;
-        border: 1px dashed #ccc;
+        border: 1px dashed #ebeef5;
         border-radius: 6px;
         .current-font {
             color: #19A9E8;

@@ -56,8 +56,8 @@
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="stepDialogCancel" size="small">取 消</el-button>
                 <el-button type="primary" @click="stepDialogSure" size="small">保 存</el-button>
+                <el-button @click="stepDialogCancel" size="small">取 消</el-button>
             </span>
         </el-dialog>
 
@@ -75,8 +75,8 @@
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="addStepDialog = false" size="small">取 消</el-button>
                 <el-button type="primary" @click="addStepDialogSure" size="small">保 存</el-button>
+                <el-button @click="addStepDialog = false" size="small">取 消</el-button>
             </span>
         </el-dialog>
     </div>
@@ -326,7 +326,7 @@
         z-index:8;
         position: relative;
         margin-top: 20px;
-        border: 1px dashed #ccc;
+        border: 1px dashed #ebeef5;
         border-radius: 6px;
         .current-font {
             color: #19A9E8;

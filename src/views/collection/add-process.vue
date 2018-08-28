@@ -627,7 +627,7 @@
 				})
             },
 			loadMore() {
-                scrollMore('.code-bottom .el-select-dropdown__wrap', () => {
+                scrollMore('.demo-ruleForm .el-select-dropdown__wrap', () => {
                     if( !this.isRemote ) {
                         this.optionsPage++;
                         if( this.optionsPage > this.optionsPageCount ) {
@@ -671,7 +671,7 @@
 			},
             removeUpload2(file, fileList) {
                 this.moduleDataAddDto.subModelInfoList[this.activeIndex].subModelInfoInfoList[this.lastIndex].imgUrlList =
-                deleteUrl(file.url, moduleDataAddDto.subModelInfoList[this.activeIndex].subModelInfoInfoList[this.lastIndex].imgUrlList);
+                deleteUrl(file.url, this.moduleDataAddDto.subModelInfoList[this.activeIndex].subModelInfoInfoList[this.lastIndex].imgUrlList);
 			},
 			beforeUpload(file){
 				if( !isImg(file.name) ) {
@@ -864,7 +864,7 @@
 	}
 	.container {
 		width: 98%;
-		margin: 20px auto;
+		margin: 15px auto;
 		background: #fff;
 		.title2 {
 			width: 96%;
@@ -1075,7 +1075,7 @@
         z-index:8;
         position: relative;
         margin-top: 20px;
-        border: 1px dashed #ccc;
+        border: 1px dashed #ebeef5;
         border-radius: 6px;
         .current-font {
             color: #19A9E8;

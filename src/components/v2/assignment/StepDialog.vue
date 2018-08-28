@@ -7,7 +7,7 @@
             :close-on-click-modal="false"
             :close-on-press-escape="false"
             :before-close="handleClose"
-            width="900px">
+            width="960px">
             <div class="step-container clearfix" v-if="toData.moduleInfos">
                 <!-- 流程步骤 -->
                 <div class="clearfix">
@@ -49,10 +49,20 @@
                             v-model="list[toData.moduleInfos[accordionIndex].moduleName].likeParams"
                             clearable
                             :placeholder="list[toData.moduleInfos[accordionIndex].moduleName].placeholder"
-                            size="small" style="width:200px; margin-right:20px;">
+                            size="medium" style="width:390px; margin-right:10px;">
                         </el-input>
-                        <el-button type="primary" size="small" @click="handleSearch(1)">搜索</el-button>
-
+                        <el-date-picker
+                            size="medium"
+                            v-model="list[toData.moduleInfos[accordionIndex].moduleName].time"
+                            type="daterange"
+                            value-format="timestamp"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                        </el-date-picker>
+                        <el-button class="search-btn" type="primary" size="small" @click="handleSearch(1)">搜索</el-button>
+                    </div>
+                    <div class="current-code">
                         当前选中数据 编号为 {{toDataClone.moduleInfos[accordionIndex].moduleDataCode}}
                     </div>
                     <div
@@ -72,6 +82,7 @@
                                 :prop="item.prop"
                                 :label="item.label"
                                 align="center"
+                                :formatter="formatter"
                                 :min-width="item.width">
                             </el-table-column>
                         </el-table>
@@ -79,8 +90,8 @@
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
-                <el-button @click="stepDialogCancel" size="small">取 消</el-button>
                 <el-button type="primary" @click="stepDialogSure" size="small">保 存</el-button>
+                <el-button @click="stepDialogCancel" size="small">取 消</el-button>
             </span>
         </el-dialog>
     </div>
@@ -88,85 +99,97 @@
 
 <script>
     import { getModuleDataList } from '@/api/v2'
-    import { deepClone, step2Class, isImg } from '@/utils'
+    import { deepClone, step2Class, isImg, formatTime } from '@/utils'
     export default {
         props: ['stepDialog'],
         data() {
             return {
                 list:{ // 这里必须给 中文名字 或者 英文缩写  因为 要包括所有流程
                     '种植':{ // zz
-                        label:[ {prop: 'zzUniqueCode',label: '编号', width: '200' },
-                                {prop: 'zzBatchNumber',label: '种植批次号', width: '200' },
-                                {prop: 'zzMedicineName',label: '药材名称', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '企业名称', width: '200' },
+                        label:[ {prop: 'zzUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'zzBatchNumber',label: '种植批次号', width: '180' },
+                                {prop: 'zzMedicineName',label: '药材名称', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '企业名称', width: '180' },
                             ],
-                        placeholder:'编号/种植批次号/药材名称/企业名称',
+                        placeholder:'编号/创建时间/种植批次号/药材名称/企业名称',
                         likeParams: '',
+                        time: [],
                         type: 2,
                         totalCount: 0,
                         currentPage: 1,
                         data: []
                     },
                     '采收':{ //cs
-                        label:[ {prop: 'csUniqueCode',label: '编号', width: '200' },
-                                {prop: 'csBatchNumber',label: '采收批次号', width: '200' },
-                                {prop: 'csPosition',label: '采收部位', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '采收企业主体', width: '200' },
+                        label:[ {prop: 'csUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'csBatchNumber',label: '采收批次号', width: '180' },
+                                {prop: 'csPosition',label: '采收部位', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '采收企业主体', width: '180' },
                             ],
-                        placeholder:'编号/采收批次号/采收部位/采收企业主体',
+                        placeholder:'编号/创建时间/采收批次号/采收部位/采收企业主体',
                         likeParams: '',
+                        time: [],
                         type: 3,
                         totalCount: 0,
                         currentPage: 1,
                         data: []
                     },
                     '仓储':{ // cc
-                        label:[ {prop: 'ccUniqueCode',label: '编号', width: '200' },
-                                {prop: 'ccBatchCode',label: '入库批次号', width: '200' },
-                                {prop: 'ccClassification',label: '仓储分类', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '仓储企业主体', width: '200' },
+                        label:[ {prop: 'ccUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'ccBatchCode',label: '入库批次号', width: '180' },
+                                {prop: 'ccClassification',label: '仓储分类', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '仓储企业主体', width: '180' },
                             ],
-                        placeholder:'编号/入库批次号/仓储分类/仓储企业主体',
+                        placeholder:'编号/创建时间/入库批次号/仓储分类/仓储企业主体',
                         likeParams: '',
+                        time: [],
                         type: 6,
                         totalCount: 0,
                         currentPage: 1,
                         data: []
                     },
                     '加工':{ // jg
-                        label:[ {prop: 'jgUniqueCode',label: '编号', width: '200' },
-                                {prop: 'jgProductName',label: '加工产品名', width: '200' },
-                                {prop: 'jgBatchNumber',label: '加工批次号', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '加工企业主体', width: '200' },
+                        label:[ {prop: 'jgUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'jgProductName',label: '加工产品名', width: '180' },
+                                {prop: 'jgBatchNumber',label: '加工批次号', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '加工企业主体', width: '180' },
                             ],
-                        placeholder:'编号/加工产品名/加工批次号/加工企业主体',
+                        placeholder:'编号/创建时间/加工产品名/加工批次号/加工企业主体',
                         likeParams: '',
+                        time: [],
                         type: 4,
                         totalCount: 0,
                         currentPage: 1,
                         data: []
                     },
                     '包装':{ // 包装
-                        label:[ {prop: 'bzUniqueCode',label: '编号', width: '200' },
-                                {prop: 'bzType',label: '包装类型', width: '200' },
-                                {prop: 'bzBatchCode',label: '包装批次号', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '包装企业主体', width: '200' }
+                        label:[ {prop: 'bzUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'bzType',label: '包装类型', width: '180' },
+                                {prop: 'bzBatchCode',label: '包装批次号', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '包装企业主体', width: '180' }
                             ],
-                        placeholder:'编号/包装类型/包装批次号/包装企业主体',
+                        placeholder:'编号/创建时间/包装类型/包装批次号/包装企业主体',
                         likeParams: '',
+                        time: [],
                         type: 5,
                         totalCount: 0,
                         currentPage: 1,
                         data: []
                     },
                     '检测':{ // 检测
-                        label:[ {prop: 'jcUniqueCode',label: '编号', width: '200' },
-                                {prop: 'jcProject',label: '检测项目', width: '200' },
-                                {prop: 'jcBatchCode',label: '检测产品批次', width: '200' },
-                                {prop: 'selectEnterpriseName',label: '检测企业主体', width: '200' },
+                        label:[ {prop: 'jcUniqueCode',label: '编号', width: '180' },
+                                {prop: 'insertTime',label: '创建时间', width: '180' },
+                                {prop: 'jcProject',label: '检测项目', width: '180' },
+                                {prop: 'jcBatchCode',label: '检测产品批次', width: '180' },
+                                {prop: 'selectEnterpriseName',label: '检测企业主体', width: '180' },
                             ],
-                        placeholder:'编号/检测项目/检测产品批次/检测企业主体',
+                        placeholder:'编号/创建时间/检测项目/检测产品批次/检测企业主体',
                         likeParams: '',
+                        time: [],
                         type: 7,
                         totalCount: 0,
                         currentPage: 1,
@@ -197,7 +220,7 @@
         //     }
         // },
         mounted() {
-            debugger   //为了缓存 高亮 用 watch  代替;
+               //为了缓存 高亮 用 watch  代替;
             if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
                 this.handleSearch(1);
             }
@@ -215,7 +238,13 @@
             handleSearch(val) {
                 if( !val ) val = 1;
                 let choose = this.list[this.accordionName];
-                getModuleDataList(choose.likeParams, val, choose.type).then( data => {
+
+                this.moduleDataResponseDto = [];
+                if( choose.time == null ) choose.time = [];
+                let beginTime = choose.time[0] || '';
+                let endTime = choose.time[1] || '';
+
+                getModuleDataList(choose.likeParams, val, choose.type, beginTime, endTime).then( data => {
                     choose.totalCount = data.data.pageCount * 20;
                     choose.data = data.data.moduleDataResponseDto;
                     choose.currentPage = val;
@@ -248,15 +277,30 @@
             },
             stepDialogCancel() {
                 this.$emit('stepDialogCancel');
-            }
+            },
+            formatter(row, column, cellValue, index) {
+                if( column.label == '采收日期' && row.csDate ) {
+                    return formatTime(cellValue, 'Y-m-d')
+                }
+                if( column.label == '创建时间' && row.insertTime ){
+                    return formatTime(cellValue, 'Y-m-d')
+                }
+                return cellValue;
+            },
         },
     }
 </script>
 
 <style lang="scss" scoped>
     @import '../../../styles/mixin';
+    .search-btn {
+        margin-left: 10px;
+    }
     .search {
-        padding: 20px 10px
+        padding: 20px 10px;
+    }
+    .current-code {
+        padding: 0  10px 20px 10px
     }
     .table-container {
         padding: 0 10px 10px 10px;
@@ -426,7 +470,7 @@
         z-index:8;
         position: relative;
         margin-top: 20px;
-        border: 1px dashed #ccc;
+        border: 1px dashed #ebeef5;
         border-radius: 6px;
         .current-font {
             color: #19A9E8;

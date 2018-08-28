@@ -16,7 +16,28 @@
 	position: relative;
 	margin: 0 auto;
 	.el-dialog__body {
-		padding: 10px 20px!important;
+		padding: 20px!important;
+	}
+	.el-dialog__title {
+		font-size: 16px;
+		font-weight: 500;
+	}
+	.el-dialog__header {
+		padding: 15px!important;
+		border-bottom: 1px solid #dcdfe6;
+	}
+	.el-dialog__footer {
+		text-align: center;
+		border-top: 1px solid #dcdfe6;
+		padding: 10px;
+	}
+	.el-table__body tr.current-row > td {
+		background: #EAFAF5;
+		color:#45BC9C;
+		font-weight: 500;
+	}
+	.el-table__body tr.current-row > td:first-child {
+		background: #EAFAF5 url('../../src/assets/images/v2/current-tr.png') no-repeat left top;
 	}
 }
 
@@ -60,9 +81,6 @@
 	input {
 		transition: width 0.2s;
 	}
-	.current-row {
-		border: 1px solid #409EFF;
-	}
 	.sidebar-container{
 		.menu-wrapper {
 			.el-menu {
@@ -97,14 +115,6 @@
 		a{
 		color: #333;
 		}
-	}
-	.el-dialog__footer {
-		text-align: center;
-		border-top: 1px solid #ddd;
-		padding-top: 20px;
-	}
-	.el-dialog__header {
-		border-bottom: 1px solid #ddd;
 	}
 	.el-dialog__body .el-form-item__content .el-input {
 		//width: 159px;
@@ -216,16 +226,44 @@
 
 // 左侧导航栏修改
 
+.menu-wrapper .el-submenu {
+	.el-submenu__title{
+		&:hover{
+			background: $menuBg!important;
+			color: #fff!important;
+		}
+	}
+}
+
 .el-submenu.is-active.is-opened {
 	.el-submenu__title{
-		background: $color!important;
+		background: $menuBg!important;
 		color: #fff!important;
+		i {
+			color: #fff!important;
+		}
 	}
 }
 
 .menu-wrapper .el-submenu.is-active {
 	.el-submenu__title {
-		background: $color!important;
+		background: $menuBg!important;
 		color: #fff!important;
 	}
+}
+.menu-wrapper .el-submenu {
+	.el-submenu__title {
+		&:hover i {
+			color: #fff!important;
+		}
+	}
+}
+// color
+
+.move {
+	color: #7f7f7f;
+}
+
+.el-table th > .cell {
+	color: #333!important;
 }

@@ -7,27 +7,41 @@
             :close-on-click-modal="false"
             :close-on-press-escape="false"
             :before-close="handleClose"
-            width="900px">
+            width="960px">
             <div class="step-container clearfix" v-if="toData.moduleInfos">
                 <!-- 表单内容 -->
                 <div class="middle-container">
                     <div class="search">
                         <el-input prefix-icon="el-icon-search"
-                            v-model="list.likeParams"
+                            v-model="ready.likeParams"
                             clearable
                             :placeholder="list.placeholder"
-                            size="small" style="width:200px; margin-right:20px;">
+                            size="medium" style="width:300px; margin-right:10px;">
                         </el-input>
-                        <el-button type="primary" size="small" @click="handleSearch(1)">搜索</el-button>
+                        <el-date-picker
+                            size="medium"
+                            v-model="ready.time"
+                            type="daterange"
+                            value-format="timestamp"
+                            range-separator="至"
+                            start-placeholder="开始日期"
+                            end-placeholder="结束日期">
+                        </el-date-picker>
+                        <el-button class="search-btn" type="primary" size="small" @click="handleSearchBtn(1)">搜索</el-button>
+                    </div>
+                    <div class="current-code">
                         当前选中项为 {{toDataClone.uniqueCode}}
                     </div>
                     <div
-                        class="table-container"
+                        class="content"
                         >
                         <el-table
+                            ref="currentTable"
+                            :height='tableHeight'
                             :data="list.data"
                             highlight-current-row
                             @current-change="handleChange"
+                            @row-click="handleRowClick"
                             border
                             style="width: 100%">
                             <el-table-column
@@ -36,6 +50,7 @@
                                 :prop="item.prop"
                                 :label="item.label"
                                 align="center"
+                                :formatter="formatter"
                                 :min-width="item.width">
                             </el-table-column>
                         </el-table>
@@ -52,24 +67,34 @@
 
 <script>
     import { getModuleDataList } from '@/api/v2'
-    import { deepClone, step2Class, isImg } from '@/utils'
+    import { deepClone, step2Class, isImg, formatTime, scrollMore, throttle } from '@/utils'
     export default {
         props: ['materialMapDialog'],
         data() {
             return {
                 list:{
-                    label:[ {prop: 'ylUniqueCode',label: '编号', width: '200' },
-                            {prop: 'ylName',label: '原料名称', width: '200' },
-                            {prop: 'ylSpecifications',label: '规格', width: '200' },
-                            {prop: 'selectEnterpriseName',label: '企业名称', width: '200' },
+                    label:[ {prop: 'ylUniqueCode',label: '编号', width: '180' },
+                            {prop: 'insertTime',label: '创建时间', width: '180' },
+                            {prop: 'ylName',label: '原料名称', width: '180' },
+                            {prop: 'ylSpecifications',label: '规格', width: '180' },
+                            {prop: 'selectEnterpriseName',label: '企业名称', width: '180' },
                         ],
                     placeholder:'编号/原料名称/规格/企业名称',
                     likeParams: '',
+                    time: [],
                     type: 1,
-                    totalCount: 0,
-                    currentPage: 1,
-                    data: []
-                }
+                    currentPage: 2,
+                    data: [],
+                    currentRow: null,
+                },
+                ready: {
+                    likeParams: '',
+                    time: []
+                },
+                tableHeight: 0,
+                scrollDom: '',
+                isLoaded: true,  // 是否加载完成
+                isBind: true, // 保证滚动元素只绑定一次
             }
         },
         computed: {
@@ -81,6 +106,18 @@
             },
 
         },
+        beforeMount() {
+            // 绑定 滚动事件
+                // 为了 解除绑定 再套一层函数
+            this.throttleLoad =  throttle( () => {
+                this.loadMore();
+            }, 200, 400);
+        },
+        beforeDestroy () {
+            // 移除 window 事件
+            this.scrollDom.removeEventListener('scroll', this.throttleLoad)
+            this.throttleLoad = null;
+		},
         mounted() {
             if(this.materialMapDialog && this.list.data.length == 0 ) {
                 this.handleSearch(1);
@@ -88,19 +125,50 @@
         },
         methods: {
             // 搜索数据
-            handleSearch(val) {
-                if( !val ) val = 1;
+            handleSearch(page) {
+                this.isLoaded = false;
+                if( !page ) page = this.list.currentPage;
                 let choose = this.list;
-                getModuleDataList(choose.likeParams, val, choose.type).then( data => {
-                    choose.totalCount = data.data.pageCount * 20;
-                    choose.data = data.data.moduleDataResponseDto;
-                    choose.currentPage = val;
+                if( choose.time == null ) choose.time = [];
+                let beginTime = choose.time[0] || '';
+                let endTime = choose.time[1] || '';
+                getModuleDataList(choose.likeParams, page, choose.type, beginTime, endTime).then( data => {
+                    this.isLoaded = true;
+                    choose.data = data.data.moduleDataResponseDto || [];
+                    this.scrollDom = document.querySelectorAll('.content .el-table__body-wrapper')[0];
+                    this.$nextTick( () => {
+                        this.tableHeight = choose.data.length > 3 ? 300 : 'auto';
+                        if( this.tableHeight == 'auto' ) {
+                            this.scrollDom.style.height = 'auto';
+                        }
+                        this.isBind && this.scrollDom.addEventListener('scroll', this.throttleLoad);
+                        this.isBind = false;
+                    })
                 })
+            },
+            handleSearchBtn(page) {
+                let clone = deepClone(this.ready);
+                this.list.likeParams = clone.likeParams;
+                this.list.time = clone.time;
+                this.handleSearch(page);
             },
             // 点击 tr 改变id
             handleChange(current, old) {
                 let uniqueCode = 'ylUniqueCode';
-                this.toData.uniqueCode= current[uniqueCode];
+                this.toData.uniqueCode= current ? current[uniqueCode] : '';
+                if( current ){
+                    this.toData.uniqueCode = current[uniqueCode];
+                }else {
+                    this.toData.uniqueCode = '';
+                    this.list.currentRow = null;
+                }
+            },
+            handleRowClick(row, event, column) {
+                if( this.list.currentRow && this.list.currentRow.ylUniqueCode == row.ylUniqueCode ) {
+                    this.$refs.currentTable.setCurrentRow();
+                }else {
+                    this.list.currentRow = row;
+                }
             },
             handleClose() {
                 this.$emit('handleClose');
@@ -110,6 +178,31 @@
             },
             MaterialMapDialogCancel() {
                 this.$emit('MaterialMapDialogCancel');
+            },
+            formatter(row, column, cellValue, index) {
+                if( column.label == '创建时间' && row.insertTime ){
+                    return formatTime(cellValue, 'Y-m-d')
+                }
+                return cellValue;
+            },
+            loadMore(){
+                scrollMore('.content .el-table__body-wrapper', () => {
+                    if( !this.isLoaded ) return;
+                    this.isLoaded = false;
+                    let choose = this.list;
+                    if( choose.time == null ) choose.time = [];
+                    let beginTime = choose.time[0] || '';
+                    let endTime = choose.time[1] || '';
+                    getModuleDataList(choose.likeParams, choose.currentPage, choose.type, beginTime, endTime).then(data => {
+                        this.isLoaded = true;
+                        if( data.data && data.data.moduleDataResponseDto.length == 0 ) {
+                            this.$message('没有更多数据了');
+                            return;
+                        }
+                        choose.data = choose.data.concat( data.data.moduleDataResponseDto );
+                        choose.currentPage++;
+                    })
+                })
             }
         },
     }
@@ -117,12 +210,14 @@
 
 <style lang="scss" scoped>
     @import '../../../styles/mixin';
-    .search {
-        padding: 20px 10px
+    .search-btn {
+        margin-left: 10px;
     }
-    .table-container {
+    .search, .current-code {
+        padding: 0 0 20px 10px
+    }
+    .content {
         padding: 0 10px 10px 10px;
-        max-height:300px;
         overflow: auto;
     }
     .add-farm {
@@ -287,8 +382,6 @@
     .middle-container {
         z-index:8;
         position: relative;
-        margin-top: 20px;
-        border: 1px dashed #ccc;
         border-radius: 6px;
         .current-font {
             color: #19A9E8;

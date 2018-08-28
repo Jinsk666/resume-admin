@@ -242,10 +242,10 @@
 	}
 	.container {
 		width: 98%;
-		margin: 20px auto;
+		margin: 15px auto;
 		background: #fff;
 		.title2 {
-			width: 90%;
+			width: 95%;
 			height: 50px;
 			line-height: 50px;
 			border-bottom: 1px dashed #ccc;

@@ -50,6 +50,7 @@ export const setModule = data => {
  /** 根据 url 删除 数组 */
 
  export const deleteUrl = (url, arr) => {
+    if( !arr ) return [];
     return arr.filter(val => {
         return url != val.url;
     })
@@ -124,7 +125,7 @@ export const setModule = data => {
     return true
  }
 
- // 判断编码
+ // 判断编码 存在与否
  const moduleInfosIsCode = arr => {
      for( let i = 0; i < arr.moduleInfos.length; i++ ) {
          if( arr.moduleInfos[i].moduleDataCode == '' || arr.moduleInfos[i].moduleDataCode == null ) {
@@ -133,7 +134,7 @@ export const setModule = data => {
      }
      return true;
  }
-
+// 对应数据 的必选
  export const isHaveCode = arr => {
     if( moduleInfosIsCode(arr) ){
         if( arr.resumeTemplateTwoOnes && arr.resumeTemplateTwoOnes.length > 0 ) {

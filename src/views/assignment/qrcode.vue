@@ -191,13 +191,12 @@
 
 <style lang="scss" scoped>
     .code-list {
-        padding: 20px;
+        padding: 15px;
     }
     .search-header {
-        border-radius: 6px;
         background: #FFF;
         padding: 12px;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
     }
     .code-input {
         width: 260px;
@@ -214,7 +213,6 @@
     }
     .code-container {
         background: #FFF;
-        border-radius: 6px;
         .container-top {
             .left {
                 font-weight: 400;
@@ -227,7 +225,7 @@
             line-height: 60px;
         }
         .container-table {
-            border-top: 1px solid #ddd;
+            border-top: 1px solid #ebeef5;
         }
     }
     .pagination {

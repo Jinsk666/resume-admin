@@ -12,7 +12,8 @@ img{
   	display: block;
 }
 .login-side{
-	@include wh(475px, 100%);
+	min-width: 475px;
+	height: 100%;
 	overflow-y: hidden;
 	float: left;
 	position: absolute;

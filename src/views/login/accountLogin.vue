@@ -20,6 +20,9 @@
                 <button class="to-login" id="login_btn" @click="handleLogin">登录</button>
                 <p class="backlogo"><router-link :to="{ name: 'login', query: { phone: this.phone } }">短信验证码登录</router-link>&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp;&nbsp;&nbsp;<router-link :to="{ name: 'forget', query: { phone: this.phone } }">忘记密码？</router-link></p>
             </div>
+            <div class="login-bottom">
+                Copyright 北京奥科美技术服务有限公司
+            </div>
             <!-- <img class="copyright" src="~@/assets/images/login/icon_copyright.png"/> -->
         </div>
     </div>

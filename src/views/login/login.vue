@@ -22,6 +22,9 @@
                 <button class="to-login" id="login_btn" @click="handleLogin">登录</button>
                 <p class="backlogo"><router-link :to="{ name: 'accountLogin', query: {phone: this.phone} }">账号密码登录</router-link></p>
             </div>
+            <div class="login-bottom">
+                Copyright 北京奥科美技术服务有限公司
+            </div>
             <!-- <img class="copyright" src="~@/assets/images/login/icon_copyright.png"/> -->
         </div>
     </div>

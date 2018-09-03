@@ -4,6 +4,9 @@
 	height: 100%;
 	background: #fff;
 	position: relative;
+	min-width: 1024px;
+	min-height: 600px;
+	overflow: auto;
 }
 img{
   	display: block;
@@ -102,7 +105,7 @@ input::-webkit-input-placeholder{
 .to-login{
 	@include wh(334px, 50px);
 	@include sc(16px, #fff);
-	border-radius: 25px;
+	border-radius: 6px;
 	background: $color;
 	margin-top: 38px;
 	cursor: pointer;
@@ -132,4 +135,13 @@ input::-webkit-input-placeholder{
 }
 img{
 	width: 100%;
+}
+
+.login-bottom {
+	position: absolute;
+	bottom: 20px;
+	left: 50%;
+	transform: translateX(-50%);
+	color: #a5a5a5;
+	font-size: 14px;
 }

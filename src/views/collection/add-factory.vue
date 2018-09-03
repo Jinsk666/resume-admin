@@ -67,6 +67,15 @@
                     </el-col>
 				</el-row>
 			</el-form>
+			<!-- 地图 -->
+			<!-- <input v-model="map.center">
+			<baidu-map
+			class="map"
+				:center="map.center"
+				@moving="syncCenterAndZoom"
+				@moveend="syncCenterAndZoom"
+				@zoomend="syncCenterAndZoom">
+			</baidu-map> -->
         </div>
 		<div class="footer">
 			<el-button type="primary" size="small" @click="submitForm" style="margin:20px;">保存</el-button>
@@ -107,6 +116,9 @@
 					videoUrlList: [], //视频
 					type: 1
 				},
+				map: {
+					center: '北京市'
+				}
             }
 		},
 		computed: {
@@ -199,12 +211,30 @@
                         message: '已取消删除'
                     });
                 });
+			},
+			// 地图
+			handleMapReady( { BMap, map } ) {
+				console.log(BMap, map)
+				this.map.center = '山西大学商务学院'
+				this.map.zoom = 15
+			},
+			syncCenterAndZoom(e) {
+				debugger;
+				const {lng, lat} = e.target.getCenter()
+				//this.center.lng = lng
+				//this.center.lat = lat
+				this.map.center = e.target.Yg;
+				//this.zoom = e.target.getZoom()
 			}
 		},
     }
 </script>
 
 <style lang="scss" scoped>
+	.map {
+		height: 300px;
+		width: 300px;
+	}
 	.outer-link-file {
         display: inline-block;
         margin: 0 10px;

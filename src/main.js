@@ -20,16 +20,19 @@ import '@/permission' // permission control
 import VueDND from 'awe-dnd' // 拖拽插件
 Vue.use(VueDND)
 
-import * as filters from './filters' // global filters
-
-Vue.use(ElementUI, {
-  //size: 'small'
+import BaiduMap from 'vue-baidu-map' // 百度地图
+Vue.use(BaiduMap, {
+  ak: 'ShpB32ZSyuF7pGexsWkcA4Iu9Nq5CYpO'
 })
-// 全局 filter
+
+import * as filters from './filters' // global filters
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
 
+Vue.use(ElementUI, {
+  //size: 'small'
+})
 Vue.config.productionTip = false
 
 new Vue({

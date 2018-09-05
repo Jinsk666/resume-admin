@@ -39,6 +39,24 @@
                         </el-form-item>
                     </el-col>
                 </el-row>
+				<!-- 地图位置 -->
+				<el-row>
+					<el-col :span="20">
+						<el-form-item label="企业位置 :">
+							<div class="outer-link-file">
+								<span class="one-outer-link"
+									v-if="moduleDataAddDto.mapGeneralInfoList && moduleDataAddDto.mapGeneralInfoList.length > 0"
+									>
+									经度 : {{moduleDataAddDto.mapGeneralInfoList[0].value}} &nbsp; 纬度 : {{moduleDataAddDto.mapGeneralInfoList[1].value}}
+									<span
+										@click.stop="deleteMap"
+										class="doc-delete">
+									</span>
+								</span>
+							</div>
+						</el-form-item>
+					</el-col>
+				</el-row>
 			</el-form>
         </div>
 		<div class="footer">

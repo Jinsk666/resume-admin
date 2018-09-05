@@ -65,17 +65,39 @@
 								</div>
                         </el-form-item>
                     </el-col>
+					<!-- 地图位置 -->
+					<el-row>
+						<el-col :span="20">
+							<el-form-item label="企业位置 :">
+								<el-button type="primary" size="small" @click="isShowMap = true">
+									<img class="outer-link-icon" src="@/assets/images/v2/icon-map.png" alt="">
+									选择企业位置
+								</el-button>
+								<div class="outer-link-file">
+									<span class="one-outer-link"
+										v-if="moduleDataAddDto.mapGeneralInfoList && moduleDataAddDto.mapGeneralInfoList.length > 0"
+										>
+										经度 : {{moduleDataAddDto.mapGeneralInfoList[0].value}} &nbsp; 纬度 : {{moduleDataAddDto.mapGeneralInfoList[1].value}}
+										<span
+											@click.stop="deleteMap"
+											class="el-icon-circle-close doc-delete">
+										</span>
+									</span>
+								</div>
+							</el-form-item>
+						</el-col>
+					</el-row>
 				</el-row>
 			</el-form>
 			<!-- 地图 -->
-			<!-- <input v-model="map.center">
-			<baidu-map
-			class="map"
-				:center="map.center"
-				@moving="syncCenterAndZoom"
-				@moveend="syncCenterAndZoom"
-				@zoomend="syncCenterAndZoom">
-			</baidu-map> -->
+			<base-map
+				v-if="isShowMap"
+				:value="isShowMap"
+				:mapHeight="500"
+				:dCenter="moduleDataAddDto.mapGeneralInfoList && moduleDataAddDto.mapGeneralInfoList.length > 0 ? {lng: moduleDataAddDto.mapGeneralInfoList[0].value, lat: moduleDataAddDto.mapGeneralInfoList[1].value }: null"
+				@confirm="mapConfirm"
+				@cancel="mapCancel"
+			></base-map>
         </div>
 		<div class="footer">
 			<el-button type="primary" size="small" @click="submitForm" style="margin:20px;">保存</el-button>
@@ -85,6 +107,7 @@
 </template>
 
 <script>
+	import BaseMap from '@/components/BaseMap'
 	import { addFactory, editFactory, getFactory } from '@/api/v2'
 	import { isImg } from '@/utils'
 	import { deleteUrl, generalValidate } from '@/utils/v2'
@@ -93,9 +116,11 @@
     export default {
         data() {
             return {
+				isShowMap: false, // 显示地图弹出框
 				isDataUpload: false, // 数据接入弹出框
 				imgList: [], //判断是否重复
 				moduleDataAddDto: { //上传的数据
+					mapGeneralInfoList:[],
 					documentUrlList: [],
 					enterpriseSelectName: '', //下拉框企业名称
 					externalQuoteList: [], //外部引用
@@ -116,11 +141,9 @@
 					videoUrlList: [], //视频
 					type: 1
 				},
-				map: {
-					center: '北京市'
-				}
             }
 		},
+		components: { BaseMap },
 		computed: {
 			id: function () {
 				return this.$route.query.id
@@ -213,18 +236,23 @@
                 });
 			},
 			// 地图
-			handleMapReady( { BMap, map } ) {
-				console.log(BMap, map)
-				this.map.center = '山西大学商务学院'
-				this.map.zoom = 15
+			mapConfirm(center) {
+				this.isShowMap = false;
+				console.log(center)
+				this.moduleDataAddDto.mapGeneralInfoList.push({
+					label: 'lng',
+					value: center.lng
+				})
+				this.moduleDataAddDto.mapGeneralInfoList.push({
+					label: 'lat',
+					value: center.lat
+				})
 			},
-			syncCenterAndZoom(e) {
-				debugger;
-				const {lng, lat} = e.target.getCenter()
-				//this.center.lng = lng
-				//this.center.lat = lat
-				this.map.center = e.target.Yg;
-				//this.zoom = e.target.getZoom()
+			mapCancel(is) {
+				this.isShowMap = false;
+			},
+			deleteMap() {
+				this.moduleDataAddDto.mapGeneralInfoList = [];
 			}
 		},
     }

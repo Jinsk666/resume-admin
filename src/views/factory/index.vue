@@ -58,7 +58,7 @@
 						</el-form-item>
 					</el-col>
 					<el-col :span="10">
-						<el-form-item label="企业logo : " style="position:absolute; z-index:99999;">
+						<el-form-item label="企业logo : " style="position:absolute; z-index:999;">
 							<el-upload
 								class="avatar-uploader"
 								action=""
@@ -86,23 +86,56 @@
 						</el-form-item>
 					</el-col>
 				</el-row>
+				<!-- 地图 -->
+				<el-row>
+					<el-col :span="20">
+						<el-form-item label="企业位置 :">
+							<el-button type="primary" size="small" @click="isShowMap = true">
+								<img class="outer-link-icon" src="@/assets/images/v2/icon-map.png" alt="">
+								选择企业位置
+							</el-button>
+							<div class="outer-link-file">
+								<span class="one-outer-link"
+									v-if="ruleForm.latitude && ruleForm.longitude"
+									>
+									经度 : {{ruleForm.longitude}} &nbsp; 纬度 : {{ruleForm.latitude}}
+									<span
+										@click.stop="deleteDoc"
+										class="el-icon-circle-close doc-delete">
+									</span>
+								</span>
+							</div>
+						</el-form-item>
+					</el-col>
+				</el-row>
 			</el-form>
         </div>
 		<div class="footer">
 			<el-button type="primary" size="small" @click="submitForm('ruleForm')">确认</el-button>
 		</div>
+		<base-map
+			v-if="isShowMap"
+			:value="isShowMap"
+			:mapHeight="500"
+			:dCenter="{lng: ruleForm.longitude ? ruleForm.longitude : 116.404, lat: ruleForm.latitude ? ruleForm.latitude : 39.915}"
+			@confirm="mapConfirm"
+			@cancel="mapCancel">
+		</base-map>
     </div>
 </template>
 
 <script>
 	import axios from 'axios'
+	import BaseMap from '@/components/BaseMap'
 	import { addFactoryInfo, editFactoryInfo, getCountry, getFactoryInfo, getToken  } from '@/api/login';
 	import { isImg, getByteLen } from '@/utils'
 	import { uploadImg } from '@/utils/upload'
 	import { setFactory, getRefreshToken, setRefreshToken, setToken } from '@/utils/auth'
     export default {
+		components: { BaseMap },
         data() {
             return {
+				isShowMap: false, //地图
                 ruleForm: {
 					enterpriseName: '',// 企业名称
 					address: '', // 企业地址
@@ -116,6 +149,8 @@
 					creditCode: '', //企业信用编码
 					logoImgUrl: '', //企业logo
 					description: '', // 企业简介
+					latitude: 0, // 经纬度
+					longitude: 0, // 经纬度
 				},
 				rules: {
 					enterpriseName: [
@@ -175,6 +210,7 @@
 					if (valid) {
 						if( Number(this.factoryId) ){ // 有企业
 							this.ruleForm.enterpriseInfoId = Number( this.factoryId )
+							debugger
 							editFactoryInfo(this.ruleForm).then( data => {
 								this.$message.success('修改成功');
 								this.$router.push({name: 'home'})
@@ -244,11 +280,52 @@
 				if( !data ) return;
 				this.ruleForm.logoImgUrl = data.data.fileUrl;
             },
+			// 地图
+			mapConfirm(center) {
+				this.isShowMap = false;
+				this.ruleForm.longitude = center.lng;
+				this.ruleForm.latitude = center.lat;
+				debugger
+				console.log(center)
+			},
+			mapCancel(is) {
+				this.isShowMap = false;
+			},
+			deleteDoc() {
+				this.ruleForm.longitude = 0;
+				this.ruleForm.latitude = 0;
+			}
 		},
     }
 </script>
 
 <style lang="scss" scoped>
+	.outer-link-file {
+        display: inline-block;
+        margin: 0 10px;
+        .one-outer-link {
+            display: inline-block;
+			padding: 0 10px 0 22px;
+			font-size:12px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+			margin: 0 5px;
+			height: 35px;
+			cursor: pointer;
+			line-height:32px;
+			.doc-delete {
+				color: red;
+				visibility: hidden;
+			}
+			&:hover .doc-delete{
+				visibility: inherit;
+			}
+        }
+    }
+	.outer-link-icon {
+		width: 14px;
+	}
 	.title {
 		height: 50px;
 		line-height: 50px;

@@ -65,28 +65,28 @@
 								</div>
                         </el-form-item>
                     </el-col>
+				</el-row>
 					<!-- 地图位置 -->
-					<el-row>
-						<el-col :span="20">
-							<el-form-item label="企业位置 :">
-								<el-button type="primary" size="small" @click="isShowMap = true">
-									<img class="outer-link-icon" src="@/assets/images/v2/icon-map.png" alt="">
-									选择企业位置
-								</el-button>
-								<div class="outer-link-file">
-									<span class="one-outer-link"
-										v-if="moduleDataAddDto.mapGeneralInfoList && moduleDataAddDto.mapGeneralInfoList.length > 0"
-										>
-										经度 : {{moduleDataAddDto.mapGeneralInfoList[0].value}} &nbsp; 纬度 : {{moduleDataAddDto.mapGeneralInfoList[1].value}}
-										<span
-											@click.stop="deleteMap"
-											class="el-icon-circle-close doc-delete">
-										</span>
+				<el-row>
+					<el-col :span="20">
+						<el-form-item label="企业位置 :">
+							<el-button type="primary" size="small" @click="isShowMap = true">
+								<img class="outer-link-icon" src="@/assets/images/v2/icon-map.png" alt="">
+								选择企业位置
+							</el-button>
+							<div class="outer-link-file">
+								<span class="one-outer-link"
+									v-if="moduleDataAddDto.mapGeneralInfoList && moduleDataAddDto.mapGeneralInfoList.length > 0"
+									>
+									经度 : {{moduleDataAddDto.mapGeneralInfoList[0].value}} &nbsp; 纬度 : {{moduleDataAddDto.mapGeneralInfoList[1].value}}
+									<span
+										@click.stop="deleteMap"
+										class="el-icon-circle-close doc-delete">
 									</span>
-								</div>
-							</el-form-item>
-						</el-col>
-					</el-row>
+								</span>
+							</div>
+						</el-form-item>
+					</el-col>
 				</el-row>
 			</el-form>
 			<!-- 地图 -->

@@ -7,6 +7,7 @@ const getters = {
   roles: state => state.user.roles,
   stepData: state => state.app.stepData,
   stepDataClone: state => state.app.stepDataClone,
-  accordionIndex: state => state.app.accordionIndex
+  accordionIndex: state => state.app.accordionIndex,
+  factoryCode: state => state.user.factoryCode
 }
 export default getters

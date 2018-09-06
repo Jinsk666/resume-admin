@@ -32,13 +32,27 @@
 
 <script>
     import { homeRequest } from '@/api/v2'
+    	import { getFactoryInfo  } from '@/api/login';
+
     export default {
         data() {
             return {
             }
         },
+        computed: {
+			factoryId: function () {
+				return this.$store.state.user.factoryId
+			}
+		},
         created() {
-             homeRequest()
+            getFactoryInfo(this.factoryId).then( data => {
+                debugger
+                if( data.data.creditCode ) {
+                    homeRequest()
+                }else {
+                    this.$router.push({name: 'factory'});
+                }
+            })
         },
     }
 </script>

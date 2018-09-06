@@ -9,7 +9,7 @@
                     v-model="ready.likeParams">
                 </el-input>
             </div>
-            <div class="left">
+            <!-- <div class="left">
                 <el-date-picker
                     size="medium"
                     v-model="ready.time"
@@ -20,7 +20,7 @@
                     start-placeholder="开始日期"
                     end-placeholder="结束日期">
                 </el-date-picker>
-            </div>
+            </div> -->
             <div class="left search-btn">
                   <el-button size="small" type="primary" @click="handleSearchBtn(1)">搜索</el-button>
             </div>

@@ -137,7 +137,7 @@
                                 {prop: 'zzGermplasmPrimitives',label: '种质/基原', width: '180' },
                                 {prop: 'selectEnterpriseName',label: '企业名称', width: '180' },
                             ],
-                        placeholder:'编号/创建时间/种植批次号/药材名称/种质/基原/企业名称',
+                        placeholder:'编号/种植批次号/药材名称/种质/基原/企业名称',
                         likeParams: '',
                         time: [],
                         data: []
@@ -150,7 +150,7 @@
                                 {prop: 'csDate',label: '采收日期', width: '180' },
                                 {prop: 'selectEnterpriseName',label: '采收企业主体', width: '180' },
                             ],
-                        placeholder:'编号/创建时间/采收批次号/采收部位/采收日期/采收企业主体',
+                        placeholder:'编号/采收批次号/采收部位/采收企业主体',
                         likeParams: '',
                         time: [],
                         data: []
@@ -163,7 +163,7 @@
                                 {prop: 'ccType',label: '仓库类型', width: '180' },
                                 {prop: 'selectEnterpriseName',label: '仓储企业主体', width: '180' },
                             ],
-                        placeholder:'编号/创建时间/入库批次号/仓储分类/仓库类型/仓储企业主体',
+                        placeholder:'编号/入库批次号/仓储分类/仓库类型/仓储企业主体',
                         likeParams: '',
                         time: [],
                         data: []
@@ -176,7 +176,7 @@
                                 {prop: 'jgBatchNumber',label: '加工批次号', width: '180' },
                                 {prop: 'selectEnterpriseName',label: '加工企业主体', width: '180' },
                             ],
-                        placeholder:'编号/创建时间/加工类型/加工产品名/加工批次号/加工企业主体',
+                        placeholder:'编号/加工类型/加工产品名/加工批次号/加工企业主体',
                         likeParams: '',
                         time: [],
                         data: []
@@ -189,7 +189,7 @@
                                 {prop: 'bzBatchCode',label: '包装批次号', width: '180' },
                                 {prop: 'selectEnterpriseName',label: '包装企业主体', width: '180' }
                             ],
-                        placeholder:'编号/创建时间/包装类型/包装方式/包装批次号/包装企业主体',
+                        placeholder:'编号/包装类型/包装方式/包装批次号/包装企业主体',
                         likeParams: '',
                         time: [],
                         data: []
@@ -202,7 +202,7 @@
                                 {prop: 'jcBatchCode',label: '检测产品批次', width: '180' },
                                 {prop: 'selectEnterpriseName',label: '检测企业主体', width: '180' },
                             ],
-                        placeholder:'编号/创建时间/检测类型/检测项目/检测产品批次/检测企业主体',
+                        placeholder:'编号/检测类型/检测项目/检测产品批次/检测企业主体',
                         likeParams: '',
                         time: [],
                         data: []

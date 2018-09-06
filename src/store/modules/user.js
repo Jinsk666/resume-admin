@@ -7,6 +7,7 @@ const user = {
     token: getToken(),
     username: getName(),
     factoryId: getFactory(),
+    factoryCode: ''
   },
   mutations: {
     SET_TOKEN: (state, token) => {
@@ -17,6 +18,9 @@ const user = {
     },
     SET_FACTORY:(state, id) => {
       state.factoryId = id
+    },
+    SET_FACTORYCODE:(state, code) => {
+      state.factoryCode = code
     }
   },
 

@@ -9,7 +9,7 @@ const whiteList = ['/login', '/accountLogin', '/forget'] // 不重定向白名�
 router.beforeEach((to, from, next) => {
   NProgress.start()
   if (getToken()) {
-      if( Number(getFactory()) || to.name == 'factory') {
+      if( (Number(getFactory()) || to.name == 'factory')  ) {
         next()
       }else {
         // 给提示

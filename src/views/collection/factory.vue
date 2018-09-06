@@ -3,7 +3,7 @@
         <div class="search-header clearfix">
             <div class="left code-input">
                 <el-input
-                    placeholder="编号/创建时间/企业名称/企业位置/企业负责人"
+                    placeholder="编号/企业名称/企业位置/企业负责人"
                     size="small"
                     prefix-icon="el-icon-search"
                     v-model="ready.resumeCode">

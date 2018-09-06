@@ -3,127 +3,135 @@
         <div class="phone-top">
             <img src="~@/assets/images/phone-top.png" alt="">
         </div>
-        <div class="logo-img">
-            <el-upload
-                class="logo-uploader"
-                action=""
-                :before-upload="beforeUpload"
-                :http-request="uploadFile"
-                :show-file-list="false"
-                >
-                <img v-if="stepData.imgUrlList && stepData.imgUrlList[0]" :src="stepData.imgUrlList[0].url" class="avatar">
-                <i v-else class="avatar-uploader-icon"></i>
-            </el-upload>
+        <div v-show="stepData.externalQuoteList && stepData.externalQuoteList[0] && stepData.externalQuoteList[0].externalURL">
+            <span class="step-edit iframe-edit" @click.stop="clickBase">
+                <i class="el-icon-edit"></i>
+            </span>
+            <iframe v-if="stepData.externalQuoteList && stepData.externalQuoteList[0]"  :src="stepData.externalQuoteList[0].externalURL" width="100%" height="700px;"></iframe>
         </div>
-        <div class="code">
-            <div class="code-font">溯源码 </div>
-        </div>
-        <div class="container clearfix">
-            <div class="intro">
-                <div class="intro-name ellipsis">
-                    {{stepData.resumeTemplateName || '产品名称'}}
-                </div>
-            </div>
-            <div ref="baseDom" class="intro-content clear"
-                @mouseover="enterBase"
-                @mouseout="leaveBase"
-                :class="{over: isEnterBase}"
-                >
-                <span class="step-edit right" v-show="isEnterBase" @click.stop="clickBase">
-                    <i class="el-icon-edit"></i>
-                </span>
-                <div class="bg-connect">
-                    <div class="bg-connect-left left"></div>
-                    <div class="bg-connect-right right"></div>
-                </div>
-                <!-- 第三方企业认证 -->
-                <el-row :gutter="20" class="icon-info icon-info-top" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
-                    <el-col
-						:span="24 / stepData.authenticationList.length"
-						v-for="(item, index) in stepData.authenticationList"
-                        v-if="item.label"
-						:key="index">
-						<div
-						type="text"
-						class="ellipsis"
-						:class="'factory' + index"
-						@click="thirdActive = index">{{item.label}}</div>
-					</el-col>
-                </el-row>
-				<el-row class="icon-info" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
-					<el-col
-						class="factory-intro"
-						v-show="thirdActive == index && item.value"
-						:span="24"
-						v-for="(item, index) in stepData.authenticationList"
-						:key="index">
-						{{item.value}}
-						<div class="factory-intro-top"
-						:style="stepData.authenticationList.length == 2 ? (index==1 ?'left:60%;':''): (stepData.authenticationList.length == 3 ? (index==1 ?'left:44%;':(index==2 ?'left:80%;':'')): '')"></div>
-					</el-col>
-				</el-row>
-                <!-- 基本信息 -->
-				<el-row :class="item.label == 'IMG' ? '' : 'factory-info'"
-					v-show="stepData.generalInfoList.length > 0 "
-					:span="24"
-					v-for="(item, index) in stepData.generalInfoList"
-                    v-if="item.dataType != 9"
-					:key="index">
-                    <el-col  :span="8"><div class="left">{{item.label}}</div></el-col>
-                    <el-col v-if="item.label.indexOf('企业') == -1"  :span="16"><div class="right t">{{item.value}}</div></el-col>
-                    <el-col v-else  :span="16"><div class="right t">{{stepData.enterpriseName}}</div></el-col>
-                </el-row>
-            </div>
-            <!-- 折叠开始 -->
-            <el-collapse accordion @change="handleAccordionChange" v-model="activeName" class="accordion-list">
-                <!-- 原料 -->
-                <div
-                    v-if="isMaterial === false"
+        <div v-show="!stepData.externalQuoteList || stepData.externalQuoteList.length == 0">
+            <div class="logo-img">
+                <el-upload
+                    class="logo-uploader"
+                    action=""
+                    :before-upload="beforeUpload"
+                    :http-request="uploadFile"
+                    :show-file-list="false"
                     >
-                     <el-collapse-item
-                        class="acc-li"
-                        name="-1">
-                        <template slot="title">
-                            <i class="acc-font YL"> 原料 </i>
-                        </template>
-                        <!-- 原料链接 -->
-                        <div
-                            class="acc-row acc-phone-material">
-                            <span
-                                v-for="(item, index) in stepData.resumeTemplateTwoOnes"
-                                :key="index"
-                                class="ellipsis phone-material">
-                                {{item.resumeTemplateName}}
-                            </span>
-                        </div>
-                        <!-- 原料外链 -->
-                        <div
-                            class="acc-row acc-phone-material"
-                            v-if="stepData.productImportList">
-                            <span
-                                v-for="(item, index) in stepData.productImportList"
-                                :key="(index + 1000)"
-                                class="ellipsis LL-button">
-                                <a target="_blank" :href="item.value">{{item.label}}</a>
-                            </span>
-                        </div>
-                    </el-collapse-item>
+                    <img v-if="stepData.imgUrlList && stepData.imgUrlList[0]" :src="stepData.imgUrlList[0].url" class="avatar">
+                    <i v-else class="avatar-uploader-icon"></i>
+                </el-upload>
+            </div>
+            <div class="code">
+                <div class="code-font">溯源码 </div>
+            </div>
+            <div class="container clearfix">
+                <div class="intro">
+                    <div class="intro-name ellipsis">
+                        {{stepData.resumeTemplateName || '产品名称'}}
+                    </div>
                 </div>
-               <!-- 除了原料之外的其他流程 -->
-                <div v-for="(item, index) in stepData.moduleInfos" :key="index" @mouseover="mouseOverIndex = index">
-                    <base-step
-                        :stepData="{data: item, globalPool: globalPool, index: index, mouseOverIndex: mouseOverIndex, isEnterStep: isEnterStep}"
-                        @editStep="editStep"
-                        @handleEnterStep="handleEnterStep"
-                        @handleLeaveStep="handleLeaveStep"
+                <div ref="baseDom" class="intro-content clear"
+                    @mouseover="enterBase"
+                    @mouseout="leaveBase"
+                    :class="{over: isEnterBase}"
                     >
-                    </base-step>
+                    <span class="step-edit right" v-show="isEnterBase" @click.stop="clickBase">
+                        <i class="el-icon-edit"></i>
+                    </span>
+                    <div class="bg-connect">
+                        <div class="bg-connect-left left"></div>
+                        <div class="bg-connect-right right"></div>
+                    </div>
+                    <!-- 第三方企业认证 -->
+                    <el-row :gutter="20" class="icon-info icon-info-top" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
+                        <el-col
+                            :span="24 / stepData.authenticationList.length"
+                            v-for="(item, index) in stepData.authenticationList"
+                            v-if="item.label"
+                            :key="index">
+                            <div
+                            type="text"
+                            class="ellipsis"
+                            :class="'factory' + index"
+                            @click="thirdActive = index">{{item.label}}</div>
+                        </el-col>
+                    </el-row>
+                    <el-row class="icon-info" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
+                        <el-col
+                            class="factory-intro"
+                            v-show="thirdActive == index && item.value"
+                            :span="24"
+                            v-for="(item, index) in stepData.authenticationList"
+                            :key="index">
+                            {{item.value}}
+                            <div class="factory-intro-top"
+                            :style="stepData.authenticationList.length == 2 ? (index==1 ?'left:60%;':''): (stepData.authenticationList.length == 3 ? (index==1 ?'left:44%;':(index==2 ?'left:80%;':'')): '')"></div>
+                        </el-col>
+                    </el-row>
+                    <!-- 基本信息 -->
+                    <el-row :class="item.label == 'IMG' ? '' : 'factory-info'"
+                        v-show="stepData.generalInfoList.length > 0 "
+                        :span="24"
+                        v-for="(item, index) in stepData.generalInfoList"
+                        v-if="item.dataType != 9"
+                        :key="index">
+                        <el-col  :span="8"><div class="left">{{item.label}}</div></el-col>
+                        <el-col v-if="item.label.indexOf('企业') == -1"  :span="16"><div class="right t">{{item.value}}</div></el-col>
+                        <el-col v-else  :span="16"><div class="right t">{{stepData.enterpriseName}}</div></el-col>
+                    </el-row>
                 </div>
-            </el-collapse>
+                <!-- 折叠开始 -->
+                <el-collapse accordion @change="handleAccordionChange" v-model="activeName" class="accordion-list">
+                    <!-- 原料 -->
+                    <div
+                        v-if="isMaterial === false"
+                        >
+                        <el-collapse-item
+                            class="acc-li"
+                            name="-1">
+                            <template slot="title">
+                                <i class="acc-font YL"> 原料 </i>
+                            </template>
+                            <!-- 原料链接 -->
+                            <div
+                                class="acc-row acc-phone-material">
+                                <span
+                                    v-for="(item, index) in stepData.resumeTemplateTwoOnes"
+                                    :key="index"
+                                    class="ellipsis phone-material">
+                                    {{item.resumeTemplateName}}
+                                </span>
+                            </div>
+                            <!-- 原料外链 -->
+                            <div
+                                class="acc-row acc-phone-material"
+                                v-if="stepData.productImportList">
+                                <span
+                                    v-for="(item, index) in stepData.productImportList"
+                                    :key="(index + 1000)"
+                                    class="ellipsis LL-button">
+                                    <a target="_blank" :href="item.value">{{item.label}}</a>
+                                </span>
+                            </div>
+                        </el-collapse-item>
+                    </div>
+                <!-- 除了原料之外的其他流程 -->
+                    <div v-for="(item, index) in stepData.moduleInfos" :key="index" @mouseover="mouseOverIndex = index">
+                        <base-step
+                            :stepData="{data: item, globalPool: globalPool, index: index, mouseOverIndex: mouseOverIndex, isEnterStep: isEnterStep}"
+                            @editStep="editStep"
+                            @handleEnterStep="handleEnterStep"
+                            @handleLeaveStep="handleLeaveStep"
+                        >
+                        </base-step>
+                    </div>
+                </el-collapse>
+            </div>
+            <transition name="fade" mode="out-in">
+                <div id="mask" v-show="isEnterBase || isEnterStep"></div>
+            </transition>
         </div>
-        <transition name="fade" mode="out-in">
-            <div id="mask" v-show="isEnterBase || isEnterStep"></div>
-        </transition>
         <div class="phone-bottom">
             <img src="~@/assets/images/phone-bottom.png" alt="">
         </div>
@@ -160,6 +168,9 @@
             isMaterial() {
                 return this.$store.state.app.isMaterial
             },
+        },
+        mounted() {
+            debugger
         },
         methods: {
             // 上传
@@ -212,6 +223,14 @@
 
 <style lang="scss" scoped>
     @import '../../../styles/mixin';
+    #phone {
+        position: relative;
+        .iframe-edit {
+            position: absolute;
+            top: 19px;
+            left: 172px;
+        }
+    }
     .phone-top, .phone-bottom {
         width: 375px;
         img {

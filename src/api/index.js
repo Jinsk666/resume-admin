@@ -26,13 +26,15 @@ export function getCodeDetailsList(batchCode, beginTime, endTime, likeParams, pa
   })
 }
 // 履历列表
-export function getResumeList(likeParams, page) {
+export function getResumeList(likeParams, page, beginTime, endTime) {
     return request({
       url: '/resume/V2.1/resumeDataTwoOne/getList',
       method: 'post',
       data: {
           likeParams,
-          page
+          page,
+          beginTime,
+          endTime
       }
     })
 }

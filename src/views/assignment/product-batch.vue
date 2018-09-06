@@ -6,22 +6,23 @@
                     size="medium"
                     placeholder="模板名称/编号"
                     prefix-icon="el-icon-search"
-                    v-model="search.likeParams">
+                    v-model="ready.likeParams">
                 </el-input>
             </div>
-            <!-- <div class="left">
+            <div class="left">
                 <el-date-picker
-                    size="small"
-                    v-model="search.time"
+                    size="medium"
+                    v-model="ready.time"
                     type="daterange"
+                    :default-time="['00:00:00', '23:59:00']"
                     value-format="timestamp"
                     range-separator="至"
                     start-placeholder="开始日期"
                     end-placeholder="结束日期">
                 </el-date-picker>
-            </div> -->
+            </div>
             <div class="left search-btn">
-                  <el-button size="small" type="primary" @click="handleSearch(1)">搜索</el-button>
+                  <el-button size="small" type="primary" @click="handleSearchBtn(1)">搜索</el-button>
             </div>
         </div>
         <div class="block">
@@ -50,12 +51,12 @@
                                 <p class="circle"><img src="~@/assets/images/resume/icon1.png" alt=""></p>
                                 <p>赋码</p>
                             </li>
-                            <!-- <li>
+                            <li>
                                 <router-link :to="{name: 'assignmentAdd', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon2.png" alt=""></p>
                                     <p>编辑</p>
                                 </router-link>
-                            </li> -->
+                            </li>
                             <li @click="handlePreview(item.uniqueCode)">
                                 <p class="circle"><img src="~@/assets/images/resume/icon3.png" alt=""></p>
                                 <p>预览</p>
@@ -117,13 +118,18 @@
 <script>
     import { getResumeList, deleteResume } from '@/api'
     import mapCodeDialog from '@/components/v2/assignment/MapCodeDialog'
-    import { formatTime, throttle } from '@/utils'
+    import { formatTime, throttle, deepClone } from '@/utils'
     export default {
         components: { mapCodeDialog },
         data() {
             return {
                 search: {
                     likeParams: '',
+                    time: [],
+                },
+                ready: {
+                    likeParams: '',
+                    time: [],
                 },
                 loading: '',
                 resumeList: [],
@@ -158,11 +164,20 @@
             })
         },
         methods: {
-            handleSearch(){
-                getResumeList(this.search.likeParams, 1).then(data => {
+            handleSearch(val){
+                if( this.search.time == null ) this.search.time = [];
+                let beginTime = this.search.time[0] || '';
+                let endTime = this.search.time[1] || '';
+                getResumeList(this.search.likeParams, val, beginTime, endTime).then(data => {
+                    this.currentPage = 2;
                     this.resumeList = data.data.resumeDataTwoOneResponseList;
                     this.isLoaded = true; // 可以继续加载
                 })
+            },
+            handleSearchBtn() {
+                let clone = deepClone(this.ready);
+                this.search = clone;
+                this.handleSearch(1);
             },
             handlePreview(code){
                 //测试地址
@@ -206,7 +221,10 @@
                     this.loading = this.$loading({text:'加载中...'});
                     this.isLoaded = false;
                     //写后台加载数据的函数
-                    getResumeList('', this.currentPage).then(data => {
+                    if( this.search.time == null ) this.search.time = [];
+                    let beginTime = this.search.time[0] || '';
+                    let endTime = this.search.time[1] || '';
+                    getResumeList(this.search.likeParams, this.currentPage, beginTime, endTime).then(data => {
                         this.loading.close();
                         if( data.code != '0000') return;
                         if( data.data.resumeDataTwoOneResponseList.length == 0 ){
@@ -246,6 +264,7 @@
     }
     .code-input {
         width: 230px;
+        margin-right: 10px;
     }
     .block {
         float: left;

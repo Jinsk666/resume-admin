@@ -22,6 +22,7 @@
                             size="medium"
                             v-model="ready.time"
                             type="daterange"
+                            :default-time="['00:00:00', '23:59:00']"
                             value-format="timestamp"
                             range-separator="至"
                             start-placeholder="开始日期"

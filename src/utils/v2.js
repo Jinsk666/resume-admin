@@ -80,10 +80,11 @@ export const setModule = data => {
     }
  }
  // 获取原料 数据
- export const materialData = code => {
+ export const materialData = (code, globalPool) => {
     return new Promise( (resolve, reject) => {
         getModuleData(code, 1).then( data => {
             resolve(data.data);
+            globalPool[code] = data.data;
         }).catch( err => {
             reject(err);
         })
@@ -134,14 +135,19 @@ export const setModule = data => {
      }
      return true;
  }
-// 对应数据 的必选
+// 对应数据 的必选   ！！有外链的原料不判断
  export const isHaveCode = arr => {
     if( moduleInfosIsCode(arr) ){
         if( arr.resumeTemplateTwoOnes && arr.resumeTemplateTwoOnes.length > 0 ) {
             for( let i = 0; i < arr.resumeTemplateTwoOnes.length; i++ ) {
                 let row = arr.resumeTemplateTwoOnes[i];
-                if( !row.uniqueCode ) return false;
-                if( !moduleInfosIsCode(row) ) return false;
+                debugger
+                if( row.externalQuoteList && row.externalQuoteList[0] && row.externalQuoteList[0].externalURL ) { // 如果有外链 那就不判断
+                    continue;
+                }else {
+                    if( !row.uniqueCode ) return false;
+                    if( !moduleInfosIsCode(row) ) return false;
+                }
             }
         }
     }else {

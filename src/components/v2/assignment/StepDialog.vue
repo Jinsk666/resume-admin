@@ -56,6 +56,7 @@
                             v-model="list[toData.moduleInfos[accordionIndex].moduleName].time"
                             type="daterange"
                             value-format="timestamp"
+                            :default-time="['00:00:00', '23:59:00']"
                             range-separator="至"
                             start-placeholder="开始日期"
                             end-placeholder="结束日期">

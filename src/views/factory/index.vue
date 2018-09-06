@@ -151,6 +151,7 @@
 					description: '', // 企业简介
 					latitude: 0, // 经纬度
 					longitude: 0, // 经纬度
+					tradeType: 1
 				},
 				rules: {
 					enterpriseName: [
@@ -208,6 +209,8 @@
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
+						// 如果 tradeType == 0 要给 1
+						if( this.ruleForm.tradeType == 0 ) this.ruleForm.tradeType = 1;
 						if( Number(this.factoryId) ){ // 有企业
 							this.ruleForm.enterpriseInfoId = Number( this.factoryId )
 							debugger

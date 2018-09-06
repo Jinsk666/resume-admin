@@ -110,6 +110,7 @@
                     resumeTemplateTwoOnes:[],
                     productImportList: [], // 原料外链接
                     skinInfoCode: '', // 皮肤
+                    externalQuoteList:[]
                 },
                 // 基本原料
                 material: {
@@ -117,7 +118,8 @@
                     imgUrlList: [],
                     logoUrl: '',
                     generalInfoList: [],
-                    moduleInfos: []
+                    moduleInfos: [],
+                    externalQuoteList: []
                 },
                 addStepIndex: 0, //添加步骤的下标
                 baseStep: ['采购','种植','采收', '仓储', '加工', '包装', '检测'],
@@ -162,19 +164,17 @@
                     }
                 }
             },
-            isEdit() {
-                return this.$route.query.code
-            },
             templateCode() { // 模板 code
                 return this.$route.query.templateCode
             },
-            code() { // 履历 code
+            code() { // 履历 code  有 code 就相当于是编辑
                 return this.$route.query.code
             }
         },
         mounted() {
             
         },
+        // templateCode 模版Id 表示从模版进入   code 履历Id 表示修改履历
         created: function() {
             this.$store.commit('IS_MATERIAL', false);
             this.loading = this.$loading({text:'拼命加载中...'});
@@ -237,13 +237,36 @@
                 this.$store.commit('SWITCH_STEPDATA', this.stroeData);
                 this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
             },
-            handleMaterialModule(index) {
+            async handleMaterialModule(index) { //TODO:
                 this.productModuleIndex = index;
                 this.$store.commit('IS_MATERIAL', index);
-
+                // 根据原料 id 查找原料信息
                 let clone = deepClone(this.stroeData);
                 this.$store.commit('SWITCH_STEPDATA', this.stroeData);
                 this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
+                // stepData 变话之后 立刻调用  这里的 storeData == stepData
+                dataPool(clone.moduleInfos, this.globalPool);
+                // 这里也需要 并发 原料 的 步骤
+                    // 这里需要判断是否是有链接
+                    //这里需要 调取原料  stepData 已经变为原料
+                if( this.stepData.uniqueCode ) {
+                    if( !this.globalPool[this.stepData.uniqueCode] ) {
+                        var data = await materialData(this.stepData.uniqueCode, this.globalPool)
+                    }else {
+                        var data = this.globalPool[this.stepData.uniqueCode];
+                    }
+                    this.stepData.generalInfoList = data.generalInfoList;
+                    this.stepData.imgUrlList = data.imgUrlList;
+                    this.stepData.logoUrl = data.logoUrl;
+                    this.stepData.enterpriseName = data.enterpriseSelectName;
+                    this.stepData.resumeTemplateName = data.moduleName;
+                    if( data.externalQuoteList ) this.stepData.externalQuoteList = data.externalQuoteList;
+                    else this.stepData.externalQuoteList = [];
+                    this.$store.commit('SWITCH_STEPDATA', this.stepData);
+                    let clones = deepClone(this.stepData);
+                    this.$store.commit('SWITCH_STEPDATA_CLONE', clones);
+                    this.stroeData = this.stepData;
+                }
             },
             // 点击折叠面板
             // handleAccordionChange(val) {
@@ -314,12 +337,12 @@
                     this.$message.error( '原料以及流程环节必须选择信息' );
                     return;
                 }
-                if( !this.isEdit || this.$route.query.add) {
+                if( !this.code && this.templateCode ) { // 模版保存
                     addResume(this.resumeTemplateTwoOne).then( data => {
                         this.$message.success('保存成功.')
                         this.$router.push({name: 'assignmentProductBatch'});
                     })
-                }else {
+                }else { // 履历修改
                     editResume(this.resumeTemplateTwoOne).then( data => {
                         this.$message.success('保存成功.')
                         this.$router.push({name: 'assignmentProductBatch'});
@@ -360,16 +383,18 @@
                 }
                 this.materialMapDialog = false;
                 //  请求原料数据 扔进数据池
-                materialData(this.stepData.uniqueCode).then( data => {
-                    debugger
+                materialData(this.stepData.uniqueCode, this.globalPool).then( data => {
                     this.stepData.generalInfoList = data.generalInfoList;
                     this.stepData.imgUrlList = data.imgUrlList;
                     this.stepData.logoUrl = data.logoUrl;
                     this.stepData.enterpriseName = data.enterpriseSelectName;
                     this.stepData.resumeTemplateName = data.moduleName;
+                    if( data.externalQuoteList ) this.stepData.externalQuoteList = data.externalQuoteList;
+                    else this.stepData.externalQuoteList = [];
+                    this.$store.commit('SWITCH_STEPDATA', this.stepData);
                     let clone = deepClone(this.stepData);
                     this.$store.commit('SWITCH_STEPDATA_CLONE', clone);
-                    this.stroeData = clone;
+                    this.stroeData = this.stepData;
                 })
             },
             MaterialMapDialogCancel() {

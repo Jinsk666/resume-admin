@@ -239,6 +239,7 @@
 			mapConfirm(center) {
 				this.isShowMap = false;
 				console.log(center)
+				this.moduleDataAddDto.mapGeneralInfoList = [];
 				this.moduleDataAddDto.mapGeneralInfoList.push({
 					label: 'lng',
 					value: center.lng

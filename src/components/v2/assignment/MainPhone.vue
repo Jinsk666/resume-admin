@@ -170,7 +170,6 @@
             },
         },
         mounted() {
-            debugger
         },
         methods: {
             // 上传

@@ -399,7 +399,7 @@
             },
             //删除步骤
             deleteStep(index) {
-                if( this.stepData.moduleInfos.length == 1 ) {
+                if( this.stepData.moduleInfos.length == 1 && this.isMaterial === false) {
                     this.$message('至少有一个流程');
                     return;
                 }

@@ -31,7 +31,7 @@
                         <el-button class="search-btn" type="primary" size="small" @click="handleSearchBtn(1)">搜索</el-button>
                     </div>
                     <div class="current-code">
-                        当前选中项为 {{toDataClone.uniqueCode}}
+                        上次保存的数据编码为  {{toDataClone.uniqueCode}}
                     </div>
                     <div
                         class="content"

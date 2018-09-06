@@ -266,6 +266,8 @@
                     let clones = deepClone(this.stepData);
                     this.$store.commit('SWITCH_STEPDATA_CLONE', clones);
                     this.stroeData = this.stepData;
+                }else {
+                    this.materialMapDialog = true;
                 }
             },
             // 点击折叠面板

@@ -64,7 +64,7 @@
                         <el-button class="search-btn" type="primary" size="small" @click="handleSearch(1)">搜索</el-button>
                     </div>
                     <div class="current-code">
-                        当前选中数据 编号为 {{toDataClone.moduleInfos[accordionIndex].moduleDataCode}}
+                        上次保存的数据编码为   {{toDataClone.moduleInfos[accordionIndex].moduleDataCode}}
                     </div>
                     <div
                         class="table-container"

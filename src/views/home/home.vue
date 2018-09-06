@@ -46,7 +46,6 @@
 		},
         created() {
             getFactoryInfo(this.factoryId).then( data => {
-                debugger
                 if( data.data.creditCode ) {
                     homeRequest()
                 }else {

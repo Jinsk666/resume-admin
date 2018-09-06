@@ -136,6 +136,10 @@
                 this.handleSearch(page)
             },
             moduleDialogSure() {
+                if( !this.code ) {
+                    this.$message('请选择一条数据');
+                    return;
+                }
                 this.$emit('moduleDialogSure', this.code)
             },
             moduleDialogCancel() {
@@ -149,7 +153,8 @@
             },
             handleChange(current, old) {
                 console.log(current)
-                this.code = current.uniqueCode;
+                if( current ) this.code = current.uniqueCode;
+                else this.code = '';
             },
             loadMore(){
                 scrollMore('.content .el-table__body-wrapper', () => {

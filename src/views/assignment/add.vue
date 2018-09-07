@@ -89,6 +89,7 @@
         components: {/* ThemePicker, */  MainPhone, StepDialog, BaseDialog, ModuleDialog, MaterialsDialog },
         data() {
             return {
+                //themeColor: [{color: '#45BC9C', name: 'theme1'}, {color: '#00ACE9', name: 'theme2'}, {color: '#4A90E2', name: 'theme3'}, {color: '#5DBA19', name: 'theme4'}, {color: '#FFD117', name: 'theme5'}],
                 globalPool: {}, //承载数据的数据池  可能很大 不放入 store
                 mouseoverMaterialIndex: -1,
                 loading: '',
@@ -199,6 +200,13 @@
                 }else if(this.code) {
                     getResumeDetails( this.code ).then(data => {
                         data.data.resumeTemplateTwoOnes = data.data.resumeDataTwoOnes;
+
+                        // 置入皮肤颜色
+                        if( data.data.skinInfoCode ) {
+                            let phone = document.getElementById('phone');
+                            phone.className = data.data.skinInfoCode;
+                        }
+
                         this.loading.close();
                         let clone = deepClone(data.data);
                         this.resumeTemplateTwoOne = clone;
@@ -215,6 +223,12 @@
             }
         },
         methods: {
+            // // 主题切换
+            // handleTheme(name) {
+            //     this.resumeTemplateTwoOne.skinInfoCode = name;
+            //     let phone = document.getElementById('phone');
+            //     phone.className = name;
+            // },
             //  其实可以 将 stepDialog 放入 store
             editStep(index, name) {
                 this.stepDialog = true;
@@ -408,6 +422,36 @@
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
+    .left-container {
+        position: relative;
+        height: calc(100% + 40px);
+        width: 260px;
+        position: absolute;
+        left: 0;
+        top: -20px;
+        background: #FFF;
+        text-align: center;
+        border-right: 1px solid #e6e6e6;
+        transition: width .28s;
+        .left-tabs {
+            overflow: hidden;
+        }
+        .toggle-item {
+            width: 24px;
+            position: absolute;
+            right: -24px;
+            top: 280px;
+            cursor: pointer;
+        }
+        .round {
+            float: left;
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            margin: 6px;
+            cursor: pointer;
+        }
+    }
 
     .btn-op{width:105px;height:45px;line-height: 45px;display: inline-block;font-size: 18px;text-align: center;}
     .borderright{border-right: 1px solid;}

@@ -131,13 +131,16 @@
 		.el-tabs__nav {
 			width: 100%;
 			.el-tabs__item {
-				width: 50%;
+				width: 100%;
 			}
 			.el-tabs__item:first-child {
 				border-left: 0;
 			}
 			.el-tabs__item:last-child {
 				border-right: 0;
+			}
+			>div {
+				background: #e7e7e7;
 			}
 		}
 		.el-tabs__nav-next, .el-tabs__nav-prev {

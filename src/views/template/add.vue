@@ -8,6 +8,52 @@
                 >
             </main-phone>
         </div>
+        <div class="left-container" :class="{'left-active': isLeftActive}">
+            <div class="toggle-item" @click="isLeftActive = !isLeftActive">
+                <img v-if="!isLeftActive" src="@/assets/images/left-arrow.png" alt="">
+                <img v-else src="@/assets/images/right-arrow.png" alt="">
+            </div>
+            <div class="left-tabs">
+                <el-tabs type="border-card">
+                    <!-- 手机展示主题 -->
+                    <el-tab-pane label="风格设置">
+                        <div class="theme-container">
+                            <span
+                                v-for="(item, index) in themeColor"
+                                :key="index"
+                                :style="{background: item.color}"
+                                @click="handleTheme(item.name)"
+                                class="round">
+
+                            </span>
+                        </div>
+                    </el-tab-pane>
+                    <!-- 显示隐藏 以及 位置 -->
+                    <!-- <el-tab-pane label="模块设置">
+                        <ul class="is-more">
+                            <li
+                                class="clearfix"
+                                v-for="(item, index) in stroeData.moduleInfos"
+                                v-dragging="{ item: item, list: stroeData.moduleInfos, group: 'stroeData' }"
+                                :key="index">
+                                <div class="left name">
+                                    <span>{{item.moduleName}}</span>
+                                </div>
+                                <div class="left display">
+                                    <el-switch
+                                        v-model="item.display"
+                                        active-value=1
+                                        inactive-value=0
+                                        active-color="#45BC9c"
+                                        inactive-color="#CDCDCD">
+                                    </el-switch>
+                                </div>
+                            </li>
+                        </ul>
+                    </el-tab-pane> -->
+                </el-tabs>
+            </div>
+        </div>
         <div class="right-container">
             <div class="top-btn">
                 <el-button v-if="!isView" type="primary" size="small" @click="saveData">保 存</el-button>
@@ -93,6 +139,7 @@
         components: {  MainPhone, StepDialog, BaseDialog },
         data() {
             return {
+                themeColor: [{color: '#45BC9C', name: 'theme1'}, {color: '#00ACE9', name: 'theme2'}, {color: '#4A90E2', name: 'theme3'}, {color: '#5DBA19', name: 'theme4'}, {color: '#FFD117', name: 'theme5'}],
                 mouseoverMaterialIndex: -1,
                 loading: '',
                 isLoadingEnd: false, //手机显示开关 第一个接口加载完毕是临界点
@@ -110,6 +157,7 @@
                     uniqueCode: '', // 唯一编码
                     // 原料列表
                     resumeTemplateTwoOnes:[],
+                    skinInfoCode: '',
                 },
                 // 基本原料
                 material: {
@@ -119,7 +167,8 @@
                     logoUrl: '', // logo
                     generalInfoList: [],
                     moduleInfos: [],
-                    uniqueCode:''
+                    uniqueCode: '',
+                    skinInfoCode: ''
                 },
                 addStepIndex: 0, //添加步骤的下标
                 baseStep: ['种植','采收', '仓储', '加工', '包装', '检测'],
@@ -127,6 +176,7 @@
                 stepDialog: false, // 添加步骤弹出框
                 materialDialog: false, // 原料名称弹出框
                 materialName: '', // 新添加的原料名称
+                isLeftActive: false,
             }
         },
         computed: {
@@ -204,6 +254,12 @@
                     getModuleDetails( this.isEdit ).then(data => {
                         this.loading.close();
                         if( data.data ) {
+                            // 置入皮肤颜色
+                            if( data.data.skinInfoCode ) {
+                                let phone = document.getElementById('phone');
+                                phone.className = data.data.skinInfoCode;
+                            }
+
                             this.noEditData = data.data;
                             let clone = deepClone(data.data);
                             this.resumeTemplateTwoOne = clone;
@@ -221,6 +277,12 @@
             })
         },
         methods: {
+            // 主题切换
+            handleTheme(name) {
+                this.resumeTemplateTwoOne.skinInfoCode = name;
+                let phone = document.getElementById('phone');
+                phone.className = name;
+            },
             //  其实可以 将 stepDialog 放入 store
             editStep(index) {
                 this.stepDialog = true;

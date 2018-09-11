@@ -68,6 +68,7 @@
                     </div>
                     <div
                         class="table-container"
+                        :class="index + 'table-container'"
                         v-for="(item, index) in toData.moduleInfos"
                         v-show="item.moduleName == accordionName && index == accordionIndex"
                         :key="index">
@@ -76,6 +77,7 @@
                             highlight-current-row
                             @current-change="handleChange"
                             border
+                            height="288"
                             style="width: 100%">
                             <el-table-column
                                 v-for="(item, index) in list[item.moduleName].label"
@@ -100,12 +102,12 @@
 
 <script>
     import { getModuleDataList } from '@/api/v2'
-    import { deepClone, step2Class, isImg, formatTime } from '@/utils'
+    import { deepClone, step2Class, isImg, formatTime, throttle, scrollMore } from '@/utils'
     export default {
         props: ['stepDialog'],
         data() {
             return {
-                list:{ // 这里必须给 中文名字 或者 英文缩写  因为 要包括所有流程
+                list: { // 这里必须给 中文名字 或者 英文缩写  因为 要包括所有流程
                     '种植':{ // zz
                         label:[ {prop: 'zzUniqueCode',label: '编号', width: '180' },
                                 {prop: 'insertTime',label: '创建时间', width: '180' },
@@ -117,8 +119,8 @@
                         likeParams: '',
                         time: [],
                         type: 2,
-                        totalCount: 0,
-                        currentPage: 1,
+                        totalCount: 1,
+                        currentPage: 2,
                         data: []
                     },
                     '采收':{ //cs
@@ -132,8 +134,8 @@
                         likeParams: '',
                         time: [],
                         type: 3,
-                        totalCount: 0,
-                        currentPage: 1,
+                        totalCount: 1,
+                        currentPage: 2,
                         data: []
                     },
                     '仓储':{ // cc
@@ -147,8 +149,8 @@
                         likeParams: '',
                         time: [],
                         type: 6,
-                        totalCount: 0,
-                        currentPage: 1,
+                        totalCount: 1,
+                        currentPage: 2,
                         data: []
                     },
                     '加工':{ // jg
@@ -162,8 +164,8 @@
                         likeParams: '',
                         time: [],
                         type: 4,
-                        totalCount: 0,
-                        currentPage: 1,
+                        totalCount: 1,
+                        currentPage: 2,
                         data: []
                     },
                     '包装':{ // 包装
@@ -177,8 +179,8 @@
                         likeParams: '',
                         time: [],
                         type: 5,
-                        totalCount: 0,
-                        currentPage: 1,
+                        totalCount: 1,
+                        currentPage: 2,
                         data: []
                     },
                     '检测':{ // 检测
@@ -192,11 +194,12 @@
                         likeParams: '',
                         time: [],
                         type: 7,
-                        totalCount: 0,
-                        currentPage: 1,
+                        totalCount: 1,
+                        currentPage: 2,
                         data: []
                     },
                 },
+                isLoaded: true,
             }
         },
         computed: {
@@ -220,11 +223,32 @@
         //         }
         //     }
         // },
+        beforeMount() {
+            // 绑定 滚动事件
+                // 为了 解除绑定 再套一层函数
+            this.throttleLoad =  throttle( () => {
+                this.loadMore();
+            }, 200, 400);
+        },
+        beforeDestroy () {
+            // 移除 window 事件
+            this.scrollDom.forEach( val => {
+                val.removeEventListener('scroll', this.throttleLoad)
+            })
+            this.throttleLoad = null;
+		},
         mounted() {
                //为了缓存 高亮 用 watch  代替;
             if(this.stepDialog && this.list[this.accordionName].data.length == 0 ) {
                 this.handleSearch(1);
             }
+            //  绑定滚动事件
+            this.$nextTick(() => {
+                this.scrollDom = document.querySelectorAll('.table-container .el-table__body-wrapper');
+                this.scrollDom.forEach((val) => {
+                    val.addEventListener('scroll', this.throttleLoad);
+                })
+            })
         },
         methods: {
             //弹出框步骤按钮点击
@@ -248,7 +272,7 @@
                 getModuleDataList(choose.likeParams, val, choose.type, beginTime, endTime).then( data => {
                     choose.totalCount = data.data.pageCount * 20;
                     choose.data = data.data.moduleDataResponseDto;
-                    choose.currentPage = val;
+                    choose.currentPage = val + 1;
                 })
             },
             // 点击 tr 改变id
@@ -288,6 +312,26 @@
                 }
                 return cellValue;
             },
+            // 加载更多
+            loadMore(){
+                scrollMore('.table-container .el-table__body-wrapper', () => {
+                    if( !this.isLoaded ) return;
+                    this.isLoaded = false;
+                    let choose = this.list[this.accordionName];
+                    if( choose.time == null ) choose.time = [];
+                    let beginTime = choose.time[0] || '';
+                    let endTime = choose.time[1] || '';
+                    getModuleDataList(choose.likeParams, choose.currentPage, choose.type, beginTime, endTime).then(data => {
+                        this.isLoaded = true;
+                        if( data.data && data.data.moduleDataResponseDto.length == 0 ) {
+                            this.$message('没有更多数据了');
+                            return;
+                        }
+                        choose.data = choose.data.concat( data.data.moduleDataResponseDto );
+                        choose.currentPage++;
+                    })
+                }, this.accordionIndex)
+            }
         },
     }
 </script>

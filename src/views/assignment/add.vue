@@ -101,7 +101,7 @@
                     resumeTemplateName: '',//产品名称
                     imgUrlList: [], // 产品图片
                     logoUrl: '', // logo
-                    skinInfoCode: '', //皮肤
+                    backColor: '', //皮肤
                     templateCode: '', //模板
                     uniqueCode: '', // 唯一编码
                     generalInfoList:[], //产品字段
@@ -110,7 +110,6 @@
                     // 原料列表
                     resumeTemplateTwoOnes:[],
                     productImportList: [], // 原料外链接
-                    skinInfoCode: '', // 皮肤
                     externalQuoteList:[]
                 },
                 // 基本原料
@@ -202,9 +201,9 @@
                         data.data.resumeTemplateTwoOnes = data.data.resumeDataTwoOnes;
 
                         // 置入皮肤颜色
-                        if( data.data.skinInfoCode ) {
+                        if( data.data.backColor ) {
                             let phone = document.getElementById('phone');
-                            phone.className = data.data.skinInfoCode;
+                            phone.className = data.data.backColor;
                         }
 
                         this.loading.close();
@@ -225,7 +224,7 @@
         methods: {
             // // 主题切换
             // handleTheme(name) {
-            //     this.resumeTemplateTwoOne.skinInfoCode = name;
+            //     this.resumeTemplateTwoOne.backColor = name;
             //     let phone = document.getElementById('phone');
             //     phone.className = name;
             // },

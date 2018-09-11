@@ -140,8 +140,8 @@ export const isNumber = val => {
  * @param ref => .resume-top .el-select-dropdown__wrap
  * @param cb  =>  callback
  */
-export const scrollMore = (ref, cb) => {
-	let dom = document.querySelectorAll(ref)[0];
+export const scrollMore = (ref, cb, index = 0) => {
+	let dom = document.querySelectorAll(ref)[index];
 	var scrollTop = dom.scrollTop; // 滑动高度
 	var windowHeight = dom.clientHeight; //可视区的高度
 	var scrollHeight = dom.scrollHeight; //滚动条的总高度

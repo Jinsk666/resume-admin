@@ -157,7 +157,7 @@
                     uniqueCode: '', // 唯一编码
                     // 原料列表
                     resumeTemplateTwoOnes:[],
-                    skinInfoCode: '',
+                    backColor: '',
                 },
                 // 基本原料
                 material: {
@@ -168,7 +168,7 @@
                     generalInfoList: [],
                     moduleInfos: [],
                     uniqueCode: '',
-                    skinInfoCode: ''
+                    backColor: ''
                 },
                 addStepIndex: 0, //添加步骤的下标
                 baseStep: ['种植','采收', '仓储', '加工', '包装', '检测'],
@@ -255,9 +255,9 @@
                         this.loading.close();
                         if( data.data ) {
                             // 置入皮肤颜色
-                            if( data.data.skinInfoCode ) {
+                            if( data.data.backColor ) {
                                 let phone = document.getElementById('phone');
-                                phone.className = data.data.skinInfoCode;
+                                phone.className = data.data.backColor;
                             }
 
                             this.noEditData = data.data;
@@ -279,7 +279,7 @@
         methods: {
             // 主题切换
             handleTheme(name) {
-                this.resumeTemplateTwoOne.skinInfoCode = name;
+                this.resumeTemplateTwoOne.backColor = name;
                 let phone = document.getElementById('phone');
                 phone.className = name;
             },

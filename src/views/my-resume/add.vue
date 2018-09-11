@@ -182,7 +182,7 @@
                 productInfo: {
                     productName: '',//产品名称
                     imgUrl: '', // 产品图片
-                    skinInfoCode: '', //皮肤
+                    backColor: '', //皮肤
                     templateCode: '', //模板
                     uniqueCode: '', // 唯一编码
                     generalInfoList:[], //产品字段
@@ -191,7 +191,6 @@
                     // 原料列表
                     productInfos:[],
                     productImportList: [], // 原料外链接
-                    skinInfoCode: '', // 皮肤
                 },
                 // 基本原料
                 material: {
@@ -296,9 +295,9 @@
                         this.loading.close();
                         if( data.data ) {
                             // 置入皮肤颜色
-                            if( data.data.skinInfoCode ) {
+                            if( data.data.backColor ) {
                                 let phone = document.getElementById('phone');
-                                phone.className = data.data.skinInfoCode;
+                                phone.className = data.data.backColor;
                             }
                             this.noEditData = data.data;
                             let clone = deepClone(data.data);
@@ -319,7 +318,7 @@
         methods: {
             // 主题切换
             handleTheme(name) {
-                this.productInfo.skinInfoCode = name;
+                this.productInfo.backColor = name;
                 let phone = document.getElementById('phone');
                 phone.className = name;
             },

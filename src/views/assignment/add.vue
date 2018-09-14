@@ -186,6 +186,12 @@
             }else {
                 if( this.templateCode ) {
                     getModuleDetails( this.templateCode ).then(data => {
+                        // 置入皮肤颜色
+                        if( data.data.backColor ) {
+                            let phone = document.getElementById('phone');
+                            phone.className = data.data.backColor;
+                        }
+
                         this.loading.close();
                         let clone = deepClone(data.data);
                         this.resumeTemplateTwoOne = clone;

@@ -1,6 +1,6 @@
 <template>
     <div class="add-container" v-show="isLoadingEnd">
-        <div class="phone-container">
+        <div id="phone-container">
             <main-phone
                 :globalPool="globalPool"
                 @editStep="editStep"
@@ -610,7 +610,7 @@
             margin: 14px;
         }
     }
-    .phone-container {
+    #phone-container {
         margin-right: 180px;
     }
     .material-container {

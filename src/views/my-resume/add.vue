@@ -10,7 +10,7 @@
 			<a style="display: none" id="callback" href="javascript:void(0);" onclick="callback();"></a>
 			<input type="hidden" id="commentFileUrl" name="commentFileUrl" />
         </div> -->
-        <div class="phone-container">
+        <div id="phone-container">
             <main-phone
                 @editStep="editStep"
                 @clickBase="clickBase"
@@ -704,7 +704,7 @@
             margin: 14px;
         }
     }
-    .phone-container {
+    #phone-container {
         margin-right: 180px;
     }
     .material-container {

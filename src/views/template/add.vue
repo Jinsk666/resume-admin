@@ -257,7 +257,6 @@
                             // 置入皮肤颜色
                             if( data.data.backColor ) {
                                 this.$nextTick( () => {
-                                    debugger
                                     let phone = document.getElementById('phone-container');
                                     phone.className = data.data.backColor;
                                 })
@@ -395,7 +394,6 @@
             },
             // 保存数据
             saveData() {
-                debugger
                 if( this.resumeTemplateTwoOne.resumeTemplateName == ''){
                     this.$message.error('请输入产品名称');
                     return;

@@ -451,7 +451,6 @@
             },
             // 上传文件
             uploadFile($event, obj) {
-                debugger
                 let file = $event.target.files[0];
                 if( !isImg(file.name) ) {
                     this.$message({

@@ -189,8 +189,8 @@
                         // 置入皮肤颜色
                         if( data.data.backColor ) {
                             this.$nextTick( () => {
-                                let phone = document.getElementsByClassName('phone-container');
-                                phone.className = data.data.backColor;
+                                let phone = document.getElementById('phone-container');
+                                phone.className = data.data.themeColor;
                             })
                         }
 
@@ -211,8 +211,8 @@
                         // 置入皮肤颜色
                         if( data.data.backColor ) {
                             this.$nextTick( () => {
-                                let phone = document.getElementsByClassName('phone-container');
-                                phone.className = data.data.backColor;
+                                let phone = document.getElementById('phone-container');
+                                phone.className = data.data.themeColor;
                             })
                         }
 

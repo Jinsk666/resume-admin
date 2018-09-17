@@ -1,6 +1,6 @@
 <template>
     <div class="add-container" v-show="isLoadingEnd">
-        <div class="phone-container">
+        <div id="phone-container">
             <main-phone
                 @editStep="editStep"
                 @clickBase="clickBase"
@@ -257,8 +257,8 @@
                             // 置入皮肤颜色
                             if( data.data.backColor ) {
                                 this.$nextTick( () => {
-                                    let phone = document.getElementsByClassName('phone-container');
-                                    phone.className = data.data.backColor;
+                                    let phone = document.getElementById('phone-container');
+                                    phone.className = data.data.themeColor;
                                 })
                             }
 
@@ -282,7 +282,7 @@
             // 主题切换
             handleTheme(name) {
                 this.resumeTemplateTwoOne.backColor = name;
-                let phone = document.getElementsByClassName('phone-container');
+                let phone = document.getElementById('phone-container');
                 phone.className = name;
             },
             //  其实可以 将 stepDialog 放入 store
@@ -643,7 +643,7 @@
             margin: 14px;
         }
     }
-    .phone-container {
+    #phone-container {
         margin-right: 180px;
     }
     .material-container {

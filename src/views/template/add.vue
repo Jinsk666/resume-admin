@@ -257,8 +257,9 @@
                             // 置入皮肤颜色
                             if( data.data.backColor ) {
                                 this.$nextTick( () => {
+                                    debugger
                                     let phone = document.getElementById('phone-container');
-                                    phone.className = data.data.themeColor;
+                                    phone.className = data.data.backColor;
                                 })
                             }
 

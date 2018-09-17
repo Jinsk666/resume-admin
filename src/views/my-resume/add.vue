@@ -298,7 +298,7 @@
                             if( data.data.backColor ) {
                                 this.$nextTick( () => {
                                     let phone = document.getElementById('phone-container');
-                                    phone.className = data.data.themeColor;
+                                    phone.className = data.data.backColor;
                                 })
                             }
                             this.noEditData = data.data;

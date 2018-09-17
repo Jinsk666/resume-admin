@@ -256,8 +256,10 @@
                         if( data.data ) {
                             // 置入皮肤颜色
                             if( data.data.backColor ) {
-                                let phone = document.getElementById('phone');
-                                phone.className = data.data.backColor;
+                                this.$nextTick( () => {
+                                    let phone = document.getElementsByClassName('phone-container');
+                                    phone.className = data.data.backColor;
+                                })
                             }
 
                             this.noEditData = data.data;
@@ -280,7 +282,7 @@
             // 主题切换
             handleTheme(name) {
                 this.resumeTemplateTwoOne.backColor = name;
-                let phone = document.getElementById('phone');
+                let phone = document.getElementsByClassName('phone-container');
                 phone.className = name;
             },
             //  其实可以 将 stepDialog 放入 store

@@ -188,8 +188,10 @@
                     getModuleDetails( this.templateCode ).then(data => {
                         // 置入皮肤颜色
                         if( data.data.backColor ) {
-                            let phone = document.getElementById('phone');
-                            phone.className = data.data.backColor;
+                            this.$nextTick( () => {
+                                let phone = document.getElementsByClassName('phone-container');
+                                phone.className = data.data.backColor;
+                            })
                         }
 
                         this.loading.close();
@@ -208,8 +210,10 @@
 
                         // 置入皮肤颜色
                         if( data.data.backColor ) {
-                            let phone = document.getElementById('phone');
-                            phone.className = data.data.backColor;
+                            this.$nextTick( () => {
+                                let phone = document.getElementsByClassName('phone-container');
+                                phone.className = data.data.backColor;
+                            })
                         }
 
                         this.loading.close();

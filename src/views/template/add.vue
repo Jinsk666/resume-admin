@@ -139,7 +139,10 @@
         components: {  MainPhone, StepDialog, BaseDialog },
         data() {
             return {
-                themeColor: [{color: '#45BC9C', name: 'theme1'}, {color: '#00ACE9', name: 'theme2'}, {color: '#4A90E2', name: 'theme3'}, {color: '#5DBA19', name: 'theme4'}, {color: '#FFD117', name: 'theme5'}],
+                themeColor: [
+                    {color: '#45BC9C', name: 'theme1'}, {color: '#6ACCF1', name: 'theme2'}, {color: '#1E79C5', name: 'theme3'}, {color: '#6C4BBD', name: 'theme4'}, {color: '#E1C053', name: 'theme5'},
+                    {color: '#AC8C42', name: 'theme6'}, {color: '#EE7373', name: 'theme7'}, {color: '#F88B36', name: 'theme8'}, {color: '#0CA344', name: 'theme9'}, {color: '#86B0A4', name: 'theme10'},
+                ],
                 mouseoverMaterialIndex: -1,
                 loading: '',
                 isLoadingEnd: false, //手机显示开关 第一个接口加载完毕是临界点

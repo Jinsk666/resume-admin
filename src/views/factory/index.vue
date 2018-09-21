@@ -215,8 +215,13 @@
 							this.ruleForm.enterpriseInfoId = Number( this.factoryId )
 							debugger
 							editFactoryInfo(this.ruleForm).then( data => {
-								this.$message.success('修改成功');
-								this.$router.push({name: 'home'})
+								let r = getRefreshToken();
+								getToken(r).then( (data2) => {
+									this.$store.commit('SET_TOKEN', data2.data);
+									setToken(data2.data);
+									this.$message.success('添加成功');
+									this.$router.push({name: 'home'})
+								})
 							});
 						}else {
 							addFactoryInfo(this.ruleForm).then( data => {
@@ -229,9 +234,9 @@
 								getToken(r).then( (data2) => {
 									this.$store.commit('SET_TOKEN', data2.data);
 									setToken(data2.data);
+									this.$message.success('添加成功');
+									this.$router.push({name: 'home'})
 								})
-								this.$message.success('添加成功');
-								this.$router.push({name: 'home'})
 							});
 						}
 					} else {

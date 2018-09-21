@@ -299,6 +299,16 @@
 				this.ruleForm.latitude = 0;
 			}
 		},
+		beforeRouteLeave (to, from, next) {
+			getFactoryInfo(this.factoryId).then(data => {
+				if( data.data.creditCode && data.data.enterpriseName ) {
+					next()
+				}else {
+					//window.location.reload();
+					this.$message('请填写必填字段');
+				}
+			})
+		},
     }
 </script>
 

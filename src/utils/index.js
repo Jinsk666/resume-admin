@@ -82,6 +82,7 @@ export const deepClone = obj => {
  * 是否是图片
  */
 export const isImg = path => {
+	path = path.toLowerCase();
     if( /\.(png|jpe?g|gif|svg)(\?.*)?$/.test(path) ) return true;
     else return false;
 }

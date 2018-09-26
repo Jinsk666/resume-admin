@@ -317,6 +317,7 @@
             },
             baseDialogSure() {
                 //确认 需要拿到副本 重新设置 副本
+                // this.resumeTemplateTwoOne.resumeTemplateName = this.resumeTemplateTwoOne.generalInfoList
                 this.baseDialog = false;
                 let clone = deepClone(this.stepData);
                 this.$store.commit('SWITCH_STEPDATA_CLONE', clone);

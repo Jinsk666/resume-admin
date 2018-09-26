@@ -119,4 +119,26 @@ export const getResumeDetails = code => {
         data: {}
     })
 }
+// 评论相关
+export const getCommentsList = (likeParams, page, resumeCode, starts ) => {
+    return request({
+        url: '/resume/V2.1/resumeCommentTwoOne/getList',
+        method: 'POST',
+        data: {
+            likeParams,
+            page,
+            resumeCode,
+            starts
+        }
+    })
+}
+// 删除评论
+export const deleteComment = resumeCode => {
+    return request({
+        url: '/resume/V2.1/resumeCommentTwoOne/delete/' + resumeCode,
+        method: 'DELETE',
+        data: {
+        }
+    })
+}
 

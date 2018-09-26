@@ -28,7 +28,7 @@
             <div class="container clearfix">
                 <div class="intro">
                     <div class="intro-name ellipsis">
-                        {{stepData.resumeTemplateName || '产品名称'}}
+                        {{stepData.generalInfoList[0] && stepData.generalInfoList[0].value || '产品名称'}}
                     </div>
                 </div>
                 <div ref="baseDom" class="intro-content clear"

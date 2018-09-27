@@ -28,6 +28,19 @@
                             </span>
                         </div>
                     </el-tab-pane>
+                    <el-tab-pane label="功能设置">
+                        <div class="left name">
+                            <span>点赞评论</span>
+                        </div>
+                        <div class="left comments">
+                            <el-switch
+                                :width=50
+                                v-model="resumeTemplateTwoOne.isComment"
+                                active-color="#45BC9c"
+                                inactive-color="#CDCDCD">
+                            </el-switch>
+                        </div>
+                    </el-tab-pane>
                     <!-- 显示隐藏 以及 位置 -->
                     <!-- <el-tab-pane label="模块设置">
                         <ul class="is-more">
@@ -161,6 +174,7 @@
                     // 原料列表
                     resumeTemplateTwoOnes:[],
                     backColor: '',
+                    isComment: true,
                 },
                 // 基本原料
                 material: {
@@ -496,7 +510,6 @@
 
 <style lang="scss" scoped>
     @import '../../styles/mixin';
-
     .btn-op{width:105px;height:45px;line-height: 45px;display: inline-block;font-size: 18px;text-align: center;}
     .borderright{border-right: 1px solid;}
     .btn-op img{margin-top: -3px; margin-right: 5px;width: auto!important;display: inline!important;}
@@ -568,6 +581,19 @@
             border-radius: 50%;
             margin: 6px;
             cursor: pointer;
+        }
+        .name {
+            padding-left: 20px;
+            color: #333;
+            >span {
+                display: inline-block;
+                padding: 10px 20px 10px 40px;
+                background: url('~@/assets/images/v2/comment.png') no-repeat center left;
+                background-size: 30px;
+            }
+        }
+        .comments {
+            margin-top: 10px;
         }
     }
     .right-container{

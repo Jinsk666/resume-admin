@@ -131,7 +131,7 @@
 		.el-tabs__nav {
 			width: 100%;
 			.el-tabs__item {
-				width: 100%;
+				width: 50%;
 			}
 			.el-tabs__item:first-child {
 				border-left: 0;
@@ -140,7 +140,7 @@
 				border-right: 0;
 			}
 			>div {
-				background: #e7e7e7;
+				//background: #e7e7e7;
 			}
 		}
 		.el-tabs__nav-next, .el-tabs__nav-prev {

@@ -485,6 +485,8 @@
                 let jgModule = deepClone(this.moduleInfos['加工'].subModelInfoList[1].subModelInfoInfoList[0]);
                 this.jgModule = jgModule;
                 this.mainLoading.close();
+                this.moduleInfos['种植'].subModelInfoList[2].subModelInfoInfoList = [];
+                this.moduleInfos['加工'].subModelInfoList[1].subModelInfoInfoList = [];
             })
             if( this.id ) {
                 // 下面还有一个 调用此方法

@@ -214,5 +214,17 @@ export const getModuleData = ( uniqueCode, type ) => {
     })
   }
 
+  // 获取评论数量
+  export const getCommentsList = (resumeCode, page) => {
+    return request({
+      url : '/resume/V2.1/resumeExhibitionTwoOne/getList',
+      method: 'post',
+      data: {
+        resumeCode,
+        page
+      }
+    })
+  }
+
 
 

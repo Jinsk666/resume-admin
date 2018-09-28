@@ -61,9 +61,8 @@
                         </el-input>
                     </div>
                     <div class="left selected-input">
-                        <el-select size="small" v-model="comments.star" placeholder="请选择">
+                        <el-select multiple size="small" v-model="comments.star" placeholder="请选择">
                             <el-option
-                                multiple
                                 v-for="item in options"
                                 :key="item.value"
                                 :label="item.label"
@@ -179,7 +178,7 @@
                     search: { // 搜索条件
                         resumeCode: '',
                     },
-                    star: null,
+                    star: [],
                     totalCount: 20,
                     tableData: [],
                     row:{},
@@ -200,7 +199,7 @@
                 }))
             },
             handleCommentSearch(val) {
-                getCommentsList(this.comments.search.resumeCode, val, this.$route.query.code || '', this.comments.star).then(data => {
+                getCommentsList(this.comments.search.resumeCode, val, this.$route.query.code || '', this.comments.star.join(',')).then(data => {
                     this.comments.totalCount = data.data.pageCount * 20;
                     this.comments.tableData = data.data.resumeCommentTwoOneResponseList || [];
                     this.comments.currentPage = val;

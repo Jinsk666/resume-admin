@@ -32,7 +32,7 @@
 								v-model="item.value"
 								placeholder="请选择"
 								size="small"
-								style="width:100%">
+								style="width:85%">
 								<el-option
 									v-for="item in options"
 									:key="item.uniqueCode"
@@ -40,6 +40,9 @@
 									:label="item.enterpriseName">
 								</el-option>
 							</el-select>
+							<div class="add-factory-polyfill" @click="isAddFactory = true">
+								<el-button size="small" plain icon="el-icon-plus"></el-button>
+							</div>
 						</el-form-item>
 						<!-- textarea -->
 						<el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">
@@ -114,6 +117,14 @@
 			:isDataUpload="isDataUpload"
 			:type="1">
 		</data-upload>
+		<add-factory
+		v-if="isAddFactory"
+		@addFactorySure="addFactorySure"
+		@addFactoryCancel="addFactoryCancel"
+		@handleClose="handleClose"
+		:isAddFactory="isAddFactory"
+		>
+		</add-factory>
     </div>
 </template>
 
@@ -123,8 +134,9 @@
 	import { setModule, factoryId2FactoryName, generalValidate } from '@/utils/v2'
 	import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
     import DataUpload from '@/components/v2/collection/DataUpload'
+    import AddFactory from '@/components/v2/collection/AddFactory'
     export default {
-        components: { DataUpload },
+        components: { DataUpload, AddFactory },
         data() {
             return {
 				mainLoading: false,
@@ -149,7 +161,8 @@
 				isRemote: false, // 下拉框是否在 请求数据
                 optionsPage: 1, // 当前页数
                 optionsPageCount: 0, // 总共页数
-                optionsLinkParams: '', // 搜索条件
+				optionsLinkParams: '', // 搜索条件
+				isAddFactory: false
             }
 		},
 		computed: {
@@ -291,6 +304,7 @@
 			},
 			handleClose() {
 				this.isDataUpload = false;
+				this.isAddFactory = false;
 			},
 			// 上传文档  web 直传  废弃
 			docUpload() {
@@ -337,6 +351,13 @@
                         message: '已取消删除'
                     });
                 });
+			},
+			// 快速添加企业
+			addFactorySure() {
+				this.isAddFactory = false;
+			},
+			addFactoryCancel() {
+				this.isAddFactory = false;
 			}
 		},
     }

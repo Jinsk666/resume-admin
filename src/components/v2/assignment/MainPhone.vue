@@ -28,7 +28,7 @@
             <div class="container clearfix">
                 <div class="intro">
                     <div class="intro-name ellipsis">
-                        {{stepData.generalInfoList[0] && stepData.generalInfoList[0].value || '产品名称'}}
+                        {{stepData.resumeTemplateName || '产品名称'}}
                     </div>
                 </div>
                 <div ref="baseDom" class="intro-content clear"
@@ -127,6 +127,9 @@
                         </base-step>
                     </div>
                 </el-collapse>
+                <!-- 评论 -->
+                <like-comments v-if="isComment">
+                </like-comments>
             </div>
             <transition name="fade" mode="out-in">
                 <div id="mask" v-show="isEnterBase || isEnterStep"></div>
@@ -140,13 +143,14 @@
 
 <script>
     import BaseStep from '@/components/v2/assignment/BaseStep';
+    import LikeComments from '@/components/v2/common/LikeAndComments'
     import { isImg } from '@/utils/index'
     import { uploadImg } from '@/utils/upload'
 
     export default {
         name:'MainPhone',
-        props: ['globalPool'],
-        components: { BaseStep },
+        props: ['globalPool','isComment'],
+        components: { BaseStep, LikeComments },
         data() {
             return {
                 thirdActive: 0,

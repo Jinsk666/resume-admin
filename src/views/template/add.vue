@@ -5,6 +5,7 @@
                 @editStep="editStep"
                 @clickBase="clickBase"
                 @addLastStep="addLastStep"
+                :isComment="resumeTemplateTwoOne.isComment"
                 >
             </main-phone>
         </div>

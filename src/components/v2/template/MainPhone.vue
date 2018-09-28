@@ -106,6 +106,9 @@
             <div v-if="!isView" class="acc-li add-step" @click="addLastStep">
                 <i class="el-icon-plus"></i> &nbsp;&nbsp;环节调整
             </div>
+            <!-- 评论 -->
+            <like-comments v-if="isComment">
+            </like-comments>
         </div>
         <transition name="fade" mode="out-in">
             <div id="mask" v-show="isEnterBase"></div>
@@ -118,12 +121,14 @@
 
 <script>
     import BaseStep from '@/components/v2/template/BaseStep';
+    import LikeComments from '@/components/v2/common/LikeAndComments'
     import { isImg } from '@/utils/index'
     import { uploadImg } from '@/utils/upload'
 
     export default {
         name:'MainPhone',
-        components: { BaseStep },
+        props:['isComment'],
+        components: { BaseStep, LikeComments },
         data() {
             return {
                 thirdActive: 0, //第三方默认选中

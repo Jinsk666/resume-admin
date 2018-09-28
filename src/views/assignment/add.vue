@@ -3,6 +3,7 @@
         <div id="phone-container">
             <main-phone
                 :globalPool="globalPool"
+                :isComment="resumeTemplateTwoOne.isComment"
                 @editStep="editStep"
                 @clickBase="clickBase"
                 >
@@ -17,7 +18,9 @@
                 <div
                     :class="{active: productModuleIndex == -1}"
                     class="product-btn"
-                    @click="handleProductModule">{{resumeTemplateTwoOne.resumeTemplateName || '产品模版'}}</div>
+                    @click="handleProductModule">
+                        {{resumeTemplateTwoOne.resumeTemplateName || '产品模版'}}
+                    </div>
                 <div
                     class="ellipsis material-list"
                     :class="{active: productModuleIndex == index}"
@@ -110,7 +113,8 @@
                     // 原料列表
                     resumeTemplateTwoOnes:[],
                     productImportList: [], // 原料外链接
-                    externalQuoteList:[]
+                    externalQuoteList:[],
+                    isComment: false
                 },
                 // 基本原料
                 material: {
@@ -317,7 +321,7 @@
             },
             baseDialogSure() {
                 //确认 需要拿到副本 重新设置 副本
-                // this.resumeTemplateTwoOne.resumeTemplateName = this.resumeTemplateTwoOne.generalInfoList
+                this.resumeTemplateTwoOne.resumeTemplateName = this.resumeTemplateTwoOne.generalInfoList[0].value;
                 this.baseDialog = false;
                 let clone = deepClone(this.stepData);
                 this.$store.commit('SWITCH_STEPDATA_CLONE', clone);

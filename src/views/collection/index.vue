@@ -1,16 +1,16 @@
 <template>
     <div class="main">
         <div class="container">
-            <div class="left one">
-                <router-link :to="{name: 'collectionMaterial'}">
-                    <img src="@/assets/images/v2/collection-one.png" alt="">
-                    <p>原料信息</p>
-                </router-link>
-            </div>
             <div class="left two">
                 <router-link :to="{name: 'collectionFactory'}">
                     <img src="@/assets/images/v2/collection-two.png" alt="">
                     <p>企业信息</p>
+                </router-link>
+            </div>
+            <div class="left one">
+                <router-link :to="{name: 'collectionMaterial'}">
+                    <img src="@/assets/images/v2/collection-one.png" alt="">
+                    <p>原料信息</p>
                 </router-link>
             </div>
             <div class="left three">

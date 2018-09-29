@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <el-tab-pane label="评论详情" name="two">
+            <!-- <el-tab-pane label="评论详情" name="two">
                 <div class="search-header clearfix">
                     <div class="left code-input">
                         <el-input
@@ -78,9 +78,6 @@
                     </div>
                 </div>
                 <div class="code-container">
-                    <!-- <div class="container-top">
-                        <div class="left">对应码列表</div>
-                    </div> -->
                     <div class="container-table">
                         <el-table
                             :data="comments.tableData"
@@ -145,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-            </el-tab-pane>
+            </el-tab-pane> -->
         </el-tabs>
     </div>
 </template>

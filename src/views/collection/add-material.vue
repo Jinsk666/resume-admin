@@ -32,7 +32,7 @@
 								v-model="item.value"
 								placeholder="请选择"
 								size="small"
-								style="width:85%">
+								style="width:100%">
 								<el-option
 									v-for="item in options"
 									:key="item.uniqueCode"
@@ -40,9 +40,9 @@
 									:label="item.enterpriseName">
 								</el-option>
 							</el-select>
-							<div class="add-factory-polyfill" @click="isAddFactory = true">
+							<!-- <div class="add-factory-polyfill" @click="isAddFactory = true">
 								<el-button size="small" plain icon="el-icon-plus"></el-button>
-							</div>
+							</div> -->
 						</el-form-item>
 						<!-- textarea -->
 						<el-form-item v-else-if="item.dataType == 10" :label="item.label + ' : '">

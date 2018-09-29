@@ -146,3 +146,19 @@ img{
 	color: #a5a5a5;
 	font-size: 14px;
 }
+@media screen and (max-width:768px) {
+	.login-side {
+		display: none;
+	}
+	.login-content {
+		width: 100%;
+	}
+	.login {
+		min-height: auto;
+		min-width: auto;
+	}
+	.login-bottom {
+		width: 100%;
+		text-align: center;
+	}
+}

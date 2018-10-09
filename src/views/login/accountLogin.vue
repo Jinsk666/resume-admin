@@ -10,8 +10,8 @@
                     <img src="~@/assets/images/login/login_logo.png" alt="side"/>
                 </div>
                 <div class="login-phone">
-                    <p class="login-label">手机号</p>
-                    <input id="phone" type="text" v-model="phone" placeholder="请输入手机号"/>
+                    <p class="login-label">账号</p>
+                    <input id="phone" type="text" v-model="phone" placeholder="请输入账号"/>
                 </div>
                 <div class="login-phone">
                     <p class="login-label">密码</p>
@@ -49,11 +49,7 @@
         methods: {
             /* 登陆请求  */
             handleLogin(){
-				if (!this.rightPhone){
-					/*  提示 */
-					this.$message.error( '请填写正确的手机号码。' );
-					return;
-				}else if( this.password.trim() == '' ){
+				if( this.password.trim() == '' ){
                     /*  提示 */
 					this.$message.error( '请填写密码。' );
 					return;

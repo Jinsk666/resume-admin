@@ -31,7 +31,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="批次号:" id="batchCode">
-                        <!-- <el-select
+                        <el-select
                             :disabled="form.name ? false : true"
                             :popper-append-to-body="false"
                             @visible-change="handleShow1"
@@ -49,10 +49,10 @@
                                 :label="item.uniqueCode"
                                 :value="item.uniqueCode">
                             </el-option>
-                        </el-select> -->
-                        <el-input type="text" size="small" style="width:240px" v-model="form.batchCode">
+                        </el-select>
+                        <!-- <el-input type="text" size="small" style="width:240px" v-model="form.batchCode">
 
-                        </el-input>
+                        </el-input> -->
                     </el-form-item>
                 </el-form>
             </div>
@@ -114,6 +114,7 @@
                 this.$emit('handleClose');
             },
             factoryChange(val,oldValue) {
+                this.form.batchCode = '';
                 this.remoteMethod1('',1)
             },
             handleShow(val){
@@ -126,16 +127,16 @@
                     },200)
                 }
             },
-            // handleShow1(val){
-            //     let dom = document.querySelectorAll('#batchCode .el-select-dropdown__wrap')[0];
-            //     if( val == false ) {
-            //         dom.removeEventListener('scroll', this.loadMore1);
-            //     }else {
-            //         setTimeout(()=>{
-            //             dom.addEventListener('scroll', this.loadMore1);
-            //         },200)
-            //     }
-            // },
+            handleShow1(val){
+                let dom = document.querySelectorAll('#batchCode .el-select-dropdown__wrap')[0];
+                if( val == false ) {
+                    dom.removeEventListener('scroll', this.loadMore1);
+                }else {
+                    setTimeout(()=>{
+                        dom.addEventListener('scroll', this.loadMore1);
+                    },200)
+                }
+            },
             loadMore() {
                 scrollMore('#factory .el-select-dropdown__wrap', () => {
                     if( !this.isRemote ) {
@@ -148,18 +149,18 @@
                     }
                 })
             },
-            // loadMore1() {
-            //     scrollMore('#batchCode .el-select-dropdown__wrap', () => {
-            //         if( !this.isRemote ) {
-            //             this.batchCodePage++;
-            //             if( this.batchCodePage > this.batchCodePageCount ) {
-            //                 this.$message('没用更多数据了')
-            //                 return;
-            //             }
-            //             this.remoteMethod(this.batchCodeLinkParams, this.batchCodePage);
-            //         }
-            //     })
-            // },
+            loadMore1() {
+                scrollMore('#batchCode .el-select-dropdown__wrap', () => {
+                    if( !this.isRemote ) {
+                        this.batchCodePage++;
+                        if( this.batchCodePage > this.batchCodePageCount ) {
+                            this.$message('没用更多数据了')
+                            return;
+                        }
+                        this.remoteMethod(this.batchCodeLinkParams, this.batchCodePage);
+                    }
+                })
+            },
             remoteMethod(query, page) {
                 if( !page ) this.factoryPage = 1;
                 if( this.factoryPage == 1 ) this.factoryList = [];

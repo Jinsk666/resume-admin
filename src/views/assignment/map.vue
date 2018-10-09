@@ -184,7 +184,7 @@
         },
         mounted() {
             this.handleSearch(1);
-            this.handleCommentSearch(1);
+            //this.handleCommentSearch(1);
         },
         methods: {
             // 搜索按钮

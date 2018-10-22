@@ -184,7 +184,7 @@
                 //let url = 'http://cs.nongchangyun.cn/resume-portal-beta/#/defaults?resumeCode=' + code;
                 //正式地址
                 //let url = 'http://erp.farmeasy.cn/resume-portal-beta/#/defaults?resumeCode=' + code;
-                let url = process.env.PORTAL_API + "/#/defaults?resumeCode=" + code;
+                let url = process.env.PORTAL_API + "/#/defaults?resumeCode=" + code + '&isComment=1';
                 window.open(url);
             },
             deleteDialogSure() {

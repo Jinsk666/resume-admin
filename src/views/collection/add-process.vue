@@ -413,7 +413,7 @@
 
     import { getModelList, getModuleData, getFactoryList, addModuleData, editModuleData } from '@/api/v2'
     import { isImg, scrollMore, deepClone } from '@/utils'
-    import { factoryId2FactoryName, generalValidate, isInnerOrOuter } from '@/utils/v2'
+    import { factoryId2FactoryName, generalValidate, isInnerOrOuter, insertFactory } from '@/utils/v2'
     import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
 
     import { deleteUrl } from '@/utils/v2'
@@ -740,7 +740,7 @@
             handleInnerDoc() {
                 this.isDataUpload = true;
             },
-            dataUploadSure(code) {
+            dataUploadSure(code, id) {
                 this.isDataUpload = false;
                 this.mainLoading = this.$loading({text:'拼命加载中...'});
                 getModuleData( code, this.tabId ).then( data => {
@@ -761,6 +761,8 @@
                     })
                     this.moduleDataAddDto.moduleUniqueCode = code;
                     this.mainLoading.close();
+                    debugger
+                    insertFactory(id, data.data.enterpriseSelectName, data.data.enterpriseInfoId, this.options)
                 })
             },
             dataUploadCancel() {

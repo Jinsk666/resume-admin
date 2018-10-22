@@ -131,7 +131,7 @@
 <script>
 	import { getModelList, addModuleData, editModuleData, getModuleData, getFactoryList } from '@/api/v2'
 	import { isImg, scrollMore } from '@/utils'
-	import { setModule, factoryId2FactoryName, generalValidate } from '@/utils/v2'
+	import { setModule, factoryId2FactoryName, generalValidate, insertFactory } from '@/utils/v2'
 	import { uploadImg, uploadFileDemo, isAcceptFile, setOssUrl } from '@/utils/upload'
     import DataUpload from '@/components/v2/collection/DataUpload'
     import AddFactory from '@/components/v2/collection/AddFactory'
@@ -290,13 +290,14 @@
                 })
 			},
 			// 数据接入
-			dataUploadSure(code) {
+			dataUploadSure(code, id) {
 				this.isDataUpload = false;
 				this.mainLoading = this.$loading({text:'拼命加载中...'});
 				getModuleData( code, 1 ).then( data => {
 					this.mainLoading.close();
 					this.moduleDataAddDto = data.data;
 					this.moduleDataAddDto.moduleUniqueCode = code;
+					insertFactory(id, data.data.enterpriseSelectName, data.data.enterpriseInfoId, this.options)
 				})
 			},
 			dataUploadCancel() {

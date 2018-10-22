@@ -88,6 +88,8 @@
                 batchCodePage: 1,
                 batchCodePageCount: 0,
                 batchCodeLikeParams: '',
+
+                selectFactoryId: 0,
             }
         },
         mounted() {
@@ -99,7 +101,7 @@
                 for( var i = 0; i < this.batchCodeList.length; i++ ) {
                     let code = this.batchCodeList[i];
                     if( this.form.batchCode == code.uniqueCode ) {
-                        this.$emit('dataUploadSure', this.form.batchCode);
+                        this.$emit('dataUploadSure', this.form.batchCode, this.selectFactoryId);
                         break;
                     }
                 }
@@ -114,6 +116,7 @@
                 this.$emit('handleClose');
             },
             factoryChange(val,oldValue) {
+                this.selectFactoryId = val;
                 this.form.batchCode = '';
                 this.remoteMethod1('',1)
             },

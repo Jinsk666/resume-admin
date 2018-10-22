@@ -157,3 +157,21 @@ export const setModule = data => {
  }
 
 
+ // 插入新的企业信息
+
+ export const insertFactory = (id, name, id2, arr) => {
+    for( var i = 0; i < arr.length; i++ ) {
+        if( arr[i].uniqueCode == id ) {
+            break;
+        }
+    }
+    if( i == arr.length ) {
+        arr.push({
+            enterpriseName: name,
+            enterpriseId: id2,
+            uniqueCode: id,
+        })
+    }
+ }
+
+

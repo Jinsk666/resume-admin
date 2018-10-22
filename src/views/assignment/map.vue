@@ -1,5 +1,8 @@
 <template>
     <div class="code-list">
+        <div class="all-comments" v-if="activeName2 == 'two'">
+            共 <span> {{comments.allComments || 0}}  </span> 条评论
+        </div>
         <el-tabs v-model="activeName2" type="card" @tab-click="handleClick">
             <el-tab-pane label="对应码列表" name="one">
                 <div class="search-header clearfix">
@@ -179,7 +182,8 @@
                     totalCount: 20,
                     tableData: [],
                     row:{},
-                }
+                    allComments: 0,
+                },
             }
         },
         mounted() {
@@ -196,10 +200,11 @@
                 }))
             },
             handleCommentSearch(val) {
-                getCommentsList(this.comments.search.resumeCode, val, this.$route.query.code || '', this.comments.star.join(',')).then(data => {
+                getCommentsList(this.comments.search.resumeCode, val, this.$route.query.code || '', this.comments.star).then(data => {
                     this.comments.totalCount = data.data.pageCount * 20;
                     this.comments.tableData = data.data.resumeCommentTwoOneResponseList || [];
                     this.comments.currentPage = val;
+                    this.comments.allComments = data.data.totalNum || 0;
                 })
             },
             handleClick() {
@@ -213,14 +218,14 @@
             },
             handleCommand(code){
                 if( code == 'delete' ) {
-                    this.delete(this.comments.row.batchCode);
+                    this.delete(this.comments.row.uniqueCode);
                 }
             },
             handleDeleteArr() {
                 if( this.comments.selectArr.length > 0 ) {
                     let arr = [];
                     this.comments.selectArr.forEach( val => {
-                        arr.push( val.batchCode );
+                        arr.push( val.uniqueCode );
                     })
                     this.delete(arr.join(','));
                 }else {
@@ -244,10 +249,20 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '../../styles/mixin';
+    .all-comments {
+        position: absolute;
+        right: 20px;
+        top: 20px;
+        span {
+            color: $color;
+        }
+    }
     .code-list {
         padding: 15px;
         margin: 15px;
         background: #fff;
+        position: relative;
     }
     .search-header {
         background: #FFF;

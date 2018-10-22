@@ -70,7 +70,7 @@
                             <li>
                                 <router-link :to="{name: 'assignmentMap', query: {code: item.uniqueCode}}">
                                     <p class="circle"><img src="~@/assets/images/resume/icon5.png" alt=""></p>
-                                    <p>查看对应</p> <!-- 发布详情 -->
+                                    <p>发布详情</p> <!-- 发布详情 -->
                                 </router-link>
                             </li>
                             <li @click="resumeCode = item.uniqueCode; deleteDialog=true; deleteResumeIndex = index;">

@@ -29,7 +29,7 @@
                             </span>
                         </div>
                     </el-tab-pane>
-                    <!-- <el-tab-pane label="功能设置">
+                    <el-tab-pane label="功能设置">
                         <div class="left name">
                             <span>点赞评论</span>
                         </div>
@@ -41,7 +41,7 @@
                                 inactive-color="#CDCDCD">
                             </el-switch>
                         </div>
-                    </el-tab-pane> -->
+                    </el-tab-pane>
                     <!-- 显示隐藏 以及 位置 -->
                     <!-- <el-tab-pane label="模块设置">
                         <ul class="is-more">

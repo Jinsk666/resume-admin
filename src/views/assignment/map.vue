@@ -50,7 +50,7 @@
                     </div>
                 </div>
             </el-tab-pane>
-            <!-- <el-tab-pane label="评论详情" name="two">
+            <el-tab-pane label="评论详情" name="two">
                 <div class="search-header clearfix">
                     <div class="left code-input">
                         <el-input
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                 </div>
-            </el-tab-pane> -->
+            </el-tab-pane>
         </el-tabs>
     </div>
 </template>
@@ -184,7 +184,7 @@
         },
         mounted() {
             this.handleSearch(1);
-            //this.handleCommentSearch(1);
+            this.handleCommentSearch(1);
         },
         methods: {
             // 搜索按钮
